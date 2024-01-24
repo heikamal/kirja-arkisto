@@ -1,5 +1,5 @@
 ########
-# /app #
+# app/ #
 ########
 
 # See http://help.github.com/ignore-files/ for more about ignoring files.
@@ -44,3 +44,42 @@ app/npm-debug.log
 # System files
 /app/.DS_Store
 /app/Thumbs.db
+
+
+###########
+# server/ #
+###########
+
+server/HELP.md
+server/target/
+server/!.mvn/wrapper/maven-wrapper.jar
+server/!**/src/main/**/target/
+server/!**/src/test/**/target/
+
+### STS ###
+server/.apt_generated
+server/.classpath
+server/.factorypath
+server/.project
+server/.settings
+server/.springBeans
+server/.sts4-cache
+
+### IntelliJ IDEA ###
+server/.idea
+server/*.iws
+server/*.iml
+server/*.ipr
+
+### NetBeans ###
+server/nbproject/private/
+server/nbbuild/
+server/dist/
+server/nbdist/
+server/.nb-gradle/
+server/build/
+server/!**/src/main/**/build/
+server/!**/src/test/**/build/
+
+### VS Code ###
+server/.vscode/
