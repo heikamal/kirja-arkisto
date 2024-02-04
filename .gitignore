@@ -33,7 +33,7 @@ app/npm-debug.log
 /app/.history/*
 
 # Miscellaneous
-/app//.angular/cache
+/app/.angular/
 /app/.sass-cache/
 /app//connect.lock
 /app//coverage
@@ -83,6 +83,7 @@ server/!**/src/test/**/build/
 
 ### VS Code ###
 server/.vscode/
+app/.vscode/
 
 ############
 # database #
