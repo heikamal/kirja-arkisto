@@ -1,0 +1,13 @@
+version: '0.1'
+services:
+  database:
+    image: mysql:8.3.0
+    cap_add:
+      - SYS_NICE
+    environment:
+      - MYSQL_DATABASE=arkisto
+      - MYSQL_ROOT_PASSWORD=hagrid
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./database/skriptit/luontiskripti.sql:/docker-entrypoint-initdb.d/luontiskripti.sql
