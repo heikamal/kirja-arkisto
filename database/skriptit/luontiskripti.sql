@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirja` (
   `kirjanimi` VARCHAR(45) NULL,
   `julkaisuvuosi` YEAR(4) NULL,
   `idkirjasarja` INT NOT NULL,
+  `jarjestysnro` INT NULL,
   `kuvaus` VARCHAR(255) NULL,
   PRIMARY KEY (`idkirja`),
   INDEX `fk_kirja_kirjasarja_idx` (`idkirjasarja` ASC) VISIBLE,
