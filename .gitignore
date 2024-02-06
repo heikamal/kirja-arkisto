@@ -32,6 +32,7 @@ app/npm-debug.log
 /app/*.sublime-workspace
 
 # Visual Studio Code
+/app/.vscode
 /app/.vscode/*
 /app/!.vscode/settings.json
 /app/!.vscode/tasks.json
