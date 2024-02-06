@@ -84,3 +84,10 @@ server/!**/src/test/**/build/
 ### VS Code ###
 server/.vscode/
 app/.vscode/
+app/.vscode/
+
+############
+# database #
+############
+
+database/data
