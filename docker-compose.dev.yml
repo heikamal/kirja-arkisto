@@ -1,5 +1,24 @@
 version: '0.1'
 services:
+  server:
+    build:
+      context: ./server
+      dockerfile: dev.Dockerfile
+    environment:
+      MYSQL_HOST: database
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: userpass
+      MYSQL_DATABASE: kirjakanta
+      ENVIRONMENT_TAG: dev
+    ports:
+      - '8080:8080'
+    links:
+      - database
+    depends_on:
+      database:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   database:
     image: mysql:latest
     cap_add:
@@ -14,6 +33,10 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./database/skriptit/luontiskripti.sql:/docker-entrypoint-initdb.d/luontiskripti.sql
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 20s
+      retries: 10
 
 volumes:
   db_data:
