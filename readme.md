@@ -1,6 +1,6 @@
-Kirja-arkisto
+Kirja-arkisto -projekti
 
-Tervetuloa Kirja-arkisto DevOps -projektiin! Tämä projekti tarjoaa ratkaisun vanhojen kirjojen keräilijöille, jotka haluavat helposti hallita ja järjestellä kirjakokoelmiaan. Sovellus mahdollistaa sarjojen ja niihin kuuluvien kirjojen tehokkaan hallinnan, antaen käyttäjille mahdollisuuden tallentaa tärkeitä tietoja ja kuvia kokoelmistaan.
+Tervetuloa Kirja-arkisto projektiin! Tämä projekti tarjoaa ratkaisun vanhojen kirjojen keräilijöille, jotka haluavat helposti hallita ja järjestellä kirjakokoelmiaan. Sovellus mahdollistaa sarjojen ja niihin kuuluvien kirjojen tehokkaan hallinnan, antaen käyttäjille mahdollisuuden tallentaa tärkeitä tietoja ja kuvia kokoelmistaan.
 Toiminnot
 
     Sarjojen ja kirjojen hallinta:
@@ -48,11 +48,13 @@ Käynnistys
 
     Asenna tarvittavat riippuvuudet sekä frontend- että backend-kansioissa.
 
+    bash
+
 npm install
 
 Käynnistä frontend ja backend.
 
-sql
+bash
 
     npm start
 
