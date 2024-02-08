@@ -4,6 +4,7 @@ services:
     build:
       context: ./server
       dockerfile: dev.Dockerfile
+      target: development
     environment:
       MYSQL_HOST: database
       MYSQL_USER: dbuser
