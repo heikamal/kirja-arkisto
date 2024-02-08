@@ -1,5 +1,20 @@
 version: '0.1'
+name: kirjaarkisto-dev
 services:
+  app:
+    build:
+      context: ./app
+      dockerfile: dev.Dockerfile
+    ports:
+      - '4200:4200'
+      - '49153:49153'
+    links:
+      - server
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes: 
+      - ./app:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
   server:
     build:
       context: ./server
@@ -44,3 +59,4 @@ services:
 
 volumes:
   db_data:
+  node_modules:
