@@ -25,7 +25,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -36,6 +35,19 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+    <!-- https://mvnrepository.com/artifact/org.zalando/logbook-core -->
+    <dependency>
+      <groupId>org.zalando</groupId>
+      <artifactId>logbook-core</artifactId>
+      <version>3.7.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.zalando/logbook-spring-boot-starter -->
+    <dependency>
+      <groupId>org.zalando</groupId>
+      <artifactId>logbook-spring-boot-starter</artifactId>
+      <version>3.7.2</version>
+    </dependency>
 	</dependencies>
 
 	<build>
