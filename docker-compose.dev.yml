@@ -12,6 +12,7 @@ services:
       ENVIRONMENT_TAG: dev
     ports:
       - '8080:8080'
+      - '8000:8000'
     links:
       - database
     depends_on:
@@ -19,6 +20,8 @@ services:
         condition: service_healthy
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    volumes: 
+      - ./server:/app
   database:
     image: mysql:latest
     cap_add:

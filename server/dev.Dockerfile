@@ -1,18 +1,17 @@
-FROM amazoncorretto:21-alpine-jdk AS build
-WORKDIR /workspace/app
+FROM amazoncorretto:21-alpine-jdk AS base
+WORKDIR /app
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:resolve
+COPY src ./src
 
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY src src
+FROM base AS development
+CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=mysql", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
 
-RUN ./mvnw install -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+FROM base AS build
+RUN ./mvnw package
 
-FROM amazoncorretto:21-alpine-jdk
-VOLUME /tmp
-ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","org.groupt.kirjaarkisto.KirjaarkistoApplication"]
+FROM amazoncorretto:21-alpine-jdk AS production
+EXPOSE 8080
+COPY --from=build /app/target/kirjaarkisto-*.jar /kirjaarkisto.jar
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/kirjaarkisto.jar"]
