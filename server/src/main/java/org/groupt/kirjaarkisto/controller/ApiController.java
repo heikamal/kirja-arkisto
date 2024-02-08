@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ApiController {
 
-    /**
+  /**
    * Käyttää @GetMapping -annotaatiota kartoittaakseen metodin GET-pyyntöön osoitteessa "/api". 
    * Metodi palauttaa merkkijonon "Harri, voisitko hakee mulle tulisiemeniä?".
    *
@@ -20,6 +20,6 @@ public class ApiController {
    */
   @GetMapping("/api")
   public String api() {
-    return "Harri, voisitko hakee mulle tulisiemeniä?";
+    return "Harri, voisitko hakee mulle tulisiemeniä? Niitä sais harvinaisesta kasvista, joka kasvaa mettässä.";
   }
 }
