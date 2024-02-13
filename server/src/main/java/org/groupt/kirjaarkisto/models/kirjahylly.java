@@ -16,7 +16,7 @@ public class kirjahylly {
     private String omistaja;
 
     @OneToMany(mappedBy = "kirjahylly", cascade = CascadeType.ALL)
-    private List<Kirjakopio> kirjakopiot;
+    private List<kirjakopio> kirjakopiot;
 
     @ManyToMany
     @JoinTable(
