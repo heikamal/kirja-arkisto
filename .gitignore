@@ -1,3 +1,10 @@
+#########
+# root/ #
+#########
+
+.vscode
+
+
 ########
 # app/ #
 ########
@@ -25,6 +32,7 @@ app/npm-debug.log
 /app/*.sublime-workspace
 
 # Visual Studio Code
+/app/.vscode
 /app/.vscode/*
 /app/.angular/*
 /app/!.vscode/settings.json
@@ -84,8 +92,7 @@ server/!**/src/test/**/build/
 
 ### VS Code ###
 server/.vscode/
-app/.vscode/
-app/.vscode/
+
 
 ############
 # database #
