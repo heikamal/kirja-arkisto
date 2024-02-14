@@ -23,7 +23,7 @@ public class kirjaService {
     public kirja addKirja(kirja kirja) {
         return KirjaRepository.save(kirja);
     } 
-    //tää pooistaa :D hagrid :D
+    //tää pooistaa :D
      public void deleteKirja(Long id) {
         KirjaRepository.deleteById(id);
     }

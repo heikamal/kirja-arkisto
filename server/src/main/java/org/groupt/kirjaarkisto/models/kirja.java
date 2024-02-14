@@ -12,6 +12,9 @@ public class kirja {
     @Column(name = "kirjanimi")
     private String title;
 
+    @Column(name = "kirjailija") 
+    private String kirjailija;
+
     @Column(name = "julkaisuvuosi")
     private Integer publicationYear;
 
@@ -108,6 +111,21 @@ public class kirja {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    /**
+     * @return String return the kirjailija
+     */
+    public String getKirjailija() {
+        return kirjailija;
+    }
+
+    /**
+     * @param kirjailija the kirjailija to set
+     */
+    public void setKirjailija(String kirjailija) {
+        this.kirjailija = kirjailija;
     }
 
 }
