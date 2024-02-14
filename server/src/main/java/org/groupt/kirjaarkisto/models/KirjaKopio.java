@@ -42,12 +42,15 @@ public class KirjaKopio {
     @Column(name = "myyntihinta")
     private Double salePrice;
 
+    /*
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "idkirjahylly", referencedColumnName = "idkirjahylly"),
             @JoinColumn(name = "idkirjasarja", referencedColumnName = "idkirjasarja")
     })
     private KirjaHylly bookShelf;
+
+    */
 
     public KirjaKopio() {
         
@@ -207,17 +210,15 @@ public class KirjaKopio {
         this.salePrice = salePrice;
     }
 
-    /**
-     * @return kirjahylly return the bookShelf
-     */
+    /*
+   
     public KirjaHylly getBookShelf() {
         return bookShelf;
     }
 
-    /**
-     * @param bookShelf the bookShelf to set
-     */
+    
     public void setBookShelf(KirjaHylly bookShelf) {
         this.bookShelf = bookShelf;
-    }
+    } 
+    */
 }

@@ -15,10 +15,11 @@ public class KirjaHylly {
     @Column(name = "omistaja")
     private String omistaja;
 
+    /*
     @OneToMany(mappedBy = "kirjahylly", cascade = CascadeType.ALL)
     private List<KirjaKopio> kirjakopiot;
 
-    /* 
+    */
     @ManyToMany
     @JoinTable(
             name = "omatsarjat",
@@ -26,7 +27,7 @@ public class KirjaHylly {
             inverseJoinColumns = @JoinColumn(name = "idkirjasarja")
     )
     private List<KirjaSarja> omatSarjat;
-    */
+
 
     public KirjaHylly() {
 
@@ -50,6 +51,7 @@ public class KirjaHylly {
         this.omistaja = omistaja;
     }
 
+    /*
     public List<KirjaKopio> getKirjakopiot() {
         return kirjakopiot;
     }
@@ -58,12 +60,12 @@ public class KirjaHylly {
         this.kirjakopiot = kirjakopiot;
     }
 
-    /* 
+    */
     public List<KirjaSarja> getOmatSarjat() {
         return omatSarjat;
     }
 
     public void setOmatSarjat(List<KirjaSarja> omatSarjat) {
         this.omatSarjat = omatSarjat;
-    } */
+    }
 }

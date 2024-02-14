@@ -20,7 +20,7 @@ public class Kirja {
 
     @ManyToOne
     @JoinColumn(name = "idkirjasarja")
-    private KirjaSarja bookSeries;
+    private KirjaSarja kirjasarja;
 
     @Column(name = "jarjestysnro")
     private Integer seriesOrder;
@@ -79,14 +79,14 @@ public class Kirja {
      * @return kirjasarja return the bookSeries
      */
     public KirjaSarja getBookSeries() {
-        return bookSeries;
+        return kirjasarja;
     }
 
     /**
      * @param bookSeries the bookSeries to set
      */
     public void setBookSeries(KirjaSarja bookSeries) {
-        this.bookSeries = bookSeries;
+        this.kirjasarja = bookSeries;
     }
 
     /**
