@@ -2,22 +2,6 @@
   <header class="text-center text-8xl bg-amber-500 font-extrabold p-4">
     Kirja-arkisto
   </header>
-  <nav class="flex text-center bg-white justify-center border-black border-2 min-h-20">
-    <button class="border-black bg-white border-l-2">
-      <a href="" class="text-3xl p-4">Kirjat</a>
-    </button>
-    <button class="border-black bg-white border-l-2">
-      <a href="" class="text-3xl p-4">Lehdet</a>
-    </button>
-    <button class="border-black bg-white border-l-2">
-      <a href="" class="text-3xl p-4">Sarjat</a>
-    </button>
-    <button class="border-black bg-white border-l-2">
-      <a href="" class="text-3xl p-4">Profiili</a>
-    </button>
-    <button class="border-black bg-white border-l-2 border-r-2">
-      <a href="" class="text-3xl p-4">________ 🔎︎</a>
-    </button>
-  </nav>
-  <app-landing></app-landing>
+  <app-login-page (kirjautuminen)= 'kirjautuminen()' *ngIf="!login" ></app-login-page>
+  <app-landing *ngIf="login"></app-landing>
 </div>

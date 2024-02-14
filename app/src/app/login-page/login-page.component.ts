@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-login-page',
   standalone: true,
@@ -7,8 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './login-page.component.css'
 })
 export class LoginPageComponent {
+  @Output("kirjautuminen") kirjautuminen: EventEmitter<any> = new EventEmitter();
   title = 'login';
-  landingpage() {
-    
+
+  emitToggleEvent() {
+    this.kirjautuminen.emit();
   }
 }
