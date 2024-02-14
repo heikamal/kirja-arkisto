@@ -1,7 +1,7 @@
 package org.groupt.kirjaarkisto.models;
 import java.util.List;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "kirjahylly")
@@ -18,6 +18,7 @@ public class KirjaHylly {
     @OneToMany(mappedBy = "kirjahylly", cascade = CascadeType.ALL)
     private List<KirjaKopio> kirjakopiot;
 
+    /* 
     @ManyToMany
     @JoinTable(
             name = "omatsarjat",
@@ -25,9 +26,10 @@ public class KirjaHylly {
             inverseJoinColumns = @JoinColumn(name = "idkirjasarja")
     )
     private List<KirjaSarja> omatSarjat;
+    */
 
     public KirjaHylly() {
-        
+
     }
 
     // Getterit ja setterit
