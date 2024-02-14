@@ -1,7 +1,2 @@
-<div class=" flex-row items-center justify-center h-full">
-  <header class="text-center text-8xl bg-amber-500 font-extrabold p-4">
-    Kirja-arkisto
-  </header>
-  <app-login-page (kirjautuminen)= 'kirjautuminen()' *ngIf="!login" ></app-login-page>
-  <app-landing *ngIf="login"></app-landing>
-</div>
+<app-login-page (kirjautuminen)= 'kirjautuminen()' *ngIf="!login" ></app-login-page>
+<app-landing *ngIf="login"></app-landing>
