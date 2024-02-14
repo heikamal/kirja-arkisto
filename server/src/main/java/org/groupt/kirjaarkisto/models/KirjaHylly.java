@@ -58,11 +58,12 @@ public class KirjaHylly {
         this.kirjakopiot = kirjakopiot;
     }
 
+    /* 
     public List<KirjaSarja> getOmatSarjat() {
         return omatSarjat;
     }
 
     public void setOmatSarjat(List<KirjaSarja> omatSarjat) {
         this.omatSarjat = omatSarjat;
-    }
+    } */
 }
