@@ -1,34 +1,40 @@
-<div class="h-full flex justify-center">
-    <div class="flex-col max-w-screen-lg">
-        <nav class="flex text-center bg-white justify-center border-black border-2 min-h-20">
-            <button class="border-black bg-white border-l-2">
-              <a href="" class="text-3xl p-4">Kirjat</a>
-            </button>
-            <button class="border-black bg-white border-l-2">
-              <a href="" class="text-3xl p-4">Lehdet</a>
-            </button>
-            <button class="border-black bg-white border-l-2">
-              <a href="" class="text-3xl p-4">Sarjat</a>
-            </button>
-            <button class="border-black bg-white border-l-2">
-              <a href="" class="text-3xl p-4">Profiili</a>
-            </button>
-            <button class="border-black bg-white border-l-2 border-r-2">
-              <a href="" class="text-3xl p-4">________ 🔎︎</a>
-            </button>
-          </nav>
-        <p class="font-mono font-bold text-amber-500 text-center text-3xl">
-            Tervetuloa Arkisto.xyz sivustolle, kirja-arkiston kotipaikkaan!
-        </p>
-        <div class="flex-row bg-nerd-50 rounded-lg w-max">
-            <div class="w-full h-max text-amber-500 text-center font-bold mt-52">
-                <p>Uusimmat lisätyt kirjat:</p>
+<div class=" flex-row items-center justify-center h-full">
+    <header class="text-center text-8xl bg-amber-500 font-extrabold p-4">
+        Kirja-arkisto
+    </header>
+    <nav class="flex text-center bg-neutral-500 justify-center border-black border-2 min-h-20">
+        <button (click)="show_admin()" *ngIf="is_admin" class="border-black bg-neutral-500 border-l-2">
+            <a href="" class="text-3xl p-4 text-black font-bold">Admin</a>
+        </button>
+        <button class="border-black bg-neutral-500 border-l-2">
+            <a href="" class="text-3xl p-4 text-black">Kirjat</a>
+        </button>
+        <button class="border-black bg-neutral-500 border-l-2">
+            <a href="" class="text-3xl p-4 text-black">Lehdet</a>
+        </button>
+        <button (click)="show_series()" class="border-black bg-neutral-500 border-l-2">
+            <a href="" class="text-3xl p-4 text-black">Sarjat</a>
+        </button>
+        <button (click)="show_profile()" class="border-black bg-neutral-500 border-l-2">
+            <a href="" class="text-3xl p-4 text-black">Profiili</a>
+        </button>
+        <button class="border-black bg-neutral-500 border-l-2 border-r-2">
+            <a href="" class="text-3xl p-4 text-black">________ 🔎︎</a>
+        </button>
+    </nav>
+    <div class="h-full flex justify-center">
+        <div class="flex-col h-5/6 mt-5 max-w-screen-lg">
+            <div *ngIf="visible_component === 'initial'">
+                <app-initial-landing></app-initial-landing>
             </div>
-            <div class="flex">
-                <img src="../../assets/comics/example.jpg" alt="mustanaamio" class="max-h-96 p-2">
-                <img src="../../assets/comics/example.jpg" alt="mustanaamio" class="max-h-96 p-2">
-                <img src="../../assets/comics/example.jpg" alt="mustanaamio" class="max-h-96 p-2">
-                <img src="../../assets/comics/example.jpg" alt="mustanaamio" class="max-h-96 p-2">
+            <div *ngIf="visible_component === 'profile'">
+                <app-profile></app-profile>
+            </div>
+            <div *ngIf="visible_component === 'series'">
+                <app-series></app-series>
+            </div>
+            <div *ngIf="visible_component === 'admin'">
+                <app-admin></app-admin>
             </div>
         </div>
     </div>
