@@ -4,7 +4,7 @@ Kirja-arkisto ollaan tarkoitettu kirjasarjojen ja kirjojen tietojen arkistointii
 
 ## Asennus
 
-etokannan luontiskripti löytyy ./database/skriptit-kansiosta. Tällä hetkellä ainoastaan kehitystietokanta on toiminnallinen ja sen saa alustettua komennolla:
+Tietokannan luontiskripti löytyy ./database/skriptit-kansiosta. Tällä hetkellä ainoastaan kehitystietokanta on toiminnallinen ja sen saa alustettua komennolla:
 
 ```bash
 docker compose -f docker-compose.dev.yml up
