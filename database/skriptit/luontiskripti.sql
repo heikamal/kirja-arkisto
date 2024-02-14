@@ -38,6 +38,7 @@ DROP TABLE IF EXISTS `kirjakanta`.`kirja` ;
 CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirja` (
   `idkirja` INT NOT NULL AUTO_INCREMENT,
   `kirjanimi` VARCHAR(45) NULL,
+  `kirjailija` VARCHAR(45) NULL,
   `julkaisuvuosi` YEAR(4) NULL,
   `idkirjasarja` INT NOT NULL,
   `jarjestysnro` INT NULL,
