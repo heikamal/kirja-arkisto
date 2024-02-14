@@ -16,7 +16,7 @@ public class kirjahylly {
     private String omistaja;
 
     @OneToMany(mappedBy = "kirjahylly", cascade = CascadeType.ALL)
-    private List<kirjakopio> kirjakopiot;
+    private List<KirjaKopio> kirjakopiot;
 
     @ManyToMany
     @JoinTable(
@@ -44,11 +44,11 @@ public class kirjahylly {
         this.omistaja = omistaja;
     }
 
-    public List<kirjakopio> getKirjakopiot() {
+    public List<KirjaKopio> getKirjakopiot() {
         return kirjakopiot;
     }
 
-    public void setKirjakopiot(List<kirjakopio> kirjakopiot) {
+    public void setKirjakopiot(List<KirjaKopio> kirjakopiot) {
         this.kirjakopiot = kirjakopiot;
     }
 
