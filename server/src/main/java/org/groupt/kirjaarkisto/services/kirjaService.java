@@ -19,6 +19,12 @@ public class kirjaService {
     public kirja getKirjaById(Long id) {
         return KirjaRepository.findById(id).orElse(null);
     }
-
-    // Lisää tarvittavat liiketoimintalogiikkametodit
+    //metodi siis lisää sen kirjan :D hagrid tales :D
+    public kirja addKirja(kirja kirja) {
+        return KirjaRepository.save(kirja);
+    } 
+    //tää pooistaa :D hagrid :D
+     public void deleteKirja(Long id) {
+        KirjaRepository.deleteById(id);
+    }
 }

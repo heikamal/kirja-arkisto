@@ -1,5 +1,7 @@
 package org.groupt.kirjaarkisto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.groupt.kirjaarkisto.services.kirjaService;
 import org.groupt.kirjaarkisto.models.kirja;
@@ -21,6 +23,15 @@ public class kirjaController {
     public kirja getKirja(@PathVariable Long id) {
         return kirjaService.getKirjaById(id);
     }
-
-    // Lisää tarvittavat endpointit (POST, PUT, DELETE) kirjoille
+ 
+    public ResponseEntity<kirja> createKirja(@RequestBody kirja lisattava) {
+        kirja lisattyKirja = kirjaService.addKirja(lisattava);
+        return new ResponseEntity<>(lisattyKirja, HttpStatus.CREATED);
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteKirja(@PathVariable Long id) {
+        kirjaService.deleteKirja(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
