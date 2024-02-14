@@ -1,65 +1,21 @@
-Kirja-arkisto -projekti
+# Kirja-Arkisto
 
-Tervetuloa Kirja-arkisto projektiin! Tämä projekti tarjoaa ratkaisun vanhojen kirjojen keräilijöille, jotka haluavat helposti hallita ja järjestellä kirjakokoelmiaan. Sovellus mahdollistaa sarjojen ja niihin kuuluvien kirjojen tehokkaan hallinnan, antaen käyttäjille mahdollisuuden tallentaa tärkeitä tietoja ja kuvia kokoelmistaan.
-Toiminnot
+Kirja-arkisto ollaan tarkoitettu kirjasarjojen ja kirjojen tietojen arkistointiin ja helpottamaan esimerkiksi kokoelman keräämistä. Tämä dokumentti on yksinkertaistettu käyttöohjekirja sovelluksen käyttöön.
 
-    Sarjojen ja kirjojen hallinta:
-        Luo ja hallinnoi kirjasarjoja ja siihen liittyviä kirjoja.
-        Tallenna sarjalle kuvaustietoja.
+## Asennus
 
-    Kirjojen tarkempi tallennus:
-        Tallenna kirjoille monipuolisia tietoja, kuten nimi, järjestysnumero sarjassa, etu- ja takakansikuvat, kuvausteksti, kirjailija, piirtäjät, ensipainosvuosi ja painokset.
+etokannan luontiskripti löytyy ./database/skriptit-kansiosta. Tällä hetkellä ainoastaan kehitystietokanta on toiminnallinen ja sen saa alustettua komennolla:
 
-    Käyttöliittymä:
-        Näe helposti valitun sarjan kirjat ja niiden kannet sekä perustiedot.
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+Tietokantakontti käyttää viimeisintä mysql-imagea ja siihen saa yhteyden portissa 3306.
 
-    Oman kirjaston hallinta:
-        Kokoaa omaa kirjahyllyä, johon valitaan halutut sarjat täydennettäväksi.
-        Valitse omasta sarjasta halutut kirjat todellisuudessa hankitun mukaisesti.
 
-    Yksityiskohtaiset tiedot omista kirjoista:
-        Tallenna ja näe omien kirjojen tiedot kuten kuntoluokka, kannen ja takakannen valokuvat, lisäkuvat sivuista, hankintahinta, hankinta-aika, esittelyteksti, painovuosi ja painos.
+## Osallistuminen
 
-Käyttöskenaariot
+Älä osallistu vielä, tää on aik pahasti kesken..
 
-    Uuden sarjan suunnittelu:
-        Keräilijä suunnittelee uuden sarjan hankintaa ja tallentaa siihen kuuluvien kirjojen tiedot.
+## Lisenssi
 
-    Divarissa ostoksilla:
-        Keräilijä menee divariin ja tarkistaa sovelluksesta, onko hänellä jo kyseinen kirja.
-        Sovellus kertoo, minkäkuntoinen oma kappale on, auttaen päättämään ostamisen kannattavuudesta.
-
-    Uuden kirjan lisäys:
-        Keräilijä ostaa kirjan, tallentaa kyseisen kappaleen tiedot ja kuvat sovellukseen.
-
-    Myyntitiedot:
-        Jos keräilijä haluaa myydä kirjan, hän saa kyseisen kappaleen tiedot ja kuvat yhdelle sivulle, jonka hän voi jakaa myyntisivustoille.
-
-Tekninen toteutus
-
-Projekti toteutetaan käyttäen seuraavia teknologioita:
-
-    Frontend: Typescript, Tailwind, Html
-    Backend: Java Spring, Express
-    Tietokanta: MySQL, Docker
-    Käyttöliittymä: Angular
-
-Käynnistys
-
-    Asenna tarvittavat riippuvuudet sekä frontend- että backend-kansioissa.
-
-    bash
-
-npm install
-
-Käynnistä frontend ja backend.
-
-bash
-
-    npm start
-
-    Avaa selain ja siirry osoitteeseen http://localhost:3000.
-
-Yhteydenpito ja Palaute
-
-Mikäli sinulla on kysyttävää tai haluat antaa palautetta, voit ottaa yhteyttä projektin ylläpitäjään sähköpostitse osoitteeseen: esimerkki@esimerkki.com.
+[Ei me mitää lisenssei tarvita](https://www.youtube.com/watch?v=tdSJjY3lWvE)
