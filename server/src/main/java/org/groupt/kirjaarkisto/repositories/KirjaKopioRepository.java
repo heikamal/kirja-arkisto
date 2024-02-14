@@ -2,8 +2,8 @@ package org.groupt.kirjaarkisto.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import java.util.List;
-import org.groupt.kirjaarkisto.models.kirja;
+import org.groupt.kirjaarkisto.models.Kirja;
 
-public interface kirjakopioRepository extends JpaRepository<KirjaKopio, Long> {
-    List<KirjaKopio> findByKirja(kirja kirja);
+public interface KirjaKopioRepository extends JpaRepository<KirjaKopio, Long> {
+    List<KirjaKopio> findByKirja(Kirja kirja);
 }

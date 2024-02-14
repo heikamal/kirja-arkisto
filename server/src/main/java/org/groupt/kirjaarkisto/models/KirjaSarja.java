@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "kirjasarja")
-public class kirjasarja {
+public class KirjaSarja {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idkirjasarja")
@@ -21,6 +21,10 @@ public class kirjasarja {
 
     @Column
     private String luokittelu;
+
+    public KirjaSarja() {
+        
+    }
 
     /**
      * @return Long return the id

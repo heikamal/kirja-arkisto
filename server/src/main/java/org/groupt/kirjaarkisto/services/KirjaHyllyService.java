@@ -1,22 +1,22 @@
 package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.groupt.kirjaarkisto.models.kirjahylly;
-import org.groupt.kirjaarkisto.repositories.kirjahyllyRepository;
+import org.groupt.kirjaarkisto.models.KirjaHylly;
+import org.groupt.kirjaarkisto.repositories.KirjaHyllyRepository;
 
 import java.util.List;
 
 @Service
-public class kirjahyllyService {
+public class KirjaHyllyService {
 
     @Autowired
-    private kirjahyllyRepository KirjahyllyRepository;
+    private KirjaHyllyRepository KirjahyllyRepository;
 
-    public List<kirjahylly> getKirjahyllyt() {
+    public List<KirjaHylly> getKirjahyllyt() {
         return KirjahyllyRepository.findAll();
     }
 
-    public kirjahylly getKirjahyllyById(Long id) {
+    public KirjaHylly getKirjahyllyById(Long id) {
         return KirjahyllyRepository.findById(id).orElse(null);
     }
 

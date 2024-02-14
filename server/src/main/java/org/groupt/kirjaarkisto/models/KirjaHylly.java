@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "kirjahylly")
-public class kirjahylly {
+public class KirjaHylly {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,11 @@ public class kirjahylly {
             joinColumns = @JoinColumn(name = "idkirjahylly"),
             inverseJoinColumns = @JoinColumn(name = "idkirjasarja")
     )
-    private List<kirjasarja> omatSarjat;
+    private List<KirjaSarja> omatSarjat;
+
+    public KirjaHylly() {
+        
+    }
 
     // Getterit ja setterit
 
@@ -52,11 +56,11 @@ public class kirjahylly {
         this.kirjakopiot = kirjakopiot;
     }
 
-    public List<kirjasarja> getOmatSarjat() {
+    public List<KirjaSarja> getOmatSarjat() {
         return omatSarjat;
     }
 
-    public void setOmatSarjat(List<kirjasarja> omatSarjat) {
+    public void setOmatSarjat(List<KirjaSarja> omatSarjat) {
         this.omatSarjat = omatSarjat;
     }
 }

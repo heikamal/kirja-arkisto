@@ -1,25 +1,25 @@
 package org.groupt.kirjaarkisto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.groupt.kirjaarkisto.models.kirjakopio;
-import org.groupt.kirjaarkisto.services.kirjakopioService;
+import org.groupt.kirjaarkisto.models.KirjaKopio;
+import org.groupt.kirjaarkisto.services.KirjaKopioService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/kirjakopiot")
-public class kirjakopioController {
+public class KirjaKopioController {
 
     @Autowired
-    private kirjakopioService kirjakopioService;
+    private KirjaKopioService kirjakopioService;
 
     @GetMapping
-    public List<kirjakopio> getKirjakopiot() {
+    public List<KirjaKopio> getKirjakopiot() {
         return kirjakopioService.getKirjakopiot();
     }
 
     @GetMapping("/{id}")
-    public kirjakopio getKirjakopio(@PathVariable Long id) {
+    public KirjaKopio getKirjakopio(@PathVariable Long id) {
         return kirjakopioService.getKirjakopioById(id);
     }
 

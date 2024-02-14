@@ -1,21 +1,21 @@
 package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.groupt.kirjaarkisto.models.kirjasarja;
+import org.groupt.kirjaarkisto.models.KirjaSarja;
 import java.util.List;
-import org.groupt.kirjaarkisto.repositories.kirjasarjaRepository;
+import org.groupt.kirjaarkisto.repositories.KirjaSarjaRepository;
 
 @Service
-public class kirjasarjaService {
+public class KirjaSarjaService {
 
     @Autowired
-    private kirjasarjaRepository KirjasarjaRepository;
+    private KirjaSarjaRepository KirjasarjaRepository;
 
-    public List<kirjasarja> getKirjasarjat() {
+    public List<KirjaSarja> getKirjasarjat() {
         return KirjasarjaRepository.findAll();
     }
 
-    public kirjasarja getKirjasarjaById(Long id) {
+    public KirjaSarja getKirjasarjaById(Long id) {
         return KirjasarjaRepository.findById(id).orElse(null);
     }
 

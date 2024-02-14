@@ -1,26 +1,26 @@
 package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.groupt.kirjaarkisto.models.kirja;
-import org.groupt.kirjaarkisto.repositories.kirjaRepository;
+import org.groupt.kirjaarkisto.models.Kirja;
+import org.groupt.kirjaarkisto.repositories.KirjaRepository;
 
 import java.util.List;
 
 @Service
-public class kirjaService {
+public class KirjaService {
 
     @Autowired
-    private kirjaRepository KirjaRepository;
+    private KirjaRepository KirjaRepository;
 
-    public List<kirja> getKirjat() {
+    public List<Kirja> getKirjat() {
         return KirjaRepository.findAll();
     }
 
-    public kirja getKirjaById(Long id) {
+    public Kirja getKirjaById(Long id) {
         return KirjaRepository.findById(id).orElse(null);
     }
     //metodi siis lisää sen kirjan :D hagrid tales :D
-    public kirja addKirja(kirja kirja) {
+    public Kirja addKirja(Kirja kirja) {
         return KirjaRepository.save(kirja);
     } 
     //tää pooistaa :D

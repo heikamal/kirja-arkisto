@@ -3,7 +3,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "kirja")
-public class kirja {
+public class Kirja {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idkirja")
@@ -20,13 +20,17 @@ public class kirja {
 
     @ManyToOne
     @JoinColumn(name = "idkirjasarja")
-    private kirjasarja bookSeries;
+    private KirjaSarja bookSeries;
 
     @Column(name = "jarjestysnro")
     private Integer seriesOrder;
 
     @Column(name = "kuvaus")
     private String description;
+
+    public Kirja() {
+        
+    }
 
 
     /**
@@ -74,14 +78,14 @@ public class kirja {
     /**
      * @return kirjasarja return the bookSeries
      */
-    public kirjasarja getBookSeries() {
+    public KirjaSarja getBookSeries() {
         return bookSeries;
     }
 
     /**
      * @param bookSeries the bookSeries to set
      */
-    public void setBookSeries(kirjasarja bookSeries) {
+    public void setBookSeries(KirjaSarja bookSeries) {
         this.bookSeries = bookSeries;
     }
 

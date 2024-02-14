@@ -3,29 +3,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.groupt.kirjaarkisto.services.kirjaService;
-import org.groupt.kirjaarkisto.models.kirja;
+import org.groupt.kirjaarkisto.services.KirjaService;
+import org.groupt.kirjaarkisto.models.Kirja;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/kirjat")
-public class kirjaController {
+public class KirjaController {
 
     @Autowired
-    private kirjaService kirjaService;
+    private KirjaService kirjaService;
 
     @GetMapping
-    public List<kirja> getKirjat() {
+    public List<Kirja> getKirjat() {
         return kirjaService.getKirjat();
     }
 
     @GetMapping("/{id}")
-    public kirja getKirja(@PathVariable Long id) {
+    public Kirja getKirja(@PathVariable Long id) {
         return kirjaService.getKirjaById(id);
     }
  
-    public ResponseEntity<kirja> createKirja(@RequestBody kirja lisattava) {
-        kirja lisattyKirja = kirjaService.addKirja(lisattava);
+    public ResponseEntity<Kirja> createKirja(@RequestBody Kirja lisattava) {
+        Kirja lisattyKirja = kirjaService.addKirja(lisattava);
         return new ResponseEntity<>(lisattyKirja, HttpStatus.CREATED);
     }
     
