@@ -1,5 +1,13 @@
 <div class="text-3xl text-amber-500 font-extrabold">
-    <p>lisää kirja</p>
-
-    <p>lisää kirjasarja</p>
+    <form (ngSubmit)="submit_book()" [formGroup]="form">
+          <input formControlName="title" placeholder="Title">
+          <input formControlName="author" placeholder="Author">
+          <input formControlName="year" type="number"  value="2000" placeholder="Year">
+          <input formControlName="description" placeholder="Description">
+          <input formControlName="serial" type="number" placeholder="Serial">
+        <button class="rounded-lg border-2 bg-neutral-500 border-black" type="submit">Submit</button>
+      </form>
+      <p class="text-white">Value: {{ form.value | json }}</p>
+      <p class="text-white">Validation status: {{ form.status }}</p>
 </div>
+

@@ -14,7 +14,7 @@ import { AdminComponent } from '../admin/admin.component';
 
 export class LandingComponent {
 
-  visible_component: string = 'initial';
+  visible_component: string = 'admin';
   is_admin: boolean = true;
 
   show_profile() {
