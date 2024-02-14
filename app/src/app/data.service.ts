@@ -8,7 +8,7 @@ import { Component, Injectable } from '@angular/core';
 export class DataService {
 
   constructor(private http: HttpClient) { }
-  book_url = '/api/kirjat'
+  book_url = 'http://localhost:8080/api/kirjat'
 
   postData(data: JSON) {
     return this.http.post<JSON>(this.book_url, data);
