@@ -1,5 +1,43 @@
 version: '0.1'
+name: kirjaarkisto-dev
 services:
+  app:
+    build:
+      context: ./app
+      dockerfile: dev.Dockerfile
+    ports:
+      - '4200:4200'
+      - '49153:49153'
+    links:
+      - server
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes: 
+      - ./app:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+  server:
+    build:
+      context: ./server
+      dockerfile: dev.Dockerfile
+      target: development
+    environment:
+      MYSQL_HOST: database
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: userpass
+      MYSQL_DATABASE: kirjakanta
+      ENVIRONMENT_TAG: dev
+    ports:
+      - '8080:8080'
+      - '8000:8000'
+    links:
+      - database
+    depends_on:
+      database:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes: 
+      - ./server:/app
   database:
     image: mysql:latest
     cap_add:
@@ -14,6 +52,11 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./database/skriptit/luontiskripti.sql:/docker-entrypoint-initdb.d/luontiskripti.sql
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 20s
+      retries: 10
 
 volumes:
   db_data:
+  node_modules:
