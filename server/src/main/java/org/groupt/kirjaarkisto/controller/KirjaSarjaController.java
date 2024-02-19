@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import java.util.List;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
@@ -25,12 +24,12 @@ public class KirjaSarjaController {
      * @return ResponseEntity, joka sisältää kaikki kirjasarjat listana.
      */
     @GetMapping(path = "")
-    public ResponseEntity<List<KirjaSarja>> getAllAlueet(){
+    public ResponseEntity<List<KirjaSarja>> getAllSarja(){
         return new ResponseEntity<>(kirjaSarjaService.getKirjasarjat(), HttpStatus.OK);
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<?> addNewAlue(@NonNull @RequestBody KirjaSarja sarja){
+    public ResponseEntity<?> addNewSarja(@NonNull @RequestBody KirjaSarja sarja){
         KirjaSarja response = null;
         try {
             response = kirjaSarjaService.saveKirjaSarja(sarja);
@@ -43,7 +42,7 @@ public class KirjaSarjaController {
     }
 
     @GetMapping("/{id}")
-    public KirjaSarja getKirjasarja(@PathVariable Long id) {
+    public KirjaSarja getSarja(@PathVariable Long id) {
         return kirjaSarjaService.getKirjasarjaById(id);
     }
 
@@ -54,7 +53,7 @@ public class KirjaSarjaController {
      * @return ResponseEntity, joka antaa OK-viestin, onnistui poisto tai ei.
      */
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteAlue(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<?> deleteSarja(@PathVariable(value = "id") Long id) {
         kirjaSarjaService.removeKirjaSarja(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -68,7 +67,7 @@ public class KirjaSarjaController {
      * @return       ResponseEntity joka sisältää tietokantaan päivitetyn kirjasarjan tai virheen jos tiedoissa oli jotakin vialla.
      */
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updateAlue(@PathVariable(value = "id") Long id, @RequestBody KirjaSarja sarja) {
+    public ResponseEntity<?> updateSarja(@PathVariable(value = "id") Long id, @RequestBody KirjaSarja sarja) {
         KirjaSarja toBeModified = null;
         KirjaSarja response = null;
         // TODO: Parempi validointi
