@@ -25,7 +25,8 @@ export class AdminComponent {
       author: ['', Validators.maxLength(45)],
       year: ['', Validators.max(2030)],
       description: ['', Validators.maxLength(255)],
-      serial: ['']
+      serial: [''],
+      series_id: ['']
     });
   }
   show_book() {
