@@ -30,4 +30,8 @@ export class LandingComponent {
     event?.preventDefault();
     this.visible_component = 'admin'
   }
+  show_initial() {
+    event?.preventDefault();
+    this.visible_component = 'initial'
+  }
 }
