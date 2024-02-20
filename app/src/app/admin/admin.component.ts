@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   providers: [DataService],
   templateUrl: './admin.component.html'
 })
 
 export class AdminComponent {
 
+  remove_book_id: any;
   book_form: FormGroup;
   series_form: FormGroup;
   book_data: any;
@@ -23,12 +24,12 @@ export class AdminComponent {
 
   ) {
     this.book_form = fb.group({
-      title: ['', Validators.maxLength(45)],
-      author: ['', Validators.maxLength(45)],
-      year: ['', Validators.max(2030)],
-      description: ['', Validators.maxLength(255)],
-      serial: [''],
-      series_id: ['']
+      nimi: ['', Validators.maxLength(45)],
+      kirjailija: ['', Validators.maxLength(45)],
+      julkaisuVuosi: ['', Validators.max(2030)],
+      sarja: [''],
+      kuvaus: ['', Validators.maxLength(255)],
+      jarjestysNro: ['']
     });
 
     this.series_form = fb.group({
@@ -36,6 +37,15 @@ export class AdminComponent {
       kustantaja: ['', Validators.maxLength(45)],
       kuvaus: ['', Validators.maxLength(255)],
       luokittelu: ['', Validators.maxLength(45)],
+    });
+  }
+  remove_book() {
+    // Call the service method to remove the book by its ID
+    this.dataService.remove_book(this.remove_book_id).subscribe(() => {
+      // Assuming the removal was successful, you may want to update the fetched data
+      this.show_book();
+    }, error => {
+      console.error('Error occurred while removing book:', error);
     });
   }
   show_book() {
