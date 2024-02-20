@@ -32,6 +32,20 @@ public class Kirja {
 
     }
 
+    /**
+     * Alustaja, jonka tarkoitus on luoda kopio parametreina annetusta oliosta.
+     * 
+     * @param og Kirja-olio joka halutaan kopioida.
+     */
+    public Kirja(Kirja og) {
+      this.id = og.getId();
+      this.title = og.getTitle();
+      this.kirjailija = og.getKirjailija();
+      this.publicationYear = og.getPublicationYear();
+      this.kirjasarja = og.getBookSeries();
+      this.seriesOrder = og.getSeriesOrder();
+      this.description = og.description;
+    }
 
     /**
      * @return Long return the id
@@ -131,5 +145,20 @@ public class Kirja {
     public void setKirjailija(String kirjailija) {
         this.kirjailija = kirjailija;
     }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " id='" + getId() + "'" +
+      ", title='" + getTitle() + "'" +
+      ", kirjailija='" + getKirjailija() + "'" +
+      ", publicationYear='" + getPublicationYear() + "'" +
+      ", kirjasarja='" + getBookSeries() + "'" +
+      ", seriesOrder='" + getSeriesOrder() + "'" +
+      ", description='" + getDescription() + "'" +
+      "}";
+  }
+
 
 }
