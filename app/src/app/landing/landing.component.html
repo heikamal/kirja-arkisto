@@ -1,40 +1,40 @@
 <div class="flex flex-col h-screen">
-    <header (click)="show_initial()" class="text-center text-4xl md:text-6xl lg:text-8xl bg-amber-500 font-extrabold p-4">
+    <header (click)="show_initial()" class="text-center text-2xl md:text-4xl lg:text-6xl bg-amber-500 font-extrabold p-2">
         Kirja-arkisto
     </header>
-    <nav class="flex flex-wrap justify-center text-center bg-neutral-500 border-black border-2 text-lg md:text-3xl">
-        <button (click)="show_admin()" *ngIf="is_admin" class="border-black bg-neutral-500 border-l-2">
+    <nav class="flex flex-wrap justify-center text-center bg-neutral-500 text-md md:text-2xl">
+        <button (click)="show_admin()" *ngIf="is_admin" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75">
             <a href="#" class="p-2 md:p-4 text-black font-bold block">Admin</a>
         </button>
-        <button class="border-black bg-neutral-500 border-l-2">
+        <button (click)="show_books()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75">
             <a href="#" class="p-2 md:p-4 text-black block">Kirjat</a>
         </button>
-        <button class="border-black bg-neutral-500 border-l-2">
-            <a href="#" class="p-2 md:p-4 text-black block">Lehdet</a>
-        </button>
-        <button (click)="show_series()" class="border-black bg-neutral-500 border-l-2">
+        <button (click)="show_series()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75">
             <a href="#" class="p-2 md:p-4 text-black block">Sarjat</a>
         </button>
-        <button (click)="show_profile()" class="border-black bg-neutral-500 border-l-2">
+        <button (click)="show_profile()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75">
             <a href="#" class="p-2 md:p-4 text-black block">Profiili</a>
         </button>
-        <button class="border-black bg-neutral-500 border-l-2 border-r-2">
+        <button class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75 border-r-2">
             <a href="#" class="p-2 md:p-4 text-black block">________ 🔎︎</a>
         </button>
     </nav>
     <div class="flex flex-grow justify-center">
         <div class="flex flex-col h-full mt-5 max-w-screen-lg w-full">
-            <div *ngIf="visible_component === 'initial'">
+            <div *ngIf="visible_component === 'initial'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-initial-landing></app-initial-landing>
             </div>
-            <div *ngIf="visible_component === 'profile'">
+            <div *ngIf="visible_component === 'profile'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-profile></app-profile>
             </div>
-            <div *ngIf="visible_component === 'series'">
+            <div *ngIf="visible_component === 'series'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-series></app-series>
             </div>
-            <div *ngIf="visible_component === 'admin'">
+            <div *ngIf="visible_component === 'admin'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-admin></app-admin>
+            </div>
+            <div *ngIf="visible_component === 'books'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
+                <app-books></app-books>
             </div>
         </div>
     </div>

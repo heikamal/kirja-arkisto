@@ -4,17 +4,18 @@ import { ProfileComponent } from '../profile/profile.component';
 import { CommonModule } from '@angular/common';
 import { SeriesComponent } from '../series/series.component';
 import { AdminComponent } from '../admin/admin.component';
+import { BooksComponent } from '../books/books.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [InitialLandingComponent,ProfileComponent,SeriesComponent,AdminComponent,CommonModule],
+  imports: [InitialLandingComponent,ProfileComponent,SeriesComponent,BooksComponent,AdminComponent,CommonModule],
   templateUrl: './landing.component.html',
 })
 
 export class LandingComponent {
 
-  visible_component: string = 'admin';
+  visible_component: string = 'initial';
   is_admin: boolean = true;
 
   show_profile() {
@@ -33,5 +34,9 @@ export class LandingComponent {
   show_initial() {
     event?.preventDefault();
     this.visible_component = 'initial'
+  }
+  show_books() {
+    event?.preventDefault();
+    this.visible_component = 'books'
   }
 }
