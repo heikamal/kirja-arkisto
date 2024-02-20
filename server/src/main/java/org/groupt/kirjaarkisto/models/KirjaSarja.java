@@ -95,4 +95,17 @@ public class KirjaSarja {
     public void setLuokittelu(String luokittelu) {
         this.luokittelu = luokittelu;
     }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " id='" + getId() + "'" +
+      ", title='" + getTitle() + "'" +
+      ", kustantaja='" + getKustantaja() + "'" +
+      ", kuvaus='" + getKuvaus() + "'" +
+      ", luokittelu='" + getLuokittelu() + "'" +
+      "}";
+  }
+
 }
