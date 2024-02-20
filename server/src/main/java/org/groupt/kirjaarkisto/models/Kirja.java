@@ -10,23 +10,23 @@ public class Kirja {
     private Long id;
 
     @Column(name = "kirjanimi")
-    private String title;
+    private String nimi;
 
     @Column(name = "kirjailija") 
     private String kirjailija;
 
     @Column(name = "julkaisuvuosi")
-    private Integer publicationYear;
+    private Integer julkaisuVuosi;
 
     @ManyToOne
     @JoinColumn(name = "idkirjasarja")
-    private KirjaSarja kirjasarja;
+    private KirjaSarja kirjaSarja;
 
     @Column(name = "jarjestysnro")
-    private Integer seriesOrder;
+    private Integer jarjestysNro;
 
     @Column(name = "kuvaus")
-    private String description;
+    private String kuvaus;
 
     public Kirja() {
 
@@ -39,12 +39,12 @@ public class Kirja {
      */
     public Kirja(Kirja og) {
       this.id = og.getId();
-      this.title = og.getTitle();
+      this.nimi = og.getNimi();
       this.kirjailija = og.getKirjailija();
-      this.publicationYear = og.getPublicationYear();
-      this.kirjasarja = og.getBookSeries();
-      this.seriesOrder = og.getSeriesOrder();
-      this.description = og.description;
+      this.julkaisuVuosi = og.getJulkaisuVuosi();
+      this.kirjaSarja = og.getBookSeries();
+      this.jarjestysNro = og.getJarjestysNro();
+      this.kuvaus = og.kuvaus;
     }
 
     /**
@@ -64,71 +64,71 @@ public class Kirja {
     /**
      * @return String return the title
      */
-    public String getTitle() {
-        return title;
+    public String getNimi() {
+        return nimi;
     }
 
     /**
      * @param title the title to set
      */
-    public void setTitle(String title) {
-        this.title = title;
+    public void setNimi(String title) {
+        this.nimi = title;
     }
 
     /**
      * @return Integer return the publicationYear
      */
-    public Integer getPublicationYear() {
-        return publicationYear;
+    public Integer getJulkaisuVuosi() {
+        return julkaisuVuosi;
     }
 
     /**
      * @param publicationYear the publicationYear to set
      */
-    public void setPublicationYear(Integer publicationYear) {
-        this.publicationYear = publicationYear;
+    public void setJulkaisuVuosi(Integer publicationYear) {
+        this.julkaisuVuosi = publicationYear;
     }
 
     /**
      * @return kirjasarja return the bookSeries
      */
     public KirjaSarja getBookSeries() {
-        return kirjasarja;
+        return kirjaSarja;
     }
 
     /**
      * @param bookSeries the bookSeries to set
      */
     public void setBookSeries(KirjaSarja bookSeries) {
-        this.kirjasarja = bookSeries;
+        this.kirjaSarja = bookSeries;
     }
 
     /**
      * @return Integer return the seriesOrder
      */
-    public Integer getSeriesOrder() {
-        return seriesOrder;
+    public Integer getJarjestysNro() {
+        return jarjestysNro;
     }
 
     /**
      * @param seriesOrder the seriesOrder to set
      */
-    public void setSeriesOrder(Integer seriesOrder) {
-        this.seriesOrder = seriesOrder;
+    public void setJarjestysNro(Integer seriesOrder) {
+        this.jarjestysNro = seriesOrder;
     }
 
     /**
      * @return String return the description
      */
-    public String getDescription() {
-        return description;
+    public String getKuvaus() {
+        return kuvaus;
     }
 
     /**
      * @param description the description to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setKuvaus(String description) {
+        this.kuvaus = description;
     }
 
 
@@ -151,12 +151,12 @@ public class Kirja {
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
-      ", title='" + getTitle() + "'" +
+      ", title='" + getNimi() + "'" +
       ", kirjailija='" + getKirjailija() + "'" +
-      ", publicationYear='" + getPublicationYear() + "'" +
+      ", julkaisuVuosi='" + getJulkaisuVuosi() + "'" +
       ", kirjasarja='" + getBookSeries() + "'" +
-      ", seriesOrder='" + getSeriesOrder() + "'" +
-      ", description='" + getDescription() + "'" +
+      ", jarjestysNro='" + getJarjestysNro() + "'" +
+      ", kuvaus='" + getKuvaus() + "'" +
       "}";
   }
 
