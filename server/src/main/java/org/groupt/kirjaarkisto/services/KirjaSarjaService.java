@@ -2,6 +2,7 @@ package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaSarjaException;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import java.util.List;
 import org.groupt.kirjaarkisto.repositories.KirjaSarjaRepository;
@@ -17,7 +18,12 @@ public class KirjaSarjaService {
     }
 
     public KirjaSarja getKirjasarjaById(Long id) {
-        return kirjaSarjaRepository.findById(id).orElse(null);
+      KirjaSarja sarja = kirjaSarjaRepository.findById(id).orElse(null);
+      if (sarja != null) {
+        return sarja;
+      } else {
+        throw new NonExistingKirjaSarjaException("Kirjasarja with ID " + id + " does not exist!");
+      }
     }
 
     /**
