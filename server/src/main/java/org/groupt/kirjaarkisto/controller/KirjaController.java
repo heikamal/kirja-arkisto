@@ -11,7 +11,6 @@ import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaDTO;
-import org.groupt.kirjaarkisto.models.KirjaSarja;
 
 import java.net.URI;
 import java.util.List;
@@ -48,12 +47,12 @@ public class KirjaController {
     @PostMapping(path = "")
     public ResponseEntity<Kirja> createKirja(@NonNull @RequestBody KirjaDTO kirjaDTO) {
       Kirja lisattava = new Kirja();
-      lisattava.setTitle(kirjaDTO.getNimi());
+      lisattava.setNimi(kirjaDTO.getNimi());
       lisattava.setKirjailija(kirjaDTO.getKirjailija());
-      lisattava.setPublicationYear(kirjaDTO.getJulkaisuVuosi());
+      lisattava.setJulkaisuVuosi(kirjaDTO.getJulkaisuVuosi());
       lisattava.setBookSeries(kirjaSarjaService.getKirjasarjaById(kirjaDTO.getSarja()));
-      lisattava.setSeriesOrder(kirjaDTO.getJarjestysNro());
-      lisattava.setDescription(kirjaDTO.getKuvaus());
+      lisattava.setJarjestysNro(kirjaDTO.getJarjestysNro());
+      lisattava.setKuvaus(kirjaDTO.getKuvaus());
 
       Kirja lisatty = kirjaService.addKirja(lisattava);
 
