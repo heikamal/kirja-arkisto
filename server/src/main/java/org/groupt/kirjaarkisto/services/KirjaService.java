@@ -10,21 +10,21 @@ import java.util.List;
 public class KirjaService {
 
     @Autowired
-    private KirjaRepository KirjaRepository;
+    private KirjaRepository kirjaRepository;
 
     public List<Kirja> getKirjat() {
-        return KirjaRepository.findAll();
+        return kirjaRepository.findAll();
     }
 
     public Kirja getKirjaById(Long id) {
-        return KirjaRepository.findById(id).orElse(null);
+        return kirjaRepository.findById(id).orElse(null);
     }
     //metodi siis lisää sen kirjan :D hagrid tales :D
     public Kirja addKirja(Kirja kirja) {
-        return KirjaRepository.save(kirja);
+        return kirjaRepository.save(kirja);
     } 
     //tää pooistaa :D
      public void deleteKirja(Long id) {
-        KirjaRepository.deleteById(id);
+        kirjaRepository.deleteById(id);
     }
 }
