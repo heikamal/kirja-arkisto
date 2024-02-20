@@ -24,8 +24,8 @@ public class KirjaSarjaController {
      * @return ResponseEntity, joka sisältää kaikki kirjasarjat listana.
      */
     @GetMapping(path = "")
-    public ResponseEntity<List<KirjaSarja>> getAllSarja(){
-        return new ResponseEntity<>(kirjaSarjaService.getKirjasarjat(), HttpStatus.OK);
+    public List<KirjaSarja> getAllSarja(){
+        return kirjaSarjaService.getKirjasarjat();
     }
 
     @PostMapping(path = "")
