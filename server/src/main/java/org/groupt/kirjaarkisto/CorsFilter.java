@@ -20,6 +20,14 @@ import jakarta.servlet.http.HttpServletResponse;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter{
 
+  
+  /** 
+   * @param req
+   * @param res
+   * @param chain
+   * @throws IOException
+   * @throws ServletException
+   */
   @Override
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
     //TODO: Keksi joku ratkaisu castaamiselle
@@ -34,12 +42,4 @@ public class CorsFilter implements Filter{
         chain.doFilter(req, res);
       }
   }
-
-  @Override
-    public void destroy() {
-    }
-
-    @Override
-    public void init(FilterConfig config) throws ServletException {
-    } 
 }
