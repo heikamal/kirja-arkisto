@@ -21,7 +21,7 @@ public class KirjaSarjaController {
     /**
      * Metodi määrittämään GET-endpointti, joka palauttaa kaikki tietokannasta löytyvät kirjasarjat.
      * 
-     * @return ResponseEntity, joka sisältää kaikki kirjasarjat listana.
+     * @return Kaikki tietokannasta löytyvät kirjasarjat listana.
      */
     @GetMapping(path = "")
     public List<KirjaSarja> getAllSarja(){

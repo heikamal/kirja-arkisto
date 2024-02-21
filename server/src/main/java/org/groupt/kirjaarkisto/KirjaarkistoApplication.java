@@ -14,6 +14,7 @@ public class KirjaarkistoApplication {
 		SpringApplication.run(KirjaarkistoApplication.class, args);
 	}
 
+  /* 
   @Bean
 	public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurer() {
@@ -23,5 +24,6 @@ public class KirjaarkistoApplication {
 			}
 		};
 	}
+  */
 
 }
