@@ -13,9 +13,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class KirjaArkistoAppError {
 
+  /**
+   * API:n versionumero merkkijonona.
+   */
   private final String apiVersion;
+
+  /**
+   * Virheblokki, joka sisältää virheen varsinaisen sisällön oliomuodossa. ErrorBlock-luokka määritellään tämän luokan alaluokkana.
+   */
   private final ErrorBlock error;
 
+  /**
+   * Alustaja, joka luo uuden virheilmoituksen versionumeron, virheen statuskoodin, viestin, palvelutunnisteen, syyn, virheviestin ja raportointiosoitteen pohjalta.
+   * 
+   * @param apiVersion Sovelluksen versionumero merkkijonona.
+   * @param code Vastauksen statuskoodi merkkijonona.
+   * @param message Vastauksen viesti merkkijonona.
+   * @param domain Virheen palvelutunniste merkkijonona. Kertoo mikä osa sovelluksesta on antanut virheen.
+   * @param reason Virheen syy merkkijonona.
+   * @param errorMessage Virheviesti merkkijonona.
+   * @param errorReportUri Raportointiosoite merkkijonona.
+   */
   public KirjaArkistoAppError(final String apiVersion, final String code, final String message, final String domain,
                              final String reason, final String errorMessage, final String errorReportUri) {
     this.apiVersion = apiVersion;
@@ -208,12 +226,12 @@ public class KirjaArkistoAppError {
     private final String sendReport;
 
     /**
-     * Alaluokan konstruktori.
+     * Konstruktori luo uuden virheen palvelutunnisteen, syyn, viestin ja raportointiosoitteen pohjalta.
      * 
-     * @param domain
-     * @param reason
-     * @param message
-     * @param sendReport
+     * @param domain Jokaiselle virheelle uniikki tunniste joka kertoo mistä virhe on peräisin merkkijonona.
+     * @param reason Virheen syy merkkijonona.
+     * @param message Virheen viesti merkkijonona.
+     * @param sendReport Osoite, johon virheen voi raportoida merkkijonona.
      */
     public Error(final String domain, final String reason, final String message, final String sendReport) {
       this.domain = domain;
@@ -224,7 +242,8 @@ public class KirjaArkistoAppError {
 
     /**
      * Palauttaa domain-kentän.
-     * @return
+     * 
+     * @return Virheen palvelutunniste merkkijonona.
      */
     public String getDomain() {
       return domain;
@@ -232,7 +251,8 @@ public class KirjaArkistoAppError {
 
     /**
      * Palauttaa reason-kentän.
-     * @return
+     * 
+     * @return Virheen syy merkkijonona.
      */
     public String getReason() {
       return reason;
@@ -240,7 +260,8 @@ public class KirjaArkistoAppError {
 
     /**
      * Palauttaa message-kentän.
-     * @return
+     * 
+     * @return Virheviesti merkkijonona.
      */
     public String getMessage() {
       return message;
@@ -248,7 +269,8 @@ public class KirjaArkistoAppError {
 
     /**
      * Palauttaa sendReport-kentän.
-     * @return
+     * 
+     * @return Osoite, johon virheen voi raportoida merkkijonona.
      */
     public String getSendReport() {
       return sendReport;
