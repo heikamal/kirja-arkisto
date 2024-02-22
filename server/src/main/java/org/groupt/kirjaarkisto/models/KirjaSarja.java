@@ -1,5 +1,5 @@
 package org.groupt.kirjaarkisto.models;
-
+import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +21,9 @@ public class KirjaSarja {
 
     @Column
     private String luokittelu;
+
+    @OneToMany(mappedBy = "kirjasarja", cascade = CascadeType.ALL)
+    private List<Kirja> kirjat;
 
     public KirjaSarja() {
         
@@ -107,5 +110,20 @@ public class KirjaSarja {
       ", luokittelu='" + getLuokittelu() + "'" +
       "}";
   }
+
+
+    /**
+     * @return List<Kirja> return the kirjat
+     */
+    public List<Kirja> getKirjat() {
+        return kirjat;
+    }
+
+    /**
+     * @param kirjat the kirjat to set
+     */
+    public void setKirjat(List<Kirja> kirjat) {
+        this.kirjat = kirjat;
+    }
 
 }
