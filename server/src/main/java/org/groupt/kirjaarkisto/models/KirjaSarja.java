@@ -22,8 +22,12 @@ public class KirjaSarja {
     @Column
     private String luokittelu;
 
-    @OneToMany(mappedBy = "kirjasarja", cascade = CascadeType.ALL)
-    private List<Kirja> kirjat;
+    /** 
+    * @OneToMany(mappedBy = "kirjasarja", cascade = CascadeType.ALL)
+        private List<Kirja> kirjat;
+    */
+   
+    
 
     public KirjaSarja() {
         
