@@ -2,6 +2,7 @@ package org.groupt.kirjaarkisto.controller;
 
 import org.groupt.kirjaarkisto.controller.errors.KirjaArkistoAppError;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaSarjaException;
+import org.groupt.kirjaarkisto.exceptions.NullKirjaSarjaException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,20 @@ public class KirjastoControllerAdvice {
 
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
-  
+
+  @ExceptionHandler(NullKirjaSarjaException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<KirjaArkistoAppError> handleNullKirjaSarja() {
+    final KirjaArkistoAppError error = new KirjaArkistoAppError(
+      currentApiVersion,
+      Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+      "Kirjasarjassa on tyhjiä kenttiä! Tarkista parametrit",
+      "kirjasarja-exceptions", 
+      "Kirjasarjassa tyhjiä kenttiä.",
+      "Bad request!",
+      sendReportUri
+    );
+
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+  }
 }

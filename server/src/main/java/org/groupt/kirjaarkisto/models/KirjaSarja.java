@@ -108,4 +108,14 @@ public class KirjaSarja {
       "}";
   }
 
+  /**
+   * Tarkistaa onko kirjasarjan mikään kenttä null. Jos yksikin kenttä on tyhjä, 
+   * eli kentän sisältö palauttaa arvon null, niin metodi palauttaa true-totuusarvomuuttujan.
+   * 
+   * @return Palauttaa totuusarvomuuttujan. True jos oliolla on yksikin kenttä null, muuten false.
+   */
+  public boolean isNull(){
+    return (this.getId() == null || this.getTitle() == null || this.getKustantaja() == null || this.getKuvaus() == null || this.getLuokittelu() == null);
+  }
+
 }

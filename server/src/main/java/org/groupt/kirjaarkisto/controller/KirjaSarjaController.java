@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import org.groupt.kirjaarkisto.exceptions.NullKirjaSarjaException;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import java.util.List;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
@@ -29,16 +30,11 @@ public class KirjaSarjaController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<?> addNewSarja(@NonNull @RequestBody KirjaSarja sarja){
-        KirjaSarja response = null;
-        try {
-            response = kirjaSarjaService.saveKirjaSarja(sarja);
-            //TODO: Parempi virheenkäsittely
-        } catch (IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-
+    public KirjaSarja addNewSarja(@NonNull @RequestBody KirjaSarja sarja){
+      if (sarja.isNull()){
+        throw new NullKirjaSarjaException("Oliolla on tyhjiä kenttiä! Tarkista parametrit!");
+      }
+      return kirjaSarjaService.saveKirjaSarja(sarja);
     }
 
     @GetMapping("/{id}")
