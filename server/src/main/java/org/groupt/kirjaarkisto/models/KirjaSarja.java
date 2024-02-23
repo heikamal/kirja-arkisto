@@ -116,20 +116,4 @@ public class KirjaSarja {
       ", luokittelu='" + getLuokittelu() + "'" +
       "}";
   }
-
-
-    /**
-     * @return List<Kirja> return the kirjat
-     */
-    public List<Kirja> getKirjat() {
-        return kirjat;
-    }
-
-    /**
-     * @param kirjat the kirjat to set
-     */
-    public void setKirjat(List<Kirja> kirjat) {
-        this.kirjat = kirjat;
-    }
-
 }
