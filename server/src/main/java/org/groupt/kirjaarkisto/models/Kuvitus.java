@@ -1,4 +1,5 @@
 package org.groupt.kirjaarkisto.models;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -7,7 +8,7 @@ public class Kuvitus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idkuva;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "idkirja")
@@ -19,4 +20,5 @@ public class Kuvitus {
 
     private Integer sivunro;
 
+    // getterit ja setterit
 }
