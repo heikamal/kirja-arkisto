@@ -13,7 +13,7 @@ public class NonExistingKirjaSarjaException extends RuntimeException implements 
 
   @Override
   public String getErrorCode() {
-    return "NonExistentSarja";
+    return "KS-NF";
   }
 
 }
