@@ -3,25 +3,24 @@ package org.groupt.kirjaarkisto.exceptions;
 import org.groupt.kirjaarkisto.controller.errors.ErrorCode;
 
 /**
- * Luokka virheelle kun annettu objekti on ollut tyhjä, toisin sanoen null-objekti.
+ * Luokka virheelle kun annettu kirja on ollut tyhjä.
  */
-public class NullKirjaSarjaException extends RuntimeException implements ErrorCode {
-
+public class NullKirjaException extends RuntimeException implements ErrorCode {
   /**
    * Luokan alustaja, joka luo uuden virheen sille annetun viestin pohjalta.
    * @param message
    */
-  public NullKirjaSarjaException(final String message) {
+  public NullKirjaException(final String message) {
     super(message);
   }
 
   /**
-   * Palautta virhekoodin. Tälle virheelle se on "NullBookSeries".
+   * Palautta virhekoodin. Tälle virheelle se on "NullBook".
    * 
    * @return Virhekoodi merkkijonona.
    */
   @Override
   public String getErrorCode() {
-    return "KS-N";
+    return "K-N";
   }
 }

@@ -54,6 +54,10 @@ public class KirjaSarjaService {
      * @param id Poistettavan kirjasarjan ID kokonaislukuna.
      */
     public void removeKirjaSarja(@NonNull Long id) {
+      try {
         kirjaSarjaRepository.deleteById(id);
+      } catch (IllegalArgumentException e) {
+        throw new NonExistingKirjaSarjaException("Kirjasarja with ID " + id + " does not exist!");
+      } 
     }
 }
