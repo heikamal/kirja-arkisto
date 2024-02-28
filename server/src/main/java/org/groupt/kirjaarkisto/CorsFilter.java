@@ -2,7 +2,10 @@ package org.groupt.kirjaarkisto;
 
 import java.io.IOException;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -13,11 +16,21 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter{
 
+  
+  /** 
+   * @param req
+   * @param res
+   * @param chain
+   * @throws IOException
+   * @throws ServletException
+   */
   @Override
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-    if (res instanceof HttpServletRequest) {
+    //TODO: Keksi joku ratkaisu castaamiselle
       final HttpServletResponse response = (HttpServletResponse) res;
       response.setHeader("Access-Control-Allow-Origin", "*");
       response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
@@ -28,17 +41,5 @@ public class CorsFilter implements Filter{
       } else {
         chain.doFilter(req, res);
       }
-    } else {
-      //TODO: Kehitystarkoituksiin, muista poistaa
-      System.out.println("deeb doob I'm a boob");
-    }
   }
-
-  @Override
-    public void destroy() {
-    }
-
-    @Override
-    public void init(FilterConfig config) throws ServletException {
-    } 
 }
