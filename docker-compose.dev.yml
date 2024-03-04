@@ -26,6 +26,8 @@ services:
       MYSQL_PASSWORD: userpass
       MYSQL_DATABASE: kirjakanta
       ENVIRONMENT_TAG: dev
+      SENDREPORT_URI: rofl@copter.lol
+      API_VERSION: 0.1
     ports:
       - '8080:8080'
       - '8000:8000'

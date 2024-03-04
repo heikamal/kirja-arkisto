@@ -4,9 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import io.micrometer.common.lang.NonNull;
-
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 import org.groupt.kirjaarkisto.models.Kirja;
@@ -70,4 +68,34 @@ public class KirjaController {
         kirjaService.deleteKirja(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    /**
+     * tää epic metodi määrittää endpointin PUT-pyynnöille /api/kirjat/{id}-osoitteessa. 
+     * ottaa parametrina kirjan id:n ja KirjaDTO-olion, joka muodostuu pyynnön rungosta. 
+     * tämän pohjalta siis päivittää tietokantaan kirjan tiedot.
+     * 
+     * @param id kirjan id tietokannassa, jota halutaan muokata.
+     * @param kirjaDTO kirjan datansiirto-olio.
+     * @return päivitetty kirja.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Kirja> editKirja(@PathVariable Long id,@NonNull @RequestBody KirjaDTO kirjaDTO) {
+
+    Kirja muokattava = kirjaService.getKirjaById(id);
+
+    if (muokattava == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    muokattava.setNimi(kirjaDTO.getNimi());
+    muokattava.setKirjailija(kirjaDTO.getKirjailija());
+    muokattava.setJulkaisuVuosi(kirjaDTO.getJulkaisuVuosi());
+    muokattava.setBookSeries(kirjaSarjaService.getKirjasarjaById(kirjaDTO.getSarja()));
+    muokattava.setJarjestysNro(kirjaDTO.getJarjestysNro());
+    muokattava.setKuvaus(kirjaDTO.getKuvaus());
+
+    Kirja muokattuKirja = kirjaService.editKirja(id, muokattava);
+
+    return ResponseEntity.ok(muokattuKirja);
+}
 }
