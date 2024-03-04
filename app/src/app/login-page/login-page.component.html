@@ -14,13 +14,12 @@
         <input type="password" class="w-full px-8 py-2 border border-neutral-800 bg-gray-500 rounded box-border mb-5" id="password">
         </div>
         <div class= "class= bg-amber-500 text-white px-10 py-3 rounded cursor-pointer hover:bg-amber-500">
-        <button (click)="emitToggleEvent()">Kirjaudu</button>
+        <button (click)="kirjaudu()" type="submit">Kirjaudu</button>
         </div>
         <div class = "forgot text-blue-600 underline">
         <a href="">Unohditko salasanasi?</a>
         </div>
-        <div class = "create text-blue-600 underline">
-            <a href="">Eikö ole tunnusta? Luo sellainen</a>
-        </div>
+     <a href="#" (click)="emitToggleEvent()" class="text-blue-600 underline">Eikö ole tunnusta? luo sellainen</a>
+ 
     </form>
     </div>

@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './registeration.component.css'
 })
 export class RegisterationComponent {
-
+  showPassword: boolean = false;
+  password: string = '';
+  constructor() { }
 }
