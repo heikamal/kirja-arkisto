@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../data.service';
+import { CarouselComponent } from '../carousel/carousel.component';
+
 
 @Component({
   selector: 'app-initial-landing',
   standalone: true,
-  imports: [],
+  imports: [CarouselComponent],
   templateUrl: './initial-landing.component.html'
 })
-export class InitialLandingComponent {
-
+export class InitialLandingComponent{
 }
