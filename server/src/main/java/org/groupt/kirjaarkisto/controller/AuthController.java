@@ -31,25 +31,51 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Luokka määrittämään käyttäjänhallinan ja autentikoinnin endpointit. Endpointit löytyvät osoitteesta "/api/auth/*" ja 
+ * sisältävät käyttäjän luonnin ja kirjautumisen.
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+  /**
+   * Olio, joka tarjoaa autentikoinnin metodit.
+   */
   @Autowired
   AuthenticationManager authenticationManager;
 
+  /**
+   * Repository, joka hallitsee käyttäjiä tietokannassa.
+   */
   @Autowired
   KayttajaRepository kayttajaRepository;
 
+  /**
+   * Repository hallitsemaan rooleja tietokannassa.
+   */
   @Autowired
   RoleRepository roleRepository;
 
+  /**
+   * Salasanan enkoodaaja.
+   */
   @Autowired
   PasswordEncoder encoder;
 
+  /**
+   * Tokeninhallinnan metodit.
+   */
   @Autowired
   JwtUtils jwtUtils;
 
+  /**
+   * Määrittää endpointin käyttäjän sisäänkirjautumiselle. Vastaus sisältää käyttäjän ID:n, nimen, roolit ja tokenin, 
+   * mitä voi käyttää tunnistautumiseen.
+   * 
+   * @param loginRequest LoginRequest-olio, joka sisältää kirjautuvan käyttäjän käyttäjänimen ja salasanan.
+   * @return ResponseEntity-olio, joka sisää käyttäjän ID:n, nimen, roolit ja tokenin.
+   */
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -70,15 +96,22 @@ public class AuthController {
                          roles));
   }
 
+  /**
+   * Määrittää endpointin käyttäjän luomiselle. Luo uuden käyttäjän nimen, salasanan ja roolien pohjalta. 
+   * Vastaus sisältää tiedon siitä että käyttäjän luonti on onnistunut.
+   * 
+   * @param signUpRequest SignupRequest-olio, joka sisää nimen, salasanan ja roolit.
+   * @return ResponseEntity-olio, joka kertoo onnistuneesta käyttäjän luomisesta.
+   */
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
     if (kayttajaRepository.existsByNimi(signUpRequest.getUsername())) {
       return ResponseEntity
           .badRequest()
           .body(new MessageResponse("Error: Username is already taken!"));
     }
 
-    // Create new user's account
     Kayttaja user = new Kayttaja(signUpRequest.getUsername(),
                encoder.encode(signUpRequest.getPassword()));
 
