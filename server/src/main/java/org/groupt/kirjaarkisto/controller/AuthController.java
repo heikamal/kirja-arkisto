@@ -80,7 +80,7 @@ public class AuthController {
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        new UsernamePasswordAuthenticationToken(loginRequest.getNimi(), loginRequest.getSalasana()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
@@ -106,16 +106,16 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
-    if (kayttajaRepository.existsByNimi(signUpRequest.getUsername())) {
+    if (kayttajaRepository.existsByNimi(signUpRequest.getNimi())) {
       return ResponseEntity
           .badRequest()
           .body(new MessageResponse("Error: Username is already taken!"));
     }
 
-    Kayttaja user = new Kayttaja(signUpRequest.getUsername(),
-               encoder.encode(signUpRequest.getPassword()));
+    Kayttaja user = new Kayttaja(signUpRequest.getNimi(),
+               encoder.encode(signUpRequest.getSalasana()));
 
-    Set<String> strRoles = signUpRequest.getRole();
+    Set<String> strRoles = signUpRequest.getRooli();
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {

@@ -7,35 +7,35 @@ import jakarta.validation.constraints.*;
 public class SignupRequest {
   @NotBlank
   @Size(min = 3, max = 20)
-  private String username;
+  private String nimi;
 
-  private Set<String> role;
+  private Set<String> rooli;
 
   @NotBlank
   @Size(min = 6, max = 40)
-  private String password;
+  private String salasana;
 
-  public String getUsername() {
-    return username;
+  public String getNimi() {
+    return nimi;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setNimi(String username) {
+    this.nimi = username;
   }
 
-  public String getPassword() {
-    return password;
+  public String getSalasana() {
+    return salasana;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setSalasana(String password) {
+    this.salasana = password;
   }
 
-  public Set<String> getRole() {
-    return this.role;
+  public Set<String> getRooli() {
+    return this.rooli;
   }
 
-  public void setRole(Set<String> role) {
-    this.role = role;
+  public void setRooli(Set<String> role) {
+    this.rooli = role;
   }
 }
