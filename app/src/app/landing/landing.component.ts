@@ -57,10 +57,12 @@ export class LandingComponent {
   }
 
   show_my_profile() {
+    this.visible_component = 'landing'
     this.mybooks = true;
     this.myprofile = false;
   }
   show_my_books() {
+    this.visible_component = 'landing'
    this.myprofile = true;
    this.mybooks = false;
   }

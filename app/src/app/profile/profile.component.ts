@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MyProfileComponent } from '../my-profile/my-profile.component';
+import { MyBooksComponent } from '../my-books/my-books.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MyProfileComponent],
+  imports: [MyProfileComponent, MyBooksComponent],
   templateUrl: './profile.component.html'
 })
 
