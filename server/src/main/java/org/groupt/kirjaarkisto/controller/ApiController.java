@@ -44,7 +44,7 @@ public class ApiController {
   public Map<String,Object> adminAccess() {
     Map<String,Object> model = new HashMap<String,Object>();
     model.put("id", UUID.randomUUID().toString());
-    model.put("content", "Kalkaros tappoi Dumbledoren.");
+    model.put("content", "Halusin vain ilmoittaa että olet kirjautunut sisään adminina.");
     return model;
   }
 }
