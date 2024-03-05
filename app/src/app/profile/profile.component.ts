@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MyProfileComponent } from '../my-profile/my-profile.component';
 
 @Component({
@@ -7,6 +7,14 @@ import { MyProfileComponent } from '../my-profile/my-profile.component';
   imports: [MyProfileComponent],
   templateUrl: './profile.component.html'
 })
-export class ProfileComponent {
 
+export class ProfileComponent {
+  @Output("myprofile") my_profile: EventEmitter<any> = new EventEmitter();
+@Output("mybooks") my_books: EventEmitter<any> = new EventEmitter();
+  show_my_profile() {
+    this.my_profile.emit();
+  }
+  show_my_books() {
+    this.my_books.emit();
+  }
 }
