@@ -73,6 +73,12 @@ public class AuthController {
    * Määrittää endpointin käyttäjän sisäänkirjautumiselle. Vastaus sisältää käyttäjän ID:n, nimen, roolit ja tokenin, 
    * mitä voi käyttää tunnistautumiseen.
    * 
+   * Tulevan JSON-datan tulisi näyttää seuraavalta:
+   * {
+   *   "nimi": "",
+   *   "salasana": "",
+   * }
+   * 
    * @param loginRequest LoginRequest-olio, joka sisältää kirjautuvan käyttäjän käyttäjänimen ja salasanan.
    * @return ResponseEntity-olio, joka sisää käyttäjän ID:n, nimen, roolit ja tokenin.
    */
@@ -99,6 +105,13 @@ public class AuthController {
   /**
    * Määrittää endpointin käyttäjän luomiselle. Luo uuden käyttäjän nimen, salasanan ja roolien pohjalta. 
    * Vastaus sisältää tiedon siitä että käyttäjän luonti on onnistunut.
+   * 
+   * Tulevan JSON-datan tulisi käyttää seuraavalta:
+   * {
+   *   "nimi": "",
+   *   "salasana": "",
+   *   "rooli": ["admin", "user"]
+   * }
    * 
    * @param signUpRequest SignupRequest-olio, joka sisää nimen, salasanan ja roolit.
    * @return ResponseEntity-olio, joka kertoo onnistuneesta käyttäjän luomisesta.
