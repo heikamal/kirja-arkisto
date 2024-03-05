@@ -1,4 +1,4 @@
-package org.groupt.kirjaarkisto.models;
+package org.groupt.kirjaarkisto.payload;
 
 public class KirjaDTO {
   

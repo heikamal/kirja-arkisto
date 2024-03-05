@@ -16,6 +16,58 @@ CREATE SCHEMA IF NOT EXISTS `kirjakanta` DEFAULT CHARACTER SET utf8 ;
 USE `kirjakanta` ;
 
 -- -----------------------------------------------------
+-- Table `kirjakanta`.`kayttaja`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `kirjakanta`.`kayttaja` ;
+
+CREATE TABLE IF NOT EXISTS `kirjakanta`.`kayttaja` (
+  `idkayttaja` INT NOT NULL AUTO_INCREMENT,
+  `kayttajanimi` VARCHAR(45) NULL,
+  `salasana` VARCHAR(120) NULL,
+  `token` VARCHAR(255) NULL,
+  PRIMARY KEY (`idkayttaja`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `kirjakanta`.`rooli`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `kirjakanta`.`rooli` ;
+
+CREATE TABLE IF NOT EXISTS `kirjakanta`.`rooli` (
+  `idrooli` INT NOT NULL AUTO_INCREMENT,
+  `nimi` VARCHAR(45) NULL,
+  PRIMARY KEY (`idrooli`))
+ENGINE = InnoDB;
+
+INSERT INTO rooli (nimi) VALUES ('ROLE_USER');
+INSERT INTO rooli (nimi) VALUES ('ROLE_ADMIN');
+
+
+-- -----------------------------------------------------
+-- Table `kirjakanta`.`kayttajan_rooli`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `kirjakanta`.`kayttajan_rooli` ;
+
+CREATE TABLE IF NOT EXISTS `kirjakanta`.`kayttajan_rooli` (
+  `idkayttaja` INT NOT NULL,
+  `idrooli` INT NOT NULL,
+  PRIMARY KEY (`idkayttaja`, `idrooli`),
+  INDEX `fk_kayttaja_has_rooli_rooli1_idx` (`idrooli` ASC) VISIBLE,
+  INDEX `fk_kayttaja_has_rooli_kayttaja1_idx` (`idkayttaja` ASC) VISIBLE,
+  CONSTRAINT `fk_kayttaja_has_rooli_kayttaja1`
+    FOREIGN KEY (`idkayttaja`)
+    REFERENCES `kirjakanta`.`kayttaja` (`idkayttaja`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_kayttaja_has_rooli_rooli1`
+    FOREIGN KEY (`idrooli`)
+    REFERENCES `kirjakanta`.`rooli` (`idrooli`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `kirjakanta`.`kirjasarja`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `kirjakanta`.`kirjasarja` ;

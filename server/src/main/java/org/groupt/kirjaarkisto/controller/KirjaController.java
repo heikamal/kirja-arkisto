@@ -10,7 +10,7 @@ import io.micrometer.common.lang.NonNull;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 import org.groupt.kirjaarkisto.models.Kirja;
-import org.groupt.kirjaarkisto.models.KirjaDTO;
+import org.groupt.kirjaarkisto.payload.KirjaDTO;
 
 import java.net.URI;
 import java.util.List;
