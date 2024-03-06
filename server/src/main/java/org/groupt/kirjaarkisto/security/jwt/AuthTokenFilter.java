@@ -20,15 +20,37 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
+/**
+ * Luokka määrittämään suodatin tuleville pyynnöille.
+ */
 public class AuthTokenFilter extends OncePerRequestFilter {
+
+  /**
+   * JwtUtils-olento tuomaan JSON-webtokeneiden metodit.
+   */
   @Autowired
   private JwtUtils jwtUtils;
 
+  /**
+   * UserDetailsServiceImpl-olento jotta voidaan hallita tietokannassa olevia käyttäjiä.
+   */
   @Autowired
   private UserDetailsServiceImpl userDetailsService;
 
+  /**
+   * Loggeri tulostamaan konsoliin.
+   */
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
+  /**
+   * Metodi tarkastamaan että pyynnön mukana tuleva tokeni on hyväksytty ja vielä olemassa.
+   * 
+   * @param request Pyyntö.
+   * @param response Vastaus.
+   * @param filterChain Filtterijono.
+   * @throws ServletException Virhe, jos filtterijonon suorittaminen on keskeytynyt.
+   * @throws IOException Filtterijonossa on tapahtunut I/O-virhe.
+   */
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
@@ -54,6 +76,12 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
+  /**
+   * Palauttaa pyynnön mukana tulevan tokenin. Etsii pyynnöstä oikean otsikon ja palauttaa sieltä oikean sisällön.
+   * 
+   * @param request Pyyntö.
+   * @return JSON-webtoken merkkijonona.
+   */
   private String parseJwt(HttpServletRequest request) {
     String headerAuth = request.getHeader("Authorization");
 
