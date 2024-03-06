@@ -1,17 +1,21 @@
-# Käyttöohjeet
+# Kirja-Arkisto
 
 Kirja-arkisto ollaan tarkoitettu kirjasarjojen ja kirjojen tietojen arkistointiin ja helpottamaan esimerkiksi kokoelman keräämistä. Tämä dokumentti on yksinkertaistettu käyttöohjekirja sovelluksen käyttöön.
 
-## Asennus ja käyttö
+## Asennus
 
 Tietokannan luontiskripti löytyy ./database/skriptit-kansiosta. Tällä hetkellä ainoastaan kehitystietokanta on toiminnallinen ja sen saa alustettua komennolla:
 
 ```bash
 docker compose -f docker-compose.dev.yml up
 ```
-
 Tietokantakontti käyttää viimeisintä mysql-imagea ja siihen saa yhteyden portissa 3306.
 
-## Changelog
 
-04/02/2024: readme.md luotu, lisätty ohjeet kehitystietokannan käyttöön.
+## Osallistuminen
+
+Älä osallistu vielä, tää on aik pahasti kesken..
+
+## Lisenssi
+
+[Ei me mitää lisenssei tarvita](https://www.youtube.com/watch?v=tdSJjY3lWvE)
