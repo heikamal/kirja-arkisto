@@ -31,9 +31,6 @@ public class KirjaSarjaController {
 
     @PostMapping(path = "")
     public KirjaSarja addNewSarja(@NonNull @RequestBody KirjaSarja sarja){
-      if (sarja.isNull()){
-        throw new NullKirjaSarjaException("Oliolla on tyhjiä kenttiä! Tarkista parametrit!");
-      }
       return kirjaSarjaService.saveKirjaSarja(sarja);
     }
 
