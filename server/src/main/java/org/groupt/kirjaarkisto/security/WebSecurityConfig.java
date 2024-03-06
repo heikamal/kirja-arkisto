@@ -58,6 +58,7 @@ public class WebSecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
           auth.requestMatchers("/api/auth/**").permitAll()
+              //En tiedä miksi se tarvitsee näitä, mutta ohjelma ei käänny jos tässä ei jätä /api/test/**-enpointteja auki. Elä koske.
               .requestMatchers("/api/test/**").permitAll()
               .anyRequest().authenticated()
         );

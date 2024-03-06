@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
+import org.groupt.kirjaarkisto.exceptions.UserNotFoundException;
 import org.groupt.kirjaarkisto.models.ERole;
 import org.groupt.kirjaarkisto.models.Kayttaja;
 import org.groupt.kirjaarkisto.models.Role;
@@ -163,18 +164,29 @@ public class AuthController {
   }
 
   /**
-   * Testiendpointti. Palauttaa pyynnössä mukana tulevan tokenin omistajan nimen.
+   * Endpointti käyttäjän hakemiselle. Hakee pyynnön tokenin omistavan käyttäjän ja vastaa sillä.
    * 
-   * @return Vastaus, joka pitää sisällään satunnaisesti generoidun id:n ja käyttäjänimen.
+   * @return Vastaus, joka sisältää käyttäjän.
    */
-  @GetMapping("/test")
-  public ResponseEntity<?> returnUser() {
+  @GetMapping("/user")
+  public Map<String, Object> returnUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String userName = authentication.getName();
+    String nimi = authentication.getName();
+    Kayttaja kayttaja = kayttajaRepository.findByNimi(nimi).orElse(null);
+    
+    // Realistisesti virheellinen tokeni napataan jo aiemmin, mutta tuleepahan suojattua tämä kuitenkin.
+    if (kayttaja == null) {
+      throw new UserNotFoundException("Käyttäjää ei löydy!");
+    }
+
     Map<String, Object> response = new HashMap<>();
-    response.put("id", UUID.randomUUID().toString());
-    response.put("username", userName);
-    return ResponseEntity.ok(response);
+    Set<ERole> roolit = new HashSet<>();
+    kayttaja.getRoles().forEach(r -> roolit.add(r.getName()));
+    response.put("id", kayttaja.getId());
+    response.put("nimi", kayttaja.getNimi());
+    response.put("rooli", roolit);
+    
+    return response;
   }
 
   //TODO: käyttäjän muokkaaminen
