@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { Book } from '../book';
-import { MatDialog } from '@angular/material/dialog';
-import { BookDetailsComponent } from '../book-details/book-details.component';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-carousel',
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.css'] // Add any necessary styles
+  standalone: true,
+  imports: [CommonModule],
+  providers: [DataService],
+  templateUrl: './carousel.component.html'
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit{
   books: Book[] = [];
 
-  constructor(private dataService: DataService, private dialog: MatDialog) { }
-
+  constructor(private dataService: DataService) { }
+  
   ngOnInit(): void {
-    this.dataService.get_books().subscribe((response: any[]) => {
+    this.dataService.get_books().subscribe((response: any[]) => { // Adjust the type to any[]
       this.books = response.map((bookData: any) => {
         return {
           id: bookData.id,
@@ -24,15 +24,10 @@ export class CarouselComponent implements OnInit {
           date: bookData.julkaisuVuosi,
           series: bookData.jarjestysNro,
           image_url: "none"
-        } as Book;
+          // Add other properties as needed
+        } as Book; // Specify the type assertion to Book
       });
-    });
-  }
-
-  openBookDetails(book: Book): void {
-    const dialogRef = this.dialog.open(BookDetailsComponent, {
-      width: '500px', // Adjust width as needed
-      data: book
+      console.log(this.books); // Print books array into the console
     });
   }
 }

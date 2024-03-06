@@ -12,6 +12,8 @@ export class DataService {
   constructor(private http: HttpClient) { }
   book_url = 'http://localhost:8080/api/kirjat'
   series_url = 'http://localhost:8080/api/kirjasarjat'
+  registeration_url = "http://localhost:8080/api/auth/signup"
+  login_url = "http://localhost:8080/api/auth/signin"
 
   post_book(data: JSON) {
     return this.http.post<JSON>(this.book_url, data);
@@ -36,5 +38,11 @@ export class DataService {
   remove_series(series_id: string): Observable<any> {
     const url = `${this.series_url}/${series_id}`;
     return this.http.delete<any>(url);
+  }
+  register_user(data: JSON){
+    return this.http.post<JSON>(this.registeration_url, data);
+  } //200OK
+  login_user(data: JSON){
+    return this.http.post<JSON>(this.login_url, data);
   }
 }
