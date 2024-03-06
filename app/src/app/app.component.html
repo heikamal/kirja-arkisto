@@ -1,1 +1,3 @@
-<app-landing></app-landing>
+<app-login-page (Landing) = 'Landing()' (Register)= 'Register()' *ngIf="login" ></app-login-page>
+<app-registeration *ngIf="registeration"></app-registeration>
+<app-landing *ngIf="landing"></app-landing>

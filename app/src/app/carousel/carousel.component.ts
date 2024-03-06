@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { Book } from '../book';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { BookDetailsComponent } from '../book-details/book-details.component';
 export class CarouselComponent implements OnInit {
   books: Book[] = [];
 
-  constructor(private dataService: DataService, private dialog: MatDialogModule) { }
+  constructor(private dataService: DataService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.dataService.get_books().subscribe((response: any[]) => {
@@ -31,7 +31,7 @@ export class CarouselComponent implements OnInit {
 
   openBookDetails(book: Book): void {
     const dialogRef = this.dialog.open(BookDetailsComponent, {
-      width: '500px',
+      width: '500px', // Adjust width as needed
       data: book
     });
   }
