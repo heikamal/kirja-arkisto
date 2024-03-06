@@ -1,5 +1,5 @@
-<div class = "container bg-neutral-800">
-    <form class="flex flex-col items-center justify-center h-screen">
+<div class = "display: flex; bg-neutral-800 h-full justify-center align-items items-center">
+    <form class="flex flex-col items-center justify-center h-full">
         <div class="font-bold text-3xl text bg-neutral-800 text-amber-500" >
             <h1>Rekisteröidy.</h1>
         </div>
@@ -10,9 +10,12 @@
         </div>
         <div class="input_box">
         <label class="font-bold mb-5 text-amber-500">Salasana:</label>
-        <input type="password" class="w-full px-8 py-2 border border-neutral-800 bg-gray-500 rounded box-border mb-5" id="password">
-        <input type="checkbox" class= "margin-left: 5px;">
+        <input type="password" style = "display: contents = false" class="w-full px-8 py-2 border border-neutral-800 bg-gray-500 rounded box-border mb-5" id="password">
+        <br>
+        <input type="checkbox" class= "margin-left: 5px;" id = "check">
+        <label class="font-bold mb-5 text-amber-500"> Näytä salasana </label>
         </div>
+        <br>
         <div class= "class= bg-amber-500 text-white px-10 py-3 rounded cursor-pointer hover:bg-amber-500">
         <button type="submit"> Luo tili </button>
         </div>

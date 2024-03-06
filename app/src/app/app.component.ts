@@ -12,10 +12,26 @@ import { CommonModule } from '@angular/common';
     imports: [LandingComponent, LoginPageComponent, RegisterationComponent, RouterModule, CommonModule]
 })
 export class AppComponent {
-  login: boolean = false;
+  login: boolean = true;
+  registeration: boolean = false;
+  landing: boolean = false;
 
-  kirjautuminen() {
-   this.login = true;
+  Login() {
+    this.login = true;
+    this.registeration = false;
+    this.landing = false;
+  }
+
+  Register() {
+    this.login = false;
+    this.registeration = true;
+    this.landing = false;
+  }
+
+  Landing() {
+    this.login = false;
+    this.registeration = false;
+    this.landing = true;
   }
   
   title = 'app';}
