@@ -1,8 +1,11 @@
 package org.groupt.kirjaarkisto.controller;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
@@ -26,6 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -156,5 +160,20 @@ public class AuthController {
     kayttajaRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+  }
+
+  /**
+   * Testiendpointti. Palauttaa pyynnössä mukana tulevan tokenin omistajan nimen.
+   * 
+   * @return Vastaus, joka pitää sisällään satunnaisesti generoidun id:n ja käyttäjänimen.
+   */
+  @GetMapping("/test")
+  public ResponseEntity<?> returnUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String userName = authentication.getName();
+    Map<String, Object> response = new HashMap<>();
+    response.put("id", UUID.randomUUID().toString());
+    response.put("username", userName);
+    return ResponseEntity.ok(response);
   }
 }
