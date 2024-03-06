@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class KirjastoControllerAdvice {
 
-  //TODO: nämä enveiksi
-  //@Value("${kirjaarkisto.sendreport.uri}")
-  private String sendReportUri = "Huuda 'Heikki auta' niin kovaa kuin keuhkoista lähtee";
-  //@Value("${kirjaarkisto.api.version}")
-  private String currentApiVersion = "0.1";
+  @Value("${kirjaarkisto.sendreport.uri}")
+  private String sendReportUri;
+  @Value("${kirjaarkisto.api.version}")
+  private String currentApiVersion;
 
   @ExceptionHandler(NonExistingKirjaSarjaException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
