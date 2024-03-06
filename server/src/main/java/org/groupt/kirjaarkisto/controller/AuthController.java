@@ -176,4 +176,7 @@ public class AuthController {
     response.put("username", userName);
     return ResponseEntity.ok(response);
   }
+
+  //TODO: käyttäjän muokkaaminen
+  //TODO: käyttäjän poistaminen
 }
