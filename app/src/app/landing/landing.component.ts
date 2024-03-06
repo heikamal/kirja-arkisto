@@ -7,11 +7,12 @@ import { AdminComponent } from '../admin/admin.component';
 import { BooksComponent } from '../books/books.component';
 import { MyBooksComponent } from '../my-books/my-books.component';
 import { MyProfileComponent } from '../my-profile/my-profile.component';
+import { BookDetailsComponent } from '../book-details/book-details.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [InitialLandingComponent,ProfileComponent,SeriesComponent,BooksComponent,AdminComponent,CommonModule, MyBooksComponent, MyProfileComponent],
+  imports: [InitialLandingComponent,ProfileComponent,SeriesComponent,BooksComponent,AdminComponent,CommonModule, MyBooksComponent, MyProfileComponent, BookDetailsComponent],
   templateUrl: './landing.component.html',
 })
 
@@ -65,5 +66,11 @@ export class LandingComponent {
     this.visible_component = 'landing'
    this.myprofile = true;
    this.mybooks = false;
+  }
+  show_bookdetails() {
+    event?.preventDefault();
+    this.visible_component = 'bookdetails'
+    this.mybooks = false;
+    this.myprofile = false;
   }
 }
