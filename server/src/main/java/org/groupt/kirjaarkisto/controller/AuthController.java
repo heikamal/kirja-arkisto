@@ -171,20 +171,18 @@ public class AuthController {
   @GetMapping("/user")
   public Map<String, Object> returnUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String nimi = authentication.getName();
-    Kayttaja kayttaja = kayttajaRepository.findByNimi(nimi).orElse(null);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
     
-    // Realistisesti virheellinen tokeni napataan jo aiemmin, mutta tuleepahan suojattua tämä kuitenkin.
-    if (kayttaja == null) {
-      throw new UserNotFoundException("Käyttäjää ei löydy!");
-    }
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
+    List<String> roles = userDetails.getAuthorities().stream()
+        .map(item -> item.getAuthority())
+        .collect(Collectors.toList());
 
     Map<String, Object> response = new HashMap<>();
-    Set<ERole> roolit = new HashSet<>();
-    kayttaja.getRoles().forEach(r -> roolit.add(r.getName()));
-    response.put("id", kayttaja.getId());
-    response.put("nimi", kayttaja.getNimi());
-    response.put("rooli", roolit);
+    
+    response.put("id", userDetails.getId());
+    response.put("nimi", userDetails.getUsername());
+    response.put("rooli", roles);
     
     return response;
   }
