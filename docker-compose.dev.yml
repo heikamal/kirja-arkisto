@@ -28,6 +28,8 @@ services:
       ENVIRONMENT_TAG: dev
       SENDREPORT_URI: rofl@copter.lol
       API_VERSION: 0.1
+      JWT_SECRET: TamaOnTarkkaanVarjeltuSalaisuusAlaKerroYhtaanKenellekaanEdesAidillesiTaiMorokolliTuleeViemaanEnkaMaVoiEnaaSuaSiinaVaiheessaAuttaa
+      JWT_EXPIRATION_MS: 86400000
     ports:
       - '8080:8080'
       - '8000:8000'
