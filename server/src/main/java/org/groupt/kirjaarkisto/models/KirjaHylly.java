@@ -15,11 +15,7 @@ public class KirjaHylly {
     @Column(name = "omistaja")
     private String omistaja;
 
-    /*
-    @OneToMany(mappedBy = "kirjahylly", cascade = CascadeType.ALL)
-    private List<KirjaKopio> kirjakopiot;
-
-    */
+    
     @ManyToMany
     @JoinTable(
             name = "omatsarjat",
