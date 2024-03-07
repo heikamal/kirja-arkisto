@@ -5,9 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.persistence.EntityNotFoundException;
-
-import org.groupt.kirjaarkisto.exceptions.NullKirjaSarjaException;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import java.util.List;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
