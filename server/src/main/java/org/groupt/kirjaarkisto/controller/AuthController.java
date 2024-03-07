@@ -5,12 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
-import org.groupt.kirjaarkisto.exceptions.UserNotFoundException;
 import org.groupt.kirjaarkisto.models.ERole;
 import org.groupt.kirjaarkisto.models.Kayttaja;
 import org.groupt.kirjaarkisto.models.Role;
@@ -90,7 +88,7 @@ public class AuthController {
    * @return ResponseEntity-olio, joka sisää käyttäjän ID:n, nimen, roolit ja tokenin.
    */
   @PostMapping("/signin")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getNimi(), loginRequest.getSalasana()));
@@ -124,7 +122,7 @@ public class AuthController {
    * @return ResponseEntity-olio, joka kertoo onnistuneesta käyttäjän luomisesta.
    */
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+  public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
     if (kayttajaRepository.existsByNimi(signUpRequest.getNimi())) {
       return ResponseEntity
@@ -144,14 +142,11 @@ public class AuthController {
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
-        switch (role) {
-        case "admin":
+        if ("admin".equals(role)) {
           Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
               .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
           roles.add(adminRole);
-
-          break;
-        default:
+        } else {
           Role userRole = roleRepository.findByName(ERole.ROLE_USER)
               .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
           roles.add(userRole);
