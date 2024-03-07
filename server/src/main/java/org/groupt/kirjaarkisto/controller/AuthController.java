@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
+import org.groupt.kirjaarkisto.exceptions.UserNotFoundException;
 import org.groupt.kirjaarkisto.models.ERole;
 import org.groupt.kirjaarkisto.models.Kayttaja;
 import org.groupt.kirjaarkisto.models.Role;
@@ -29,7 +30,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -184,6 +187,47 @@ public class AuthController {
     return response;
   }
 
-  //TODO: käyttäjän muokkaaminen
+  @PutMapping("/user/{id}")
+  public Map<String, Object> editUser(@PathVariable(value = "id") Long id, @Valid @RequestBody SignupRequest editRequest) {
+    Map<String, Object> response = new HashMap<>();
+
+    Kayttaja toBeModified = kayttajaRepository.findById(id).orElse(null);
+    if (toBeModified == null) {
+      throw new UserNotFoundException("Käyttäjää ei löytynyt!");
+    }
+    Set<String> strRoles = editRequest.getRooli();
+    Set<ERole> roles = new HashSet<>();
+
+    // Onhan tää nyt vähän spagettia mutta toimii
+    if (editRequest.getNimi() != null) {
+      toBeModified.setNimi(editRequest.getNimi());
+    }
+
+    if (editRequest.getSalasana() != null) {
+      toBeModified.setSalasana(encoder.encode(editRequest.getSalasana()));
+    }
+
+    if (strRoles != null) {
+      strRoles.forEach(role -> {
+        if ("admin".equals(role)) {
+          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+              .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+          roles.add(adminRole.getName());
+        } else {
+          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+              .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+          roles.add(userRole.getName());
+        }
+      });
+    } else {
+      toBeModified.getRoles().forEach(role -> roles.add(role.getName()));
+    }
+
+    kayttajaRepository.save(toBeModified);
+    response.put("id", toBeModified.getId());
+    response.put("nimi", toBeModified.getNimi());
+    response.put("rooli", roles);
+    return response;
+  }
   //TODO: käyttäjän poistaminen
 }
