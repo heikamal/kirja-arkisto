@@ -155,8 +155,8 @@ DROP TABLE IF EXISTS `kirjakanta`.`kirjahylly` ;
 CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirjahylly` (
   `idkirjahylly` INT NOT NULL AUTO_INCREMENT,
   `idkayttaja` INT NOT NULL,
-  PRIMARY KEY (`idkirjahylly`)
-  CONSTRAINT `fk_kirjahylly_kayttaja1`
+  PRIMARY KEY (`idkirjahylly`),
+  CONSTRAINT `fk_kirjahylly_kayttaja`
     FOREIGN KEY (`idkayttaja`)
     REFERENCES `kirjakanta`.`kayttaja` (`idkayttaja`)
     ON DELETE NO ACTION
