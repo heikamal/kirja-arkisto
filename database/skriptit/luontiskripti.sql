@@ -263,7 +263,7 @@ USE `kirjakanta`;
 CREATE  OR REPLACE VIEW `omat_kirjasarjat` AS
 SELECT
 	idkirjahylly,
-	omistaja,
+	idkayttaja,
     idkirjasarja
 FROM
 	kirjahylly
