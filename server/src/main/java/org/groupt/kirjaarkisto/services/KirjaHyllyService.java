@@ -20,5 +20,13 @@ public class KirjaHyllyService {
         return KirjahyllyRepository.findById(id).orElse(null);
     }
 
+    public KirjaHylly getKirjaHyllyByOmistaja(Long omistaja) {
+        return KirjahyllyRepository.findByOmistaja(omistaja);
+    }
+
+    public void saveKirjaHylly(KirjaHylly kirjahylly) {
+        KirjahyllyRepository.save(kirjahylly);
+    }
+
     // Lisää tarvittavat liiketoimintalogiikkametodit
 }
