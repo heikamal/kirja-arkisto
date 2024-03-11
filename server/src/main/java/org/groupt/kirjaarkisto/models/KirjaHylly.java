@@ -64,4 +64,8 @@ public class KirjaHylly {
     public void setOmatSarjat(List<KirjaSarja> omatSarjat) {
         this.omatSarjat = omatSarjat;
     }
+
+    public void addToOmatSarjat(KirjaSarja sarja) {
+      this.omatSarjat.add(sarja);
+    }
 }
