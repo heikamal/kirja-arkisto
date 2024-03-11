@@ -100,8 +100,8 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirja` (
   CONSTRAINT `fk_kirja_kirjasarja`
     FOREIGN KEY (`idkirjasarja`)
     REFERENCES `kirjakanta`.`kirjasarja` (`idkirjasarja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -137,13 +137,13 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kuvitus` (
   CONSTRAINT `fk_kuva_has_kirja_kuva1`
     FOREIGN KEY (`idkuva`)
     REFERENCES `kirjakanta`.`kuva` (`idkuva`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_kuva_has_kirja_kirja1`
     FOREIGN KEY (`idkirja`)
     REFERENCES `kirjakanta`.`kirja` (`idkirja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
