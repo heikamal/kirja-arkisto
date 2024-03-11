@@ -3,13 +3,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.micrometer.common.lang.NonNull;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
+import org.groupt.kirjaarkisto.services.TiedostonhallintaService;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -22,6 +25,9 @@ public class KirjaController {
 
     @Autowired
     private KirjaSarjaService kirjaSarjaService;
+
+    @Autowired
+    private TiedostonhallintaService tiedostonhallintaService;
 
     @GetMapping
     public List<Kirja> getKirjat() {
@@ -98,4 +104,26 @@ public class KirjaController {
 
     return ResponseEntity.ok(muokattuKirja);
 }
+@PostMapping("/{id}/kuvat")
+public ResponseEntity<String> lisaakuvaKirjalle(@PathVariable Long id,
+                                                @RequestParam("file") MultipartFile file,
+                                                @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
+                                                @RequestParam("taiteilija") String taiteilija,
+                                                @RequestParam("tyyli") String tyyli,
+                                                @RequestParam("kuvaus") String kuvaus) {
+    try {
+        // Tallenna tiedosto palvelimelle kansioon
+        String tiedostoNimi = tiedostonhallintaService.tallennaKuva(file);
+
+        // Tallenna tiedostonimi ja muut tiedot tietokantaan
+        kirjaService.lisaaKuvaKirjalle(id, tiedostoNimi, julkaisuvuosi, taiteilija, tyyli, kuvaus);
+
+        // Voit palauttaa tiedoston nimen tai esimerkiksi sen URL-osoitteen
+        return ResponseEntity.ok(tiedostoNimi);
+    } catch (IOException e) {
+        // Käsittely virheellistä tiedoston tallennusta
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Virhe tallennettaessa tiedostoa.");
+    }
+}
+
 }
