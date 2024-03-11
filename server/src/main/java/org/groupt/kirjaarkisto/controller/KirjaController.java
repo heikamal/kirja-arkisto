@@ -115,41 +115,29 @@ public ResponseEntity<String> lisaakuvaKirjalle(@PathVariable Long id,
                                                 @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
                                                 @RequestParam("taiteilija") String taiteilija,
                                                 @RequestParam("tyyli") String tyyli,
-                                                @RequestParam("kuvaus") String kuvaus) {
+                                                @RequestParam("kuvaus") String kuvaus,
+                                                @RequestParam("sivunro") Integer sivunro) {
     try {
-        // Tallenna tiedosto palvelimelle kansioon
-        String tiedostoNimi = tiedostonhallintaService.tallennaKuva(file);
+       
+        String tiedostoNimi = TiedostonhallintaService.tallennaKuva(file);
 
-        // Tallenna tiedostonimi ja muut tiedot tietokantaan
-        kirjaService.lisaaKuvaKirjalle(id, tiedostoNimi, julkaisuvuosi, taiteilija, tyyli, kuvaus);
+        
+        kirjaService.lisaaKuvaKirjalle(id, tiedostoNimi, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
 
-        // Voit palauttaa tiedoston nimen tai esimerkiksi sen URL-osoitteen
+        
         return ResponseEntity.ok(tiedostoNimi);
     } catch (IOException e) {
-        // Käsittely virheellistä tiedoston tallennusta
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Virhe tallennettaessa tiedostoa.");
+        
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("virhe tallennettaessa tiedostoa.");
     }
 }
-
-  @DeleteMapping("/{id}")
-    public ResponseEntity<String> poistaKuva(@PathVariable Long id) {
-        try {
-            //onko kuvaa olemassa
-            Kuva poistettavaKuva = kuvaservice.getKuvaById(id);
-            if (poistettavaKuva == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            //poista kuva kuvakansiosta
-            tiedostonhallintaService.poistaKuva(poistettavaKuva.getTiedostonimi());
-
-            //poista kuva tietokannasta
-            kuvaservice.poistaKuva(id);
-
-            return ResponseEntity.ok("Kuva poistettu onnistuneesti");
-        } catch (Exception e) {
-            // nönnönnnöö error-handling
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Virhe kuvan poistossa.");
-        }
+@DeleteMapping("/{kirjaId}/kuvat/{kuvaId}")
+public ResponseEntity<String> poistaKirjaJaKuva(@PathVariable Long kirjaId, @PathVariable Long kuvaId) {
+    try {
+        kirjaService.poistaKuvaKirjalta(kirjaId, kuvaId);
+        return new ResponseEntity<>("Kirja ja kuva poistettu onnistuneesti", HttpStatus.OK);
+    } catch (Exception e) {
+        return new ResponseEntity<>("Kirjan ja kuvan poistaminen epäonnistui", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
 }

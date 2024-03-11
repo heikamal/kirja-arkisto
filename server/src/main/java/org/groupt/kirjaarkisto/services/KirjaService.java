@@ -12,8 +12,6 @@ import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvitusRepository;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
