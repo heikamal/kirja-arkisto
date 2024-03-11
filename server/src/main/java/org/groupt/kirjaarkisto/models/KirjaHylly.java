@@ -12,8 +12,8 @@ public class KirjaHylly {
     @Column(name = "idkirjahylly")
     private Long id;
 
-    @Column(name = "omistaja")
-    private String omistaja;
+    @Column(name = "idkayttaja")
+    private Long omistaja;
 
     
     @ManyToMany
@@ -39,11 +39,11 @@ public class KirjaHylly {
         this.id = id;
     }
 
-    public String getOmistaja() {
+    public Long getOmistaja() {
         return omistaja;
     }
 
-    public void setOmistaja(String omistaja) {
+    public void setOmistaja(Long omistaja) {
         this.omistaja = omistaja;
     }
 
@@ -63,5 +63,9 @@ public class KirjaHylly {
 
     public void setOmatSarjat(List<KirjaSarja> omatSarjat) {
         this.omatSarjat = omatSarjat;
+    }
+
+    public void addToOmatSarjat(KirjaSarja sarja) {
+      this.omatSarjat.add(sarja);
     }
 }

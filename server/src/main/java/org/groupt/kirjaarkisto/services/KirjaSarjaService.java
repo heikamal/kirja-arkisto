@@ -40,7 +40,7 @@ public class KirjaSarjaService {
      * @param sarja tallennettava kirjasarja
      * @return Tallennettu kirjasarja.
      */
-    public KirjaSarja saveKirjaSarja(@NonNull KirjaSarja sarja) {
+    public KirjaSarja saveKirjaSarja(KirjaSarja sarja) {
       try {
         return kirjaSarjaRepository.save(sarja);
       } catch (IllegalArgumentException e) {

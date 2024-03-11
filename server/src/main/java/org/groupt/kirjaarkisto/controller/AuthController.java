@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.groupt.kirjaarkisto.exceptions.UserNotFoundException;
 import org.groupt.kirjaarkisto.models.ERole;
 import org.groupt.kirjaarkisto.models.Kayttaja;
+import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.Role;
 import org.groupt.kirjaarkisto.payload.JwtResponse;
 import org.groupt.kirjaarkisto.payload.LoginRequest;
@@ -21,6 +22,7 @@ import org.groupt.kirjaarkisto.repositories.KayttajaRepository;
 import org.groupt.kirjaarkisto.repositories.RoleRepository;
 import org.groupt.kirjaarkisto.security.jwt.JwtUtils;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
+import org.groupt.kirjaarkisto.services.KirjaHyllyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -77,6 +79,9 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
+  @Autowired
+  KirjaHyllyService kirjahyllyService;
+
   /**
    * Määrittää endpointin käyttäjän sisäänkirjautumiselle. Vastaus sisältää käyttäjän ID:n, nimen, roolit ja tokenin, 
    * mitä voi käyttää tunnistautumiseen.
@@ -91,7 +96,7 @@ public class AuthController {
    * @return ResponseEntity-olio, joka sisää käyttäjän ID:n, nimen, roolit ja tokenin.
    */
   @PostMapping("/signin")
-  public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+  public JwtResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getNimi(), loginRequest.getSalasana()));
@@ -104,10 +109,10 @@ public class AuthController {
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
 
-    return ResponseEntity.ok(new JwtResponse(jwt, 
+    return new JwtResponse(jwt, 
                          userDetails.getId(), 
                          userDetails.getUsername(), 
-                         roles));
+                         roles);
   }
 
   /**
@@ -158,7 +163,12 @@ public class AuthController {
     }
 
     user.setRoles(roles);
-    kayttajaRepository.save(user);
+    Kayttaja saved = kayttajaRepository.save(user);
+
+    KirjaHylly hylly = new KirjaHylly();
+    hylly.setOmistaja(saved.getId());
+
+    kirjahyllyService.saveKirjaHylly(hylly);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }

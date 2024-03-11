@@ -1,11 +1,16 @@
 package org.groupt.kirjaarkisto.models;
 import java.sql.Date;
 
+import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
+import org.groupt.kirjaarkisto.services.KirjaService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "kirjakopio")
 public class KirjaKopio {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idkirjakopio")
@@ -42,18 +47,29 @@ public class KirjaKopio {
     @Column(name = "myyntihinta")
     private Double salePrice;
 
-    /*
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "idkirjahylly", referencedColumnName = "idkirjahylly"),
-            @JoinColumn(name = "idkirjasarja", referencedColumnName = "idkirjasarja")
-    })
-    private KirjaHylly bookShelf;
+    @Column(name = "idkirjahylly")
+    private Long idKirjaHylly;
 
-    */
+    @Column(name = "idkirjasarja")
+    private Long idKirjaSarja;
 
     public KirjaKopio() {
         
+    }
+
+    public KirjaKopio(KirjaKopioDTO dto, Kirja kirja, Long idKirjaHylly) {
+      this.title = dto.getNimi();
+      this.editions = dto.getPainos();
+      this.editionYear = dto.getPainosVuosi();
+      this.book = kirja;
+      this.purchasePrice = dto.getMyyntiHinta();
+      this.purchaseDate = dto.getOstoPvm();
+      this.condition = dto.getKunto();
+      this.description = dto.getKuvaus();
+      this.saleDate = dto.getMyyntiPvm();
+      this.salePrice = dto.getMyyntiHinta();
+      this.idKirjaHylly = idKirjaHylly;
+      this.idKirjaSarja = dto.getIdKirjaSarja();
     }
 
     /**
@@ -210,15 +226,31 @@ public class KirjaKopio {
         this.salePrice = salePrice;
     }
 
-    /*
-   
-    public KirjaHylly getBookShelf() {
-        return bookShelf;
+    /**
+     * @return Long return the idKirjaHylly
+     */
+    public Long getIdKirjaHylly() {
+        return idKirjaHylly;
     }
 
-    
-    public void setBookShelf(KirjaHylly bookShelf) {
-        this.bookShelf = bookShelf;
-    } 
-    */
+    /**
+     * @param idKirjaHylly the idKirjaHylly to set
+     */
+    public void setIdKirjaHylly(Long idKirjaHylly) {
+        this.idKirjaHylly = idKirjaHylly;
+    }
+
+    /**
+     * @return Long return the idKirjaSarja
+     */
+    public Long getIdKirjaSarja() {
+        return idKirjaSarja;
+    }
+
+    /**
+     * @param idKirjaSarja the idKirjaSarja to set
+     */
+    public void setIdKirjaSarja(Long idKirjaSarja) {
+        this.idKirjaSarja = idKirjaSarja;
+    }
 }
