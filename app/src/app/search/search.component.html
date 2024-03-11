@@ -1,0 +1,13 @@
+<input type="text" placeholder="Search by title" [(ngModel)]="searchTerm" (input)="filterBooks()">
+
+<ul>
+  <li *ngFor="let book of filteredBooks">
+    <img [src]="book.image_url" alt="Book cover">
+    <div>
+      <h3>{{ book.title }}</h3>
+      <p>Author: {{ book.author }}</p>
+      <p>Published: {{ book.date }}</p>
+      <p>Series: {{ book.series }}</p>
+    </div>
+  </li>
+</ul>

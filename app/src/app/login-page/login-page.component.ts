@@ -44,7 +44,7 @@ export class LoginPageComponent {
       const nimi: string = jsonObject.nimi;
       const type: string = jsonObject.roolit;
       console.log(accessToken); // This will print the access token
-      this.cookieService.set("accessToken",  tokenType + " " + accessToken);
+      this.cookieService.set("accessToken",  accessToken);
       this.cookieService.set("user", nimi);
       this.cookieService.set("roles", type);
     })

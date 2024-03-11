@@ -15,7 +15,7 @@
         <button (click)="show_profile()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75">
             <a href="#" class="p-2 md:p-4 text-black block">Profiili</a>
         </button>
-        <button class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75 border-r-2">
+        <button (click)="show_search()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75 border-r-2">
             <a href="#" class="p-2 md:p-4 text-black block">________ 🔎︎</a>
         </button>
         <button (click)="show_bookdetails()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75">
@@ -38,6 +38,9 @@
             </div>
             <div *ngIf="visible_component === 'books'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-books></app-books>
+            </div>
+            <div *ngIf="visible_component === 'search'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
+                <app-search></app-search>
             </div>
             <div *ngIf="mybooks" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-my-books></app-my-books>
