@@ -14,6 +14,7 @@ import { DataService } from '../data.service';
 
 export class AdminComponent {
 
+  
   chosen_book_id: any;
   remove_book_id: any;
   remove_series_id: any;
