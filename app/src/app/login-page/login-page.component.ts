@@ -39,7 +39,9 @@ export class LoginPageComponent {
       const jsonStr: string = JSON.stringify(response);
       const jsonObject: any = JSON.parse(jsonStr);
       const accessToken: string = jsonObject.accessToken;
+      const tokenType: string = jsonObject.tokenType;
       console.log(accessToken); // This will print the access token
+      this.cookieService.set("accessToken",  tokenType + " " + accessToken);
     })
     this.Landing.emit();
   }
