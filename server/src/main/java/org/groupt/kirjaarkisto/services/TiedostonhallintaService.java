@@ -1,39 +1,33 @@
 package org.groupt.kirjaarkisto.services;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.Paths;
 
 @Service
 public class TiedostonhallintaService {
+private static final String KUVAKANSIO = "kuvat";
 
-    @Value("${kuvat.kansio}")
-    private String kuvatKansio;
+    public static String tallennaKuva(MultipartFile file) throws IOException {
+        String tiedostoNimi = file.getOriginalFilename();
+        Path tallennusPolku = Paths.get(KUVAKANSIO).toAbsolutePath().normalize();
+        Path tallennusTiedosto = tallennusPolku.resolve(tiedostoNimi);
 
-    public String tallennaKuva(MultipartFile file) throws IOException {
-        // luodaan polku
-        Path tallennusPolku = Path.of(kuvatKansio).toAbsolutePath().normalize();
-        Files.createDirectories(tallennusPolku);
+        File tallennusKansio = new File(String.valueOf(tallennusPolku));
+        if (!tallennusKansio.exists()) {
+            tallennusKansio.mkdirs();
+        }
 
-        // nimen generointi
-        String tiedostonimi = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-
-        // tallenna tiedosto
-        Path tallennettuPolku = tallennusPolku.resolve(tiedostonimi).normalize();
-        Files.copy(file.getInputStream(), tallennettuPolku, StandardCopyOption.REPLACE_EXISTING);
-
-        return tiedostonimi;
+        file.transferTo(tallennusTiedosto.toFile());
+        return tiedostoNimi;
     }
+    
+    public void poistaKuva(String tiedostoNimi) throws IOException {
+        Path tallennettuPolku = Paths.get(KUVAKANSIO).resolve(tiedostoNimi).normalize();
 
-    public void poistaKuva(String tiedostonimi) throws IOException {
-
-        Path tallennettuPolku = Path.of(kuvatKansio).resolve(tiedostonimi).normalize();
-
-        // poista tiedosto luodusta polusta, parametrinä poistettavan tiedoston polku
         Files.deleteIfExists(tallennettuPolku);
     }
 }
