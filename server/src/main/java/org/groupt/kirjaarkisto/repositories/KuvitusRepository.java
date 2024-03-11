@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KuvitusRepository extends JpaRepository<Kuvitus, Long> {
- Optional<Kuvitus> findByKirjaAndKuva_Id(Kirja kirja, Long kuvaId);
-    void deleteByKirjaAndKuva_Id(Kirja kirja, Long kuvaId);
+
 }

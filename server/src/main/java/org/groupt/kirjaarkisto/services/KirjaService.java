@@ -86,50 +86,29 @@ public class KirjaService {
       return kirjaRepository.save(kirja);
   }
   //kuvan lisäys metodi
-   public void lisaaKuvaKirjalle(Long kirjaId, String tiedostoNimi, Integer julkaisuvuosi, String taiteilija,
+  @Transactional
+    public void lisaaKuvaKirjalle(Long kirjaId, String tiedostoNimi, Integer julkaisuvuosi, String taiteilija,
                                   String tyyli, String kuvaus, Integer sivunro) {
         Optional<Kirja> kirjaOptional = kirjaRepository.findById(kirjaId);
 
         if (kirjaOptional.isPresent()) {
             Kirja kirja = kirjaOptional.get();
 
-    
             Kuva kuva = new Kuva();
             kuva.setKuvanimi(tiedostoNimi);
             kuva.setJulkaisuvuosi(julkaisuvuosi);
             kuva.setTaiteilija(taiteilija);
             kuva.setTyyli(tyyli);
             kuva.setKuvaus(kuvaus);
-            
-          
+
             Kuva tallennettuKuva = kuvaRepository.save(kuva);
 
-            // Luo uusi kuvitus ja liitä se kirjaan
             Kuvitus kuvitus = new Kuvitus();
             kuvitus.setKirja(kirja);
             kuvitus.setKuva(tallennettuKuva);
             kuvitus.setSivunro(sivunro);
 
-            // Tallenna kuvitus tietokantaan
             kuvitusRepository.save(kuvitus);
-        } else {
-            // Käsittely, kun kirjaa ei löydy
-            throw new EntityNotFoundException("kirjaa ei löydy id:llä " + kirjaId);
-        }
-    }
-    public void poistaKuvaKirjalta(Long kirjaId, Long kuvaId) {
-        Optional<Kirja> kirjaOptional = kirjaRepository.findById(kirjaId);
-    
-        if (kirjaOptional.isPresent()) {
-            Kirja kirja = kirjaOptional.get();
-    
-            Optional<Kuvitus> kuvitusOptional = kuvitusRepository.findByKirjaAndKuva_Id(kirja, kuvaId);
-    
-            if (kuvitusOptional.isPresent()) {
-                kuvitusRepository.deleteByKirjaAndKuva_Id(kirja, kuvaId);
-            } else {
-                throw new EntityNotFoundException("Kuvitusta ei löydy annetulla kirjaId:llä ja kuvaId:llä");
-            }
         } else {
             throw new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId);
         }

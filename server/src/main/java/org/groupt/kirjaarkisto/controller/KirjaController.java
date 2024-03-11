@@ -131,13 +131,4 @@ public ResponseEntity<String> lisaakuvaKirjalle(@PathVariable Long id,
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("virhe tallennettaessa tiedostoa.");
     }
 }
-@DeleteMapping("/{kirjaId}/kuvat/{kuvaId}")
-public ResponseEntity<String> poistaKirjaJaKuva(@PathVariable Long kirjaId, @PathVariable Long kuvaId) {
-    try {
-        kirjaService.poistaKuvaKirjalta(kirjaId, kuvaId);
-        return new ResponseEntity<>("Kirja ja kuva poistettu onnistuneesti", HttpStatus.OK);
-    } catch (Exception e) {
-        return new ResponseEntity<>("Kirjan ja kuvan poistaminen epäonnistui", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-}
 }
