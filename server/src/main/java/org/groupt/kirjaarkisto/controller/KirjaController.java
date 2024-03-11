@@ -8,8 +8,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.micrometer.common.lang.NonNull;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
+import org.groupt.kirjaarkisto.services.KuvaService;
 import org.groupt.kirjaarkisto.services.TiedostonhallintaService;
 import org.groupt.kirjaarkisto.models.Kirja;
+import org.groupt.kirjaarkisto.models.Kuva;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
 
 import java.io.IOException;
@@ -22,6 +24,9 @@ public class KirjaController {
 
     @Autowired
     private KirjaService kirjaService;
+
+    @Autowired
+    private KuvaService kuvaservice;
 
     @Autowired
     private KirjaSarjaService kirjaSarjaService;
@@ -126,4 +131,25 @@ public ResponseEntity<String> lisaakuvaKirjalle(@PathVariable Long id,
     }
 }
 
+  @DeleteMapping("/{id}")
+    public ResponseEntity<String> poistaKuva(@PathVariable Long id) {
+        try {
+            //onko kuvaa olemassa
+            Kuva poistettavaKuva = kuvaservice.getKuvaById(id);
+            if (poistettavaKuva == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            //poista kuva kuvakansiosta
+            tiedostonhallintaService.poistaKuva(poistettavaKuva.getTiedostonimi());
+
+            //poista kuva tietokannasta
+            kuvaservice.poistaKuva(id);
+
+            return ResponseEntity.ok("Kuva poistettu onnistuneesti");
+        } catch (Exception e) {
+            // nönnönnnöö error-handling
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Virhe kuvan poistossa.");
+        }
+    }
 }
