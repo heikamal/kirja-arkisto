@@ -15,6 +15,7 @@ services:
     volumes: 
       - ./app:/usr/src/app
       - node_modules:/usr/src/app/node_modules
+      - kuvat:/usr/src/app/data/kuvat
   server:
     build:
       context: ./server
@@ -64,3 +65,4 @@ services:
 volumes:
   db_data:
   node_modules:
+  kuvat:
