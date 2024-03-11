@@ -11,7 +11,9 @@ import org.groupt.kirjaarkisto.models.Kuva;
 import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
+import org.groupt.kirjaarkisto.repositories.KuvitusRepository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,9 @@ public class KirjaService {
 
     @Autowired
     private KuvaRepository kuvaRepository;
+
+     @Autowired
+    private KuvitusRepository kuvitusRepository;
 
     public List<Kirja> getKirjat() {
         return kirjaRepository.findAll();
@@ -54,7 +59,7 @@ public class KirjaService {
       }
   }
 
-  //vittu tää metodi on ydinjätettä :-D, mut siis joo TODO: parempi virheenkäsittely
+  //kirjan muokkaus.
   @Transactional
   public Kirja editKirja(Long id, Kirja muokattavaKirja) {
       Kirja kirja = kirjaRepository.findById(id)
@@ -82,33 +87,53 @@ public class KirjaService {
 
       return kirjaRepository.save(kirja);
   }
-      public void lisaaKuvaKirjalle(Long kirjaId, String tiedostonimi, Integer julkaisuvuosi, String taiteilija, String tyyli, String kuvaus) {
+  //kuvan lisäys metodi
+   public void lisaaKuvaKirjalle(Long kirjaId, String tiedostoNimi, Integer julkaisuvuosi, String taiteilija,
+                                  String tyyli, String kuvaus, Integer sivunro) {
         Optional<Kirja> kirjaOptional = kirjaRepository.findById(kirjaId);
 
         if (kirjaOptional.isPresent()) {
             Kirja kirja = kirjaOptional.get();
 
+    
             Kuva kuva = new Kuva();
-            kuva.setKuvanimi(tiedostonimi);
+            kuva.setKuvanimi(tiedostoNimi);
             kuva.setJulkaisuvuosi(julkaisuvuosi);
             kuva.setTaiteilija(taiteilija);
             kuva.setTyyli(tyyli);
             kuva.setKuvaus(kuvaus);
-            kuva.setTiedostonimi(tiedostonimi);
+            
+          
+            Kuva tallennettuKuva = kuvaRepository.save(kuva);
 
-            // Tallenna kuva tietokantaan
-            kuva = kuvaRepository.save(kuva);
-
-            // Lisää kuva kirjalle
+            // Luo uusi kuvitus ja liitä se kirjaan
             Kuvitus kuvitus = new Kuvitus();
             kuvitus.setKirja(kirja);
-            kuvitus.setKuva(kuva);
+            kuvitus.setKuva(tallennettuKuva);
+            kuvitus.setSivunro(sivunro);
 
-            kirja.getKuvitukset().add(kuvitus);
-            kirjaRepository.save(kirja);
+            // Tallenna kuvitus tietokantaan
+            kuvitusRepository.save(kuvitus);
         } else {
-            // Kirjaa ei löytynyt
-            throw new EntityNotFoundException("Kirjaa ei löytynyt id:llä " + kirjaId);
+            // Käsittely, kun kirjaa ei löydy
+            throw new EntityNotFoundException("kirjaa ei löydy id:llä " + kirjaId);
+        }
+    }
+    public void poistaKuvaKirjalta(Long kirjaId, Long kuvaId) {
+        Optional<Kirja> kirjaOptional = kirjaRepository.findById(kirjaId);
+    
+        if (kirjaOptional.isPresent()) {
+            Kirja kirja = kirjaOptional.get();
+    
+            Optional<Kuvitus> kuvitusOptional = kuvitusRepository.findByKirjaAndKuva_Id(kirja, kuvaId);
+    
+            if (kuvitusOptional.isPresent()) {
+                kuvitusRepository.deleteByKirjaAndKuva_Id(kirja, kuvaId);
+            } else {
+                throw new EntityNotFoundException("Kuvitusta ei löydy annetulla kirjaId:llä ja kuvaId:llä");
+            }
+        } else {
+            throw new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId);
         }
     }
 }
