@@ -23,5 +23,10 @@ public class KirjaKopioController {
         return kirjakopioService.getKirjakopioById(id);
     }
 
+    @PostMapping
+    public KirjaKopio addKirjaKopio(@RequestBody KirjaKopio kirjakopio) {
+        return kirjakopioService.saveKirjaKopio(kirjakopio);
+    }
+
     // Lisää tarvittavat endpointit (POST, PUT, DELETE) kirjakopioille
 }

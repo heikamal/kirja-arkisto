@@ -20,5 +20,9 @@ public class KirjaKopioService {
         return KirjakopioRepository.findById(id).orElse(null);
     }
 
+    public KirjaKopio saveKirjaKopio(KirjaKopio kirjaKopio){
+        return KirjakopioRepository.save(kirjaKopio);
+    }
+
     // Lisää tarvittavat liiketoimintalogiikkametodit
 }
