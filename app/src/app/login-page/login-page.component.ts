@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { DataService } from '../data.service';
 import { CookieService } from 'ngx-cookie-service';
+import { json } from 'stream/consumers';
 
 
 @Component({
@@ -40,8 +41,12 @@ export class LoginPageComponent {
       const jsonObject: any = JSON.parse(jsonStr);
       const accessToken: string = jsonObject.accessToken;
       const tokenType: string = jsonObject.tokenType;
+      const nimi: string = jsonObject.nimi;
+      const type: string = jsonObject.roolit;
       console.log(accessToken); // This will print the access token
       this.cookieService.set("accessToken",  tokenType + " " + accessToken);
+      this.cookieService.set("user", nimi);
+      this.cookieService.set("roles", type);
     })
     this.Landing.emit();
   }
