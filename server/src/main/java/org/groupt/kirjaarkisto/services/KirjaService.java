@@ -4,17 +4,25 @@ import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.BadIdException;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.groupt.kirjaarkisto.models.Kirja;
+import org.groupt.kirjaarkisto.models.Kuva;
+import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
+import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class KirjaService {
 
     @Autowired
     private KirjaRepository kirjaRepository;
+
+    @Autowired
+    private KuvaRepository kuvaRepository;
 
     public List<Kirja> getKirjat() {
         return kirjaRepository.findAll();
@@ -74,4 +82,33 @@ public class KirjaService {
 
       return kirjaRepository.save(kirja);
   }
+      public void lisaaKuvaKirjalle(Long kirjaId, String tiedostonimi, Integer julkaisuvuosi, String taiteilija, String tyyli, String kuvaus) {
+        Optional<Kirja> kirjaOptional = kirjaRepository.findById(kirjaId);
+
+        if (kirjaOptional.isPresent()) {
+            Kirja kirja = kirjaOptional.get();
+
+            Kuva kuva = new Kuva();
+            kuva.setKuvanimi(tiedostonimi);
+            kuva.setJulkaisuvuosi(julkaisuvuosi);
+            kuva.setTaiteilija(taiteilija);
+            kuva.setTyyli(tyyli);
+            kuva.setKuvaus(kuvaus);
+            kuva.setTiedostonimi(tiedostonimi);
+
+            // Tallenna kuva tietokantaan
+            kuva = kuvaRepository.save(kuva);
+
+            // Lisää kuva kirjalle
+            Kuvitus kuvitus = new Kuvitus();
+            kuvitus.setKirja(kirja);
+            kuvitus.setKuva(kuva);
+
+            kirja.getKuvitukset().add(kuvitus);
+            kirjaRepository.save(kirja);
+        } else {
+            // Kirjaa ei löytynyt
+            throw new EntityNotFoundException("Kirjaa ei löytynyt id:llä " + kirjaId);
+        }
+    }
 }
