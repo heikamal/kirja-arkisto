@@ -2,16 +2,27 @@ package org.groupt.kirjaarkisto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.micrometer.common.lang.NonNull;
+
+import org.groupt.kirjaarkisto.services.KirjaHyllyService;
+import org.groupt.kirjaarkisto.services.KirjaKopioService;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 import org.groupt.kirjaarkisto.models.Kirja;
+import org.groupt.kirjaarkisto.models.KirjaHylly;
+import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
+import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/kirjat")
@@ -23,6 +34,12 @@ public class KirjaController {
     @Autowired
     private KirjaSarjaService kirjaSarjaService;
 
+    @Autowired
+    private KirjaKopioService kirjaKopioService;
+
+    @Autowired
+    private KirjaHyllyService kirjaHyllyService;
+
     @GetMapping
     public List<Kirja> getKirjat() {
         return kirjaService.getKirjat();
@@ -31,6 +48,39 @@ public class KirjaController {
     @GetMapping("/{id}")
     public Kirja getKirja(@PathVariable Long id) {
         return kirjaService.getKirjaById(id);
+    }
+
+    /**
+     * Metodi määrittää endpointin GET-pyynnölle /{id}/owned-osoitteeseen. Metodin on tarkoitus katsoa että onko id:n määrittämän kirja jo valmiiksi kirjautuneen käyttäjän kirjahyllyssä.
+     * Kirjan ID:n metodi saa osoiteparametrinä ja kirjahylly haetaan pyynnön mukana tulevan tokenin perusteella.
+     * 
+     * @param id Kirjan ID kokonaislukuna.
+     * @return Kuvaus, joka sisältää tiedon löytyykö tarkasteltu kirja kirjautuneen käyttäjän kirjahyllystä.
+     */
+    @GetMapping("/{id}/owned")
+    public Map<String, Object> isKirjaOwned(@PathVariable Long id){
+      Map<String, Object> response = new HashMap<>();
+      boolean owned = false;
+
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+    
+      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+      KirjaHylly hylly = kirjaHyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
+
+      List<KirjaKopio> lista = kirjaKopioService.getKirjaKopioByKirja(kirjaService.getKirjaById(id));
+      for (KirjaKopio kopio : lista) {
+        if (Objects.equals(kopio.getIdKirjaHylly(), hylly.getId())) {
+          owned = true;
+          break;
+        }
+      }
+
+      response.put("owned", owned);
+
+      return response;
+      
     }
 
     /**

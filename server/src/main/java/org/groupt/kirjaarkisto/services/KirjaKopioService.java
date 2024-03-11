@@ -2,6 +2,7 @@ package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaKopioException;
+import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
 
@@ -17,7 +18,7 @@ public class KirjaKopioService {
    * Repository, jolla voidaan hallita kirjakopioita tietokannassa.
    */
     @Autowired
-    private KirjaKopioRepository KirjakopioRepository;
+    private KirjaKopioRepository kirjakopioRepository;
 
     /**
      * Palauttaa kaikki tietokannasta löytyvät kirjakopiot.
@@ -25,7 +26,11 @@ public class KirjaKopioService {
      * @return Lista kirjakopioista.
      */
     public List<KirjaKopio> getKirjakopiot() {
-        return KirjakopioRepository.findAll();
+        return kirjakopioRepository.findAll();
+    }
+
+    public List<KirjaKopio> getKirjaKopioByKirja(Kirja kirja) {
+      return kirjakopioRepository.findByBook(kirja);
     }
 
     /**
@@ -35,7 +40,7 @@ public class KirjaKopioService {
      * @return Tietokannasta haettu kirjakopio.
      */
     public KirjaKopio getKirjakopioById(Long id) {
-        KirjaKopio kopio = KirjakopioRepository.findById(id).orElse(null);
+        KirjaKopio kopio = kirjakopioRepository.findById(id).orElse(null);
         if (kopio == null) {
             throw new NonExistingKirjaKopioException("Kirja kopio with ID " + id + " does not exist!");
         }
@@ -49,7 +54,7 @@ public class KirjaKopioService {
      * @return Tallennettu kirjakopio.
      */
     public KirjaKopio saveKirjaKopio(KirjaKopio kirjaKopio){
-        return KirjakopioRepository.save(kirjaKopio);
+        return kirjakopioRepository.save(kirjaKopio);
     }
 
     // Lisää tarvittavat liiketoimintalogiikkametodit
