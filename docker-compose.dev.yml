@@ -1,4 +1,4 @@
-version: '0.1'
+version: '0.3'
 name: kirjaarkisto-dev
 services:
   app:
@@ -28,7 +28,7 @@ services:
       MYSQL_DATABASE: kirjakanta
       ENVIRONMENT_TAG: dev
       SENDREPORT_URI: rofl@copter.lol
-      API_VERSION: 0.1
+      API_VERSION: 0.3
       JWT_SECRET: TamaOnTarkkaanVarjeltuSalaisuusAlaKerroYhtaanKenellekaanEdesAidillesiTaiMorokolliTuleeViemaanEnkaMaVoiEnaaSuaSiinaVaiheessaAuttaa
       JWT_EXPIRATION_MS: 86400000
     ports:
