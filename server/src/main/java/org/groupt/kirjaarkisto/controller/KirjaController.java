@@ -4,26 +4,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.EntityNotFoundException;
-
 import org.springframework.security.core.Authentication;
 import org.groupt.kirjaarkisto.services.KirjaHyllyService;
 import org.groupt.kirjaarkisto.services.KirjaKopioService;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 import org.groupt.kirjaarkisto.services.KuvaService;
-import org.groupt.kirjaarkisto.services.TiedostonhallintaService;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
-import org.groupt.kirjaarkisto.models.Kuva;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
-
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +36,6 @@ public class KirjaController {
 
     @Autowired
     private KirjaSarjaService kirjaSarjaService;
-
-    @Autowired
-    private TiedostonhallintaService tiedostonhallintaService;
 
     @Autowired
     private KirjaHyllyService kirjaHyllyService;
@@ -168,7 +159,7 @@ public class KirjaController {
             @RequestParam("sivunro") Integer sivunro) {
 
         try {
-            kirjaService.lisaaKuvaKirjalle(id, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
+            kuvaservice.lisaaKuvaKirjalle(id, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
             return ResponseEntity.ok("Kuva lisätty onnistuneesti.");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kirjaa ei löydy id:llä " + id);

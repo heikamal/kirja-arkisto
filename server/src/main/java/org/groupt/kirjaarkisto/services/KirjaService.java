@@ -15,7 +15,6 @@ import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvitusRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,27 +95,5 @@ public List<KirjaResponse> getKirjatBySarja(KirjaSarja sarja) {
       }
 
       return kirjaRepository.save(kirja);
-  }
-  //kuvan lisäys metodi
-  @Transactional
-  public void lisaaKuvaKirjalle(Long kirjaId, Integer julkaisuvuosi, String taiteilija,
-                                String tyyli, String kuvaus, Integer sivunro) {
-      Kirja kirja = kirjaRepository.findById(kirjaId)
-              .orElseThrow(() -> new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId));
-
-      Kuva kuva = new Kuva();
-      kuva.setJulkaisuvuosi(julkaisuvuosi);
-      kuva.setTaiteilija(taiteilija);
-      kuva.setTyyli(tyyli);
-      kuva.setKuvaus(kuvaus);
-
-      kuvaRepository.save(kuva);
-
-      Kuvitus kuvitus = new Kuvitus();
-      kuvitus.setKirja(kirja);
-      kuvitus.setKuva(kuva);
-      kuvitus.setSivunro(sivunro);
-
-      kuvitusRepository.save(kuvitus);
   }
 }
