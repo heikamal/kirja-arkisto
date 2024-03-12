@@ -26,7 +26,7 @@ export class CarouselComponent implements OnInit {
           author: bookData.kirjailija,
           date: bookData.julkaisuVuosi,
           series: bookData.jarjestysNro,
-          image_url: "none"
+          image_url: bookData.image_url
         } as Book;
       });
     });
