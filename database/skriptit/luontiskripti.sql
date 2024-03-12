@@ -159,8 +159,8 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirjahylly` (
   CONSTRAINT `fk_kirjahylly_kayttaja`
     FOREIGN KEY (`idkayttaja`)
     REFERENCES `kirjakanta`.`kayttaja` (`idkayttaja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -178,13 +178,13 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`omatsarjat` (
   CONSTRAINT `fk_kirjahylly_has_kirjasarja_kirjahylly1`
     FOREIGN KEY (`idkirjahylly`)
     REFERENCES `kirjakanta`.`kirjahylly` (`idkirjahylly`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_kirjahylly_has_kirjasarja_kirjasarja1`
     FOREIGN KEY (`idkirjasarja`)
     REFERENCES `kirjakanta`.`kirjasarja` (`idkirjasarja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -213,13 +213,13 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirjakopio` (
   CONSTRAINT `fk_kirjakopio_kirja1`
     FOREIGN KEY (`idkirja`)
     REFERENCES `kirjakanta`.`kirja` (`idkirja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_kirjakopio_kirjahylly_has_kirjasarja1`
     FOREIGN KEY (`idkirjahylly` , `idkirjasarja`)
     REFERENCES `kirjakanta`.`omatsarjat` (`idkirjahylly` , `idkirjasarja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -238,8 +238,8 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`valokuva` (
   CONSTRAINT `fk_valokuva_kirjakopio1`
     FOREIGN KEY (`idkirjakopio`)
     REFERENCES `kirjakanta`.`kirjakopio` (`idkirjakopio`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 USE `kirjakanta` ;
