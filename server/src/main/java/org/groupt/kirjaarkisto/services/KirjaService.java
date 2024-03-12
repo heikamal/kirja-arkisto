@@ -74,8 +74,8 @@ public class KirjaService {
       if (muokattavaKirja.getJulkaisuVuosi() != null) {
           kirja.setJulkaisuVuosi(muokattavaKirja.getJulkaisuVuosi());
       }
-      if (muokattavaKirja.getBookSeries() != null) {
-          kirja.setBookSeries(muokattavaKirja.getBookSeries());
+      if (muokattavaKirja.getKirjaSarja() != null) {
+          kirja.setKirjaSarja(muokattavaKirja.getKirjaSarja());
       }
       if (muokattavaKirja.getJarjestysNro() != null) {
           kirja.setJarjestysNro(muokattavaKirja.getJarjestysNro());

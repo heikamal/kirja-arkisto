@@ -4,12 +4,20 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
+import org.groupt.kirjaarkisto.models.KirjaKopio;
+import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.payload.HyllyResponse;
+import org.groupt.kirjaarkisto.payload.KirjaKopioResponse;
+import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.payload.OmaSarjaDTO;
+import org.groupt.kirjaarkisto.payload.SarjaResponse;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import org.groupt.kirjaarkisto.services.KirjaHyllyService;
+import org.groupt.kirjaarkisto.services.KirjaKopioService;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,6 +30,9 @@ public class KirjaHyllyController {
     @Autowired
     private KirjaHyllyService kirjahyllyService;
 
+    @Autowired
+    private KirjaKopioService kirjaKopioService;
+
     @GetMapping
     public List<KirjaHylly> getKirjahyllyt() {
         return kirjahyllyService.getKirjahyllyt();
@@ -33,13 +44,27 @@ public class KirjaHyllyController {
     }
 
     @GetMapping("/self")
-    public KirjaHylly getOwnKirjaHylly() {
+    public HyllyResponse getOwnKirjaHylly() {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
       SecurityContextHolder.getContext().setAuthentication(authentication);
     
       UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-      return kirjahyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
+      KirjaHylly hylly = kirjahyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
+
+      List<SarjaResponse> sarjat = new ArrayList<>();
+
+      for (KirjaSarja sarja : hylly.getOmatSarjat()) {
+        List<KirjaKopio> kopiot = kirjaKopioService.getBySarja(sarja);
+        List<KirjaKopioResponse> kopioResponseList = new ArrayList<>();
+        for (KirjaKopio kopio : kopiot) {
+          kopioResponseList.add(new KirjaKopioResponse(kopio, new KirjaResponse(kopio.getBook())));
+        }
+        SarjaResponse a = new SarjaResponse(sarja, kopioResponseList, true);
+        sarjat.add(a);
+      }
+
+      return new HyllyResponse(hylly, sarjat);
     }
 
     @PostMapping("/self")

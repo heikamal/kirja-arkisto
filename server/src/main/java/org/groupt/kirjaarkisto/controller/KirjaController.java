@@ -98,7 +98,7 @@ public class KirjaController {
       lisattava.setNimi(kirjaDTO.getNimi());
       lisattava.setKirjailija(kirjaDTO.getKirjailija());
       lisattava.setJulkaisuVuosi(kirjaDTO.getJulkaisuVuosi());
-      lisattava.setBookSeries(kirjaSarjaService.getKirjasarjaById(kirjaDTO.getSarja()));
+      lisattava.setKirjaSarja(kirjaSarjaService.getKirjasarjaById(kirjaDTO.getSarja()));
       lisattava.setJarjestysNro(kirjaDTO.getJarjestysNro());
       lisattava.setKuvaus(kirjaDTO.getKuvaus());
 
@@ -140,7 +140,7 @@ public class KirjaController {
     muokattava.setNimi(kirjaDTO.getNimi());
     muokattava.setKirjailija(kirjaDTO.getKirjailija());
     muokattava.setJulkaisuVuosi(kirjaDTO.getJulkaisuVuosi());
-    muokattava.setBookSeries(kirjaSarjaService.getKirjasarjaById(kirjaDTO.getSarja()));
+    muokattava.setKirjaSarja(kirjaSarjaService.getKirjasarjaById(kirjaDTO.getSarja()));
     muokattava.setJarjestysNro(kirjaDTO.getJarjestysNro());
     muokattava.setKuvaus(kirjaDTO.getKuvaus());
 

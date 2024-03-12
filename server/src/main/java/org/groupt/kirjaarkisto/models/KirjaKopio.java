@@ -2,8 +2,6 @@ package org.groupt.kirjaarkisto.models;
 import java.sql.Date;
 
 import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
-import org.groupt.kirjaarkisto.services.KirjaService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.persistence.*;
 
