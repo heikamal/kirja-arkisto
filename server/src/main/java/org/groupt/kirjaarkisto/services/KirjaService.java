@@ -32,10 +32,6 @@ public class KirjaService {
      @Autowired
     private KuvitusRepository kuvitusRepository;
 
-    @Value("${upload.path}")
-    private String uploadPath;
-
-
     public List<Kirja> getKirjat() {
         return kirjaRepository.findAll();
     }
