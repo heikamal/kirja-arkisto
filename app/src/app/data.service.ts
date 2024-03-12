@@ -53,6 +53,13 @@ export class DataService {
     return this.http.get<JSON>(this.series_url, { headers });
   }
 
+  get_series_info(series_id: string): Observable<any> {
+    const accessToken = this.cookieService.get('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    const url = `${this.series_url}/${series_id}`;
+    return this.http.get<JSON>(url, { headers });
+  }
+
   remove_series(series_id: string): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
