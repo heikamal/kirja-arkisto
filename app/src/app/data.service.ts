@@ -17,6 +17,7 @@ export class DataService {
   bookshelf_url = 'http://localhost:8080/api/kirjahyllyt/self';  
   bookcopy_url = 'http://localhost:8080/api/kirjakopiot';  
   photo_url = 'http://localhost:8080/api/id/kuvat';
+  ownership_url = 'http://localhost:8080/api/kirjat'
 
   post_book(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
@@ -102,5 +103,11 @@ export class DataService {
 
   login_user(data: JSON): Observable<JSON> {
     return this.http.post<JSON>(this.login_url, data);
+  }
+  get_ownership(book_id: number): Observable<JSON> {
+    const accessToken = this.cookieService.get('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    const url = `${this.ownership_url}/${book_id}/owned`;
+    return this.http.get<JSON>(url, { headers });
   }
 }
