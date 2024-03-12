@@ -1,23 +1,16 @@
 package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.BadIdException;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
-import org.groupt.kirjaarkisto.models.Kuva;
-import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
-import org.groupt.kirjaarkisto.repositories.KuvaRepository;
-import org.groupt.kirjaarkisto.repositories.KuvitusRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class KirjaService {
@@ -25,11 +18,6 @@ public class KirjaService {
     @Autowired
     private KirjaRepository kirjaRepository;
 
-    @Autowired
-    private KuvaRepository kuvaRepository;
-
-     @Autowired
-    private KuvitusRepository kuvitusRepository;
 
     public List<Kirja> getKirjat() {
         return kirjaRepository.findAll();
