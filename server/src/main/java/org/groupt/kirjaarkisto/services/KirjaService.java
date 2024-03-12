@@ -9,7 +9,6 @@ import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +18,11 @@ public class KirjaService {
     @Autowired
     private KirjaRepository kirjaRepository;
 
+
     public List<Kirja> getKirjat() {
         return kirjaRepository.findAll();
     }
-
-    public List<KirjaResponse> getKirjatBySarja(KirjaSarja sarja) {
+public List<KirjaResponse> getKirjatBySarja(KirjaSarja sarja) {
       List<Kirja> kirjat = kirjaRepository.findByKirjaSarja(sarja);
       List<KirjaResponse> response = new ArrayList<>();
       for (Kirja kirja : kirjat) {
@@ -31,7 +30,6 @@ public class KirjaService {
       }
       return response;
     }
-
     public Kirja getKirjaById(Long id) {
         Kirja kirja = kirjaRepository.findById(id).orElse(null);
         if (kirja != null) {
@@ -58,7 +56,7 @@ public class KirjaService {
       }
   }
 
-  //vittu tää metodi on ydinjätettä :-D, mut siis joo TODO: parempi virheenkäsittely
+  //kirjan muokkaus.
   @Transactional
   public Kirja editKirja(Long id, Kirja muokattavaKirja) {
       Kirja kirja = kirjaRepository.findById(id)
