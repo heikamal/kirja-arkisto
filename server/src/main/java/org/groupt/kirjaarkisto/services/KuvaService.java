@@ -72,5 +72,5 @@ public class KuvaService {
         
                 kuvitusRepository.save(kuvitus);
             }
-}
+    } 
 }

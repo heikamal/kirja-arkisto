@@ -16,6 +16,7 @@ import org.groupt.kirjaarkisto.services.KuvaService;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
+import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import java.net.URI;
@@ -166,5 +167,10 @@ public class KirjaController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Virhe lisättäessä kuvaa.");
         }
+    }
+    @GetMapping("/{id}/kuvitukset")
+    public ResponseEntity<List<Kuvitus>> getKuvituksetByKirja(@PathVariable Kirja kirja) {
+        List<Kuvitus> kuvitukset = kuvaservice.getKuvaByKirja(kirja);
+        return ResponseEntity.ok(kuvitukset);
     }
 }
