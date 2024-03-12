@@ -5,13 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
+import org.groupt.kirjaarkisto.exceptions.UserNotFoundException;
 import org.groupt.kirjaarkisto.models.ERole;
 import org.groupt.kirjaarkisto.models.Kayttaja;
+import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.Role;
 import org.groupt.kirjaarkisto.payload.JwtResponse;
 import org.groupt.kirjaarkisto.payload.LoginRequest;
@@ -21,6 +22,7 @@ import org.groupt.kirjaarkisto.repositories.KayttajaRepository;
 import org.groupt.kirjaarkisto.repositories.RoleRepository;
 import org.groupt.kirjaarkisto.security.jwt.JwtUtils;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
+import org.groupt.kirjaarkisto.services.KirjaHyllyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,7 +32,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +47,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+  static final String ROLE_NOT_FOUND = "Error: Role is not found.";
   /**
    * Olio, joka tarjoaa autentikoinnin metodit.
    */
@@ -73,6 +79,9 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
+  @Autowired
+  KirjaHyllyService kirjahyllyService;
+
   /**
    * Määrittää endpointin käyttäjän sisäänkirjautumiselle. Vastaus sisältää käyttäjän ID:n, nimen, roolit ja tokenin, 
    * mitä voi käyttää tunnistautumiseen.
@@ -87,7 +96,7 @@ public class AuthController {
    * @return ResponseEntity-olio, joka sisää käyttäjän ID:n, nimen, roolit ja tokenin.
    */
   @PostMapping("/signin")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+  public JwtResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getNimi(), loginRequest.getSalasana()));
@@ -100,10 +109,10 @@ public class AuthController {
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
 
-    return ResponseEntity.ok(new JwtResponse(jwt, 
+    return new JwtResponse(jwt, 
                          userDetails.getId(), 
                          userDetails.getUsername(), 
-                         roles));
+                         roles);
   }
 
   /**
@@ -121,7 +130,7 @@ public class AuthController {
    * @return ResponseEntity-olio, joka kertoo onnistuneesta käyttäjän luomisesta.
    */
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+  public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
     if (kayttajaRepository.existsByNimi(signUpRequest.getNimi())) {
       return ResponseEntity
@@ -137,46 +146,98 @@ public class AuthController {
 
     if (strRoles == null) {
       Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
-        switch (role) {
-        case "admin":
+        if ("admin".equals(role)) {
           Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
           roles.add(adminRole);
-
-          break;
-        default:
+        } else {
           Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
           roles.add(userRole);
         }
       });
     }
 
     user.setRoles(roles);
-    kayttajaRepository.save(user);
+    Kayttaja saved = kayttajaRepository.save(user);
+
+    KirjaHylly hylly = new KirjaHylly();
+    hylly.setOmistaja(saved.getId());
+
+    kirjahyllyService.saveKirjaHylly(hylly);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 
   /**
-   * Testiendpointti. Palauttaa pyynnössä mukana tulevan tokenin omistajan nimen.
+   * Endpointti käyttäjän hakemiselle. Hakee pyynnön tokenin omistavan käyttäjän ja vastaa sillä.
    * 
-   * @return Vastaus, joka pitää sisällään satunnaisesti generoidun id:n ja käyttäjänimen.
+   * @return Vastaus, joka sisältää käyttäjän.
    */
-  @GetMapping("/test")
-  public ResponseEntity<?> returnUser() {
+  @GetMapping("/user")
+  public Map<String, Object> returnUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String userName = authentication.getName();
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
+    List<String> roles = userDetails.getAuthorities().stream()
+        .map(item -> item.getAuthority())
+        .collect(Collectors.toList());
+
     Map<String, Object> response = new HashMap<>();
-    response.put("id", UUID.randomUUID().toString());
-    response.put("username", userName);
-    return ResponseEntity.ok(response);
+    
+    response.put("id", userDetails.getId());
+    response.put("nimi", userDetails.getUsername());
+    response.put("rooli", roles);
+    
+    return response;
   }
 
-  //TODO: käyttäjän muokkaaminen
+  @PutMapping("/user/{id}")
+  public Map<String, Object> editUser(@PathVariable(value = "id") Long id, @Valid @RequestBody SignupRequest editRequest) {
+    Map<String, Object> response = new HashMap<>();
+
+    Kayttaja toBeModified = kayttajaRepository.findById(id).orElse(null);
+    if (toBeModified == null) {
+      throw new UserNotFoundException("Käyttäjää ei löytynyt!");
+    }
+    Set<String> strRoles = editRequest.getRooli();
+    Set<ERole> roles = new HashSet<>();
+
+    // Onhan tää nyt vähän spagettia mutta toimii
+    if (editRequest.getNimi() != null) {
+      toBeModified.setNimi(editRequest.getNimi());
+    }
+
+    if (editRequest.getSalasana() != null) {
+      toBeModified.setSalasana(encoder.encode(editRequest.getSalasana()));
+    }
+
+    if (strRoles != null) {
+      strRoles.forEach(role -> {
+        if ("admin".equals(role)) {
+          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+              .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+          roles.add(adminRole.getName());
+        } else {
+          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+              .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+          roles.add(userRole.getName());
+        }
+      });
+    } else {
+      toBeModified.getRoles().forEach(role -> roles.add(role.getName()));
+    }
+
+    kayttajaRepository.save(toBeModified);
+    response.put("id", toBeModified.getId());
+    response.put("nimi", toBeModified.getNimi());
+    response.put("rooli", roles);
+    return response;
+  }
   //TODO: käyttäjän poistaminen
 }

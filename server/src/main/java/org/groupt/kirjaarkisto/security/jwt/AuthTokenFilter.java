@@ -40,7 +40,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   /**
    * Loggeri tulostamaan konsoliin.
    */
-  private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+  private static final Logger loggeri = LoggerFactory.getLogger(AuthTokenFilter.class);
 
   /**
    * Metodi tarkastamaan että pyynnön mukana tuleva tokeni on hyväksytty ja vielä olemassa.
@@ -70,7 +70,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
-      logger.error("Cannot set user authentication: {}", e);
+      loggeri.error("Cannot set user authentication: {}", e);
     }
 
     filterChain.doFilter(request, response);

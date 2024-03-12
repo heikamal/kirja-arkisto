@@ -1,16 +1,57 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Inject } from '@angular/core';
+import { RegisterationComponent } from '../registeration/registeration.component';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { DataService } from '../data.service';
+import { CookieService } from 'ngx-cookie-service';
+import { json } from 'stream/consumers';
+
+
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [],
-  templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.css'
+  imports: [RegisterationComponent, ReactiveFormsModule, CommonModule, FormsModule],
+  providers: [DataService, CookieService],
+  templateUrl: './login-page.component.html'
 })
 export class LoginPageComponent {
-  @Output("kirjautuminen") kirjautuminen: EventEmitter<any> = new EventEmitter();
+  login_form: FormGroup;
+
+
+  constructor(@Inject(FormBuilder) fb: FormBuilder,
+    private dataService: DataService, private cookieService: CookieService
+    
+  ) {
+    this.login_form = fb.group({
+      nimi: ['', Validators.maxLength(45)],
+      salasana: ['', Validators.maxLength(45)],
+    })
+  }
+
+  @Output("Register") Register: EventEmitter<any> = new EventEmitter();
+  @Output("Landing") Landing: EventEmitter<any> = new EventEmitter();
   title = 'login';
 
+  login() {
+    this.dataService.login_user(this.login_form
+  .value).subscribe(response => {
+      console.log('Response:', response);
+      this.cookieService.set("Response", JSON.stringify(response));
+      const jsonStr: string = JSON.stringify(response);
+      const jsonObject: any = JSON.parse(jsonStr);
+      const accessToken: string = jsonObject.accessToken;
+      const tokenType: string = jsonObject.tokenType;
+      const nimi: string = jsonObject.nimi;
+      const type: string = jsonObject.roolit;
+      console.log(accessToken); // This will print the access token
+      this.cookieService.set("accessToken",  accessToken);
+      this.cookieService.set("user", nimi);
+      this.cookieService.set("roles", type);
+    })
+    this.Landing.emit();
+  }
+
   emitToggleEvent() {
-    this.kirjautuminen.emit();
+    this.Register.emit();
   }
 }

@@ -7,11 +7,19 @@ import org.groupt.kirjaarkisto.exceptions.NullKirjaException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.groupt.kirjaarkisto.models.Kirja;
+<<<<<<< HEAD
 import org.groupt.kirjaarkisto.models.Kuva;
 import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvitusRepository;
+=======
+import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.payload.KirjaResponse;
+import org.groupt.kirjaarkisto.repositories.KirjaRepository;
+
+import java.util.ArrayList;
+>>>>>>> landing
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +37,15 @@ public class KirjaService {
 
     public List<Kirja> getKirjat() {
         return kirjaRepository.findAll();
+    }
+
+    public List<KirjaResponse> getKirjatBySarja(KirjaSarja sarja) {
+      List<Kirja> kirjat = kirjaRepository.findByKirjaSarja(sarja);
+      List<KirjaResponse> response = new ArrayList<>();
+      for (Kirja kirja : kirjat) {
+        response.add(new KirjaResponse(kirja));
+      }
+      return response;
     }
 
     public Kirja getKirjaById(Long id) {

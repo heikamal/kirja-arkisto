@@ -35,8 +35,11 @@ public class KirjaSarja {
         private List<Kirja> kirjat;
     */
 
+    /**
+     * Parametritön alustaja
+     */
     public KirjaSarja() {
-        
+        //on tyhjä koska parametritön alustaja ei tee mitään muuta
     }
 
     /**

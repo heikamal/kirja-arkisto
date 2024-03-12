@@ -1,0 +1,12 @@
+<input type="text" placeholder="Search by title" [(ngModel)]="searchTerm" (input)="filterBooks()">
+
+<ul>
+  <li *ngFor="let book of filteredBooks">
+    <div>
+      <br>
+      <p class="underline">{{ book.title }}</p>
+      <p>Author: {{ book.author }}</p>
+      <p>Published: {{ book.date }}</p>
+    </div>
+  </li>
+</ul>

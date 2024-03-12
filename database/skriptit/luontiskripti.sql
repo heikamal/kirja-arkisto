@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kayttaja` (
   `idkayttaja` INT NOT NULL AUTO_INCREMENT,
   `kayttajanimi` VARCHAR(45) NULL,
   `salasana` VARCHAR(120) NULL,
-  `token` VARCHAR(255) NULL,
+  `salt` VARCHAR(255) NULL,
   PRIMARY KEY (`idkayttaja`))
 ENGINE = InnoDB;
 
@@ -100,8 +100,8 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirja` (
   CONSTRAINT `fk_kirja_kirjasarja`
     FOREIGN KEY (`idkirjasarja`)
     REFERENCES `kirjakanta`.`kirjasarja` (`idkirjasarja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -137,13 +137,13 @@ CREATE TABLE IF NOT EXISTS `kirjakanta`.`kuvitus` (
   CONSTRAINT `fk_kuva_has_kirja_kuva1`
     FOREIGN KEY (`idkuva`)
     REFERENCES `kirjakanta`.`kuva` (`idkuva`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_kuva_has_kirja_kirja1`
     FOREIGN KEY (`idkirja`)
     REFERENCES `kirjakanta`.`kirja` (`idkirja`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -154,8 +154,13 @@ DROP TABLE IF EXISTS `kirjakanta`.`kirjahylly` ;
 
 CREATE TABLE IF NOT EXISTS `kirjakanta`.`kirjahylly` (
   `idkirjahylly` INT NOT NULL AUTO_INCREMENT,
-  `omistaja` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idkirjahylly`))
+  `idkayttaja` INT NOT NULL,
+  PRIMARY KEY (`idkirjahylly`),
+  CONSTRAINT `fk_kirjahylly_kayttaja`
+    FOREIGN KEY (`idkayttaja`)
+    REFERENCES `kirjakanta`.`kayttaja` (`idkayttaja`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -258,7 +263,7 @@ USE `kirjakanta`;
 CREATE  OR REPLACE VIEW `omat_kirjasarjat` AS
 SELECT
 	idkirjahylly,
-	omistaja,
+	idkayttaja,
     idkirjasarja
 FROM
 	kirjahylly
