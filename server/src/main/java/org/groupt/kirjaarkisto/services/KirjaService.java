@@ -24,7 +24,7 @@ public class KirjaService {
     @Autowired
     private KuvaRepository kuvaRepository;
 
-     @Autowired
+    @Autowired
     private KuvitusRepository kuvitusRepository;
 
     public List<Kirja> getKirjat() {
