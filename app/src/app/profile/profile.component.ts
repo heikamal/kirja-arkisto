@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MyProfileComponent } from '../my-profile/my-profile.component';
 import { MyBooksComponent } from '../my-books/my-books.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-profile',
@@ -10,6 +11,13 @@ import { MyBooksComponent } from '../my-books/my-books.component';
 })
 
 export class ProfileComponent {
+  username: any;
+
+  constructor(private cookieService: CookieService) {}
+
+  ngOnInit() {
+    this.username = this.cookieService.get('user');
+  }
   @Output("myprofile") my_profile: EventEmitter<any> = new EventEmitter();
 @Output("mybooks") my_books: EventEmitter<any> = new EventEmitter();
   show_my_profile() {
