@@ -4,10 +4,10 @@
             <img src="../../assets/example/example_02.jpg">
         </div>
         <div> 
-            <p>kirjan nimi:</p>
-            <p>kirjailija: </p>
-            <p>vuosi: </p>
-            <p>sarja: </p>
+            <p>kirjan nimi: {{ title }}</p>
+            <p>kirjailija: {{ author }} </p>
+            <p>vuosi: {{ date }}  </p>
+            <p>sarja: {{ series }} </p> 
             <button class="bg-neutral-800  text-amber-500 font-bold py-2 px-4 rounded inline-flex items-center border border-amber-500 ">
                 <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <rect x="7" y="0" width="6" height="20"/>
@@ -17,6 +17,6 @@
             </div>
     </div>
     <div class="flex-1 bg-neutral-800">
-        <p>kirjan kuvaus:  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>kirjan kuvaus: {{description }} </p>
     </div>
 </div>
