@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaKopioException;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
+import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
 
 import java.util.List;
@@ -55,6 +56,10 @@ public class KirjaKopioService {
      */
     public KirjaKopio saveKirjaKopio(KirjaKopio kirjaKopio){
         return kirjakopioRepository.save(kirjaKopio);
+    }
+
+    public List<KirjaKopio> getBySarja(KirjaSarja sarja) {
+        return kirjakopioRepository.findByIdKirjaSarja(sarja.getId());
     }
 
     // Lisää tarvittavat liiketoimintalogiikkametodit

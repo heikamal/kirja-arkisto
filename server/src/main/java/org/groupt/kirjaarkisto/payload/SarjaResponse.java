@@ -17,6 +17,8 @@ public class SarjaResponse {
 
   private List<KirjaResponse> kirjat;
 
+  private List<KirjaKopioResponse> kopiot;
+
   public SarjaResponse() {}
 
   /**
@@ -32,6 +34,15 @@ public class SarjaResponse {
     this.kuvaus = sarja.getKuvaus();
     this.luokittelu = sarja.getLuokittelu();
     this.kirjat = kirjat;
+  }
+
+  public SarjaResponse(KirjaSarja sarja, List<KirjaKopioResponse> kopiot, boolean mummokytkin){
+    this.id = sarja.getId();
+    this.title = sarja.getTitle();
+    this.kustantaja = sarja.getKustantaja();
+    this.kuvaus = sarja.getKuvaus();
+    this.luokittelu = sarja.getLuokittelu();
+    this.kopiot = kopiot;
   }
 
 
@@ -81,6 +92,14 @@ public class SarjaResponse {
 
   public void setKirjat(List<KirjaResponse> kirjat) {
     this.kirjat = kirjat;
+  }
+
+  public List<KirjaKopioResponse> getKopiot() {
+    return this.kopiot;
+  }
+
+  public void setKopiot(List<KirjaKopioResponse> kopiot) {
+    this.kopiot = kopiot;
   }
 
 
