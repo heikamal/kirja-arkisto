@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
-import { Book } from '../book';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
