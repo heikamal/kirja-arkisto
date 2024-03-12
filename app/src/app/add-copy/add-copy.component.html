@@ -1,0 +1,45 @@
+<div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
+  <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl">
+    <form [formGroup]="copy_form" (ngSubmit)="on_submit()" style="display: grid; gap: 1rem;">
+      <div style="display: flex; justify-content: space-between;">
+        <label for="painos" style="align-self: center;">Painos (Edition):</label>
+        <input type="number" id="painos" formControlName="painos" required class="text-black" style="text-align: right;">
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <label for="painosVuosi" style="align-self: center;">Painos vuosi (Edition Year):</label>
+        <input type="number" id="painosVuosi" formControlName="painosVuosi" required class="text-black" style="text-align: right;">
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <label for="ostoHinta" style="align-self: center;">Osto hinta (Purchase Price):</label>
+        <input type="number" id="ostoHinta" formControlName="ostoHinta" step="0.01" required class="text-black" style="text-align: right;">
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <label for="ostoPvm" style="align-self: center;">Osto päivämäärä (Purchase Date):</label>
+        <input type="date" id="ostoPvm" formControlName="ostoPvm" required class="text-black" style="text-align: right;">
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <label for="kunto" style="align-self: center;">Kunto (Condition):</label>
+        <select id="kunto" formControlName="kunto" required class="text-black" style="text-align: right;">
+          <option value="5">K5 - Uusi</option>
+          <option value="4">K4 - Uudenveroinen</option>
+          <option value="3">K3 - Hyvä</option>
+          <option value="2">K2 - Tyydyttävä</option>
+          <option value="1">K1 - Kehno</option>
+        </select>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <label for="kuvaus" style="align-self: center;">Kuvaus (Description):</label>
+        <textarea id="kuvaus" formControlName="kuvaus" required class="text-black" style="text-align: right;"></textarea>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <label for="myyntiPvm" style="align-self: center;">Myynti päivämäärä (Sale Date):</label>
+        <input type="date" id="myyntiPvm" formControlName="myyntiPvm" class="text-black" style="text-align: right;">
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <label for="myyntiHinta" style="align-self: center;">Myynti hinta (Sale Price):</label>
+        <input type="number" id="myyntiHinta" formControlName="myyntiHinta" step="0.01" class="text-black" style="text-align: right;">
+      </div>
+      <button type="submit" style="margin-top: 1rem;">Lisää kopio</button>
+    </form>
+  </div>
+</div>

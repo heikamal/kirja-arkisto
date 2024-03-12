@@ -1,4 +1,5 @@
 package org.groupt.kirjaarkisto.models;
+import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
@@ -28,6 +29,9 @@ public class Kirja {
     @Column(name = "kuvaus")
     private String kuvaus;
 
+    @OneToMany(mappedBy = "kirja", cascade = CascadeType.ALL)
+    private List<Kuvitus> kuvitukset;
+
     public Kirja() {
 
     }
@@ -42,7 +46,7 @@ public class Kirja {
       this.nimi = og.getNimi();
       this.kirjailija = og.getKirjailija();
       this.julkaisuVuosi = og.getJulkaisuVuosi();
-      this.kirjaSarja = og.getBookSeries();
+      this.kirjaSarja = og.getKirjaSarja();
       this.jarjestysNro = og.getJarjestysNro();
       this.kuvaus = og.kuvaus;
     }
@@ -92,15 +96,8 @@ public class Kirja {
     /**
      * @return kirjasarja return the bookSeries
      */
-    public KirjaSarja getBookSeries() {
+    public KirjaSarja getKirjaSarja() {
         return kirjaSarja;
-    }
-
-    /**
-     * @param bookSeries the bookSeries to set
-     */
-    public void setBookSeries(KirjaSarja bookSeries) {
-        this.kirjaSarja = bookSeries;
     }
 
     /**
@@ -154,11 +151,31 @@ public class Kirja {
       ", title='" + getNimi() + "'" +
       ", kirjailija='" + getKirjailija() + "'" +
       ", julkaisuVuosi='" + getJulkaisuVuosi() + "'" +
-      ", kirjasarja='" + getBookSeries() + "'" +
+      ", kirjasarja='" + getKirjaSarja() + "'" +
       ", jarjestysNro='" + getJarjestysNro() + "'" +
       ", kuvaus='" + getKuvaus() + "'" +
       "}";
   }
 
+    /**
+     * @param kirjaSarja the kirjaSarja to set
+     */
+    public void setKirjaSarja(KirjaSarja kirjaSarja) {
+        this.kirjaSarja = kirjaSarja;
+    }
+
+    /**
+     * @return List<Kuvitus> return the kuvitukset
+     */
+    public List<Kuvitus> getKuvitukset() {
+        return kuvitukset;
+    }
+
+    /**
+     * @param kuvitukset the kuvitukset to set
+     */
+    public void setKuvitukset(List<Kuvitus> kuvitukset) {
+        this.kuvitukset = kuvitukset;
+    }
 
 }

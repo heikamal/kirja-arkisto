@@ -1,0 +1,21 @@
+<div class="text-center overflow-x-auto">
+  <div class="flex flex-col items-center bg-nerd-50 rounded-md mt-4 p-4">
+    <div class="flex overflow-x-auto">
+      <ng-container *ngFor="let book of books">
+        <div class="flex flex-col items-center bg-nerd-50 rounded-md mt-4 flex-shrink-0 relative">
+          <div class="relative group">
+            <img *ngIf="!book.image_url" src="../../assets/miscellaneous/cover_not_available.png" [alt]="book.title"
+              class="max-h-48 md:max-h-64 p-2 hover:brightness-75" (click)="show_book_details(book.id)">
+            <img *ngIf="book.image_url" [src]="book.image_url" [alt]="book.title"
+              class="max-h-48 md:max-h-64 p-2 hover:brightness-75" (click)="show_book_details(book.id)">
+            <div
+              class="absolute top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 text-white p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex justify-center items-center cursor-pointer"
+              (click)="show_book_details(book.id)">
+              <p>{{ book.title }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

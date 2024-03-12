@@ -1,5 +1,4 @@
 package org.groupt.kirjaarkisto.models;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -22,8 +21,24 @@ public class KirjaSarja {
     @Column
     private String luokittelu;
 
+
+    //vittu poista tää :D
+    /** 
+    * @OneToMany(mappedBy = "kirjasarja", cascade = CascadeType.ALL)
+        private List<Kirja> kirjat;
+    */
+   
+    //vittu poista tää :D
+    /** 
+    * @OneToMany(mappedBy = "kirjasarja", cascade = CascadeType.ALL)
+        private List<Kirja> kirjat;
+    */
+
+    /**
+     * Parametritön alustaja
+     */
     public KirjaSarja() {
-        
+        //on tyhjä koska parametritön alustaja ei tee mitään muuta
     }
 
     /**

@@ -1,0 +1,21 @@
+<div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
+    <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl">
+        <div class="relative">
+            <img *ngIf="!image_url" src="../../assets/miscellaneous/cover_not_available.png" class="max-h-96 p-2">
+            <img *ngIf="image_url" [src]="image_url" class="max-h-96 p-2">
+            <p *ngIf="owned" class="absolute bottom-0 right-0 text-xs bg-green-500 text-white px-1 rounded">OWNED</p>
+        </div>
+        <div class="md:flex md:justify-between">
+            <div class="text-center md:text-left md:w-1/2">
+                <p>Kirjan nimi: {{ title }}</p>
+                <p>Kirjailija: {{ author }}</p>
+                <p>Vuosi: {{ date }}</p>
+                <p>Sarja: {{ series_name }}</p>
+                <p>Kirjan kuvaus: {{ description }}</p>
+            </div>
+            <div class="mt-4 md:mt-0 md:w-1/2">
+                <button *ngIf="!owned" (click)="add_copy()" class="bg-gray-800 text-amber-500 font-bold py-2 px-4 rounded inline-flex items-center border border-amber-500">Add a copy</button>
+            </div>
+        </div>
+    </div>
+</div>

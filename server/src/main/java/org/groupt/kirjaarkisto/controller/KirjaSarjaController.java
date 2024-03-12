@@ -4,12 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.persistence.EntityNotFoundException;
-
+import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.payload.KirjaResponse;
+import org.groupt.kirjaarkisto.payload.SarjaResponse;
+
 import java.util.List;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
+import org.groupt.kirjaarkisto.services.KirjaService;
 
 @RestController
 @RequestMapping("/api/kirjasarjat")
@@ -18,32 +20,31 @@ public class KirjaSarjaController {
     @Autowired
     private KirjaSarjaService kirjaSarjaService;
 
+    @Autowired
+    private KirjaService kirjaService;
+
     /**
      * Metodi määrittämään GET-endpointti, joka palauttaa kaikki tietokannasta löytyvät kirjasarjat.
      * 
-     * @return ResponseEntity, joka sisältää kaikki kirjasarjat listana.
+     * @return Kaikki tietokannasta löytyvät kirjasarjat listana.
      */
     @GetMapping(path = "")
-    public ResponseEntity<List<KirjaSarja>> getAllSarja(){
-        return new ResponseEntity<>(kirjaSarjaService.getKirjasarjat(), HttpStatus.OK);
+    public List<KirjaSarja> getAllSarja(){
+        return kirjaSarjaService.getKirjasarjat();
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<?> addNewSarja(@NonNull @RequestBody KirjaSarja sarja){
-        KirjaSarja response = null;
-        try {
-            response = kirjaSarjaService.saveKirjaSarja(sarja);
-            //TODO: Parempi virheenkäsittely
-        } catch (IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-
+    public KirjaSarja addNewSarja(@NonNull @RequestBody KirjaSarja sarja){
+      return kirjaSarjaService.saveKirjaSarja(sarja);
     }
 
     @GetMapping("/{id}")
-    public KirjaSarja getSarja(@PathVariable Long id) {
-        return kirjaSarjaService.getKirjasarjaById(id);
+    public SarjaResponse getSarja(@PathVariable Long id) {
+        KirjaSarja sarja = kirjaSarjaService.getKirjasarjaById(id);
+
+        List<KirjaResponse> kirjat = kirjaService.getKirjatBySarja(sarja);
+
+        return new SarjaResponse(sarja, kirjat);
     }
 
     /**
@@ -67,24 +68,14 @@ public class KirjaSarjaController {
      * @return       ResponseEntity joka sisältää tietokantaan päivitetyn kirjasarjan tai virheen jos tiedoissa oli jotakin vialla.
      */
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updateSarja(@PathVariable(value = "id") Long id, @RequestBody KirjaSarja sarja) {
-        KirjaSarja toBeModified = null;
-        KirjaSarja response = null;
-        // TODO: Parempi validointi
-        try{
-            toBeModified = kirjaSarjaService.getKirjasarjaById(id);
-        } catch (EntityNotFoundException e){
-            return new ResponseEntity<>("Invalid area ID!", HttpStatus.NOT_FOUND);
-        }
+    public KirjaSarja updateSarja(@PathVariable(value = "id") Long id, @RequestBody KirjaSarja sarja) {
+        KirjaSarja toBeModified = kirjaSarjaService.getKirjasarjaById(id);
+        
         toBeModified.setTitle(sarja.getTitle());
         toBeModified.setKustantaja(sarja.getKustantaja());
         toBeModified.setKuvaus(sarja.getKuvaus());
         toBeModified.setLuokittelu(sarja.getLuokittelu());
-        try {
-            response = kirjaSarjaService.saveKirjaSarja(toBeModified);
-        } catch (IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        
+        return kirjaSarjaService.saveKirjaSarja(toBeModified);
     }
 }

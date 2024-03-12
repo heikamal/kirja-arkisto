@@ -2,6 +2,8 @@ package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaSarjaException;
+import org.groupt.kirjaarkisto.exceptions.NullKirjaSarjaException;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import java.util.List;
 import org.groupt.kirjaarkisto.repositories.KirjaSarjaRepository;
@@ -16,8 +18,20 @@ public class KirjaSarjaService {
         return kirjaSarjaRepository.findAll();
     }
 
+    /**
+     * Palauttaa kirjasarjan, joka haetaan tietokannasta annetun ID-numeron perusteella. Jos kirjasarjaa ei ole, heittää virheen. Ei tule palauttamaan tyhjää kirjasarjaa.
+     *
+     * @param id Haetun kirjasarjan ID kokonaislukuna.
+     * @return Haettu kirjasarja.
+     * @throws NonExistingKirjaSarjaException Jos kirjasarjaa ei ole
+     */
     public KirjaSarja getKirjasarjaById(Long id) {
-        return kirjaSarjaRepository.findById(id).orElse(null);
+      KirjaSarja sarja = kirjaSarjaRepository.findById(id).orElse(null);
+      if (sarja != null) {
+        return sarja;
+      } else {
+        throw new NonExistingKirjaSarjaException("Kirjasarja with ID " + id + " does not exist!");
+      }
     }
 
     /**
@@ -26,11 +40,11 @@ public class KirjaSarjaService {
      * @param sarja tallennettava kirjasarja
      * @return Tallennettu kirjasarja.
      */
-    public KirjaSarja saveKirjaSarja(@NonNull KirjaSarja sarja) {
+    public KirjaSarja saveKirjaSarja(KirjaSarja sarja) {
       try {
         return kirjaSarjaRepository.save(sarja);
       } catch (IllegalArgumentException e) {
-        throw new IllegalArgumentException("Invalid input parameters!");
+        throw new NullKirjaSarjaException("Tietokantaan menevä olio tyhjä. Tarkista parametrit!");
       }
     }
 
@@ -40,6 +54,10 @@ public class KirjaSarjaService {
      * @param id Poistettavan kirjasarjan ID kokonaislukuna.
      */
     public void removeKirjaSarja(@NonNull Long id) {
+      try {
         kirjaSarjaRepository.deleteById(id);
+      } catch (IllegalArgumentException e) {
+        throw new NonExistingKirjaSarjaException("Kirjasarja with ID " + id + " does not exist!");
+      } 
     }
 }

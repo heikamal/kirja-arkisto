@@ -14,10 +14,14 @@ import { DataService } from '../data.service';
 
 export class AdminComponent {
 
+  
+  chosen_book_id: any;
   remove_book_id: any;
+  remove_series_id: any;
   book_form: FormGroup;
   series_form: FormGroup;
   book_data: any;
+  single_book_data: any;
   series_data: any;
   constructor(@Inject(FormBuilder) fb: FormBuilder,
     private dataService: DataService
@@ -40,18 +44,22 @@ export class AdminComponent {
     });
   }
   remove_book() {
-    // Call the service method to remove the book by its ID
     this.dataService.remove_book(this.remove_book_id).subscribe(() => {
-      // Assuming the removal was successful, you may want to update the fetched data
-      this.show_book();
+      this.show_books();
     }, error => {
       console.error('Error occurred while removing book:', error);
     });
   }
-  show_book() {
-    this.dataService.get_book().subscribe(response => {
+  show_books() {
+    this.dataService.get_books().subscribe(response => {
       this.book_data = response;
       console.log('Fetched Data:', this.book_data);
+    })
+  }
+  show_book() {
+    this.dataService.get_book(this.chosen_book_id).subscribe(response => {
+      this.single_book_data = response;
+      console.log('Fetched Data:', this.single_book_data);
     })
   }
   submit_book() {
@@ -77,5 +85,12 @@ export class AdminComponent {
     } (error: HttpErrorResponse) => {
       console.error('Error:', error);
     }
+  }
+  remove_series() {
+    this.dataService.remove_series(this.remove_series_id).subscribe(() => {
+      this.show_series();
+    }, error => {
+      console.error('Error occurred while removing book:', error);
+    });
   }
 }
