@@ -34,5 +34,11 @@ export class BookDetailsComponent implements OnInit {
       this.series_number = jsonObject.kirjaSarja;
       this.description = jsonObject.kuvaus;
     });
+
+    this.dataService.get_series_info(this.chosen_book).subscribe((response: any[]) => {
+      const jsonStr: string = JSON.stringify(response);
+      const jsonObject: any = JSON.parse(jsonStr);
+      this.series = jsonObject.title;
+    });
   }
 }
