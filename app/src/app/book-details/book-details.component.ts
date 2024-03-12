@@ -18,6 +18,7 @@ export class BookDetailsComponent implements OnInit {
   description: any;
   series_name: any;
   chosen_book: any;
+  image_url: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { bookId: number}, private dataService: DataService) {
     this.chosen_book = data.bookId;
@@ -32,6 +33,7 @@ export class BookDetailsComponent implements OnInit {
       this.date = jsonObject.julkaisuVuosi;
       this.series_name = jsonObject.kirjaSarja.title;
       this.description = jsonObject.kuvaus;
+      this.image_url = jsonObject.image_url;
     });
   }
 }
