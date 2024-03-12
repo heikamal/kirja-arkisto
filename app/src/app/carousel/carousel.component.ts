@@ -32,7 +32,7 @@ export class CarouselComponent implements OnInit {
     });
   }
 
-  showBookId(bookId: number) {
+  show_book_details(bookId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = { bookId };
     const dialogRef = this.dialog.open(BookDetailsComponent, dialogConfig);
