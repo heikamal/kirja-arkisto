@@ -99,40 +99,24 @@ public List<KirjaResponse> getKirjatBySarja(KirjaSarja sarja) {
   }
   //kuvan lisäys metodi
   @Transactional
-    public void lisaaKuvaKirjalle(Long kirjaId, String tiedostoNimi, Integer julkaisuvuosi, String taiteilija,
-                                  String tyyli, String kuvaus, Integer sivunro) {
-        Optional<Kirja> kirjaOptional = kirjaRepository.findById(kirjaId);
+  public void lisaaKuvaKirjalle(Long kirjaId, Integer julkaisuvuosi, String taiteilija,
+                                String tyyli, String kuvaus, Integer sivunro) {
+      Kirja kirja = kirjaRepository.findById(kirjaId)
+              .orElseThrow(() -> new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId));
 
-        if (kirjaOptional.isPresent()) {
-            Kirja kirja = kirjaOptional.get();
+      Kuva kuva = new Kuva();
+      kuva.setJulkaisuvuosi(julkaisuvuosi);
+      kuva.setTaiteilija(taiteilija);
+      kuva.setTyyli(tyyli);
+      kuva.setKuvaus(kuvaus);
 
-            Kuva kuva = new Kuva();
-            kuva.setKuvanimi(tiedostoNimi);
-            kuva.setJulkaisuvuosi(julkaisuvuosi);
-            kuva.setTaiteilija(taiteilija);
-            kuva.setTyyli(tyyli);
-            kuva.setKuvaus(kuvaus);
+      kuvaRepository.save(kuva);
 
-            Kuva tallennettuKuva = kuvaRepository.save(kuva);
+      Kuvitus kuvitus = new Kuvitus();
+      kuvitus.setKirja(kirja);
+      kuvitus.setKuva(kuva);
+      kuvitus.setSivunro(sivunro);
 
-            Kuvitus kuvitus = new Kuvitus();
-            kuvitus.setKirja(kirja);
-            kuvitus.setKuva(tallennettuKuva);
-            kuvitus.setSivunro(sivunro);
-
-            kuvitusRepository.save(kuvitus);
-        } else {
-            throw new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId);
-        }
-    }
-    public void poistaKuvitusKuvasta(Long kuvitusId) {
-      Optional<Kuvitus> kuvitusOptional = kuvitusRepository.findById(kuvitusId);
-
-      if (kuvitusOptional.isPresent()) {
-          Kuvitus kuvitus = kuvitusOptional.get();
-          kuvitusRepository.delete(kuvitus);
-      } else {
-          throw new EntityNotFoundException("kuvitusta ei löydy id:llä " + kuvitusId);
-      }
+      kuvitusRepository.save(kuvitus);
   }
 }

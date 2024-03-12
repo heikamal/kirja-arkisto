@@ -2,21 +2,33 @@ package org.groupt.kirjaarkisto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.security.core.Authentication;
+import org.groupt.kirjaarkisto.services.KirjaHyllyService;
+import org.groupt.kirjaarkisto.services.KirjaKopioService;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 import org.groupt.kirjaarkisto.services.KuvaService;
 import org.groupt.kirjaarkisto.services.TiedostonhallintaService;
 import org.groupt.kirjaarkisto.models.Kirja;
+import org.groupt.kirjaarkisto.models.KirjaHylly;
+import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.Kuva;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
+import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/kirjat")
@@ -34,6 +46,12 @@ public class KirjaController {
     @Autowired
     private TiedostonhallintaService tiedostonhallintaService;
 
+    @Autowired
+    private KirjaHyllyService kirjaHyllyService;
+
+    @Autowired
+    private KirjaKopioService kirjaKopioService;
+
     @GetMapping
     public List<Kirja> getKirjat() {
         return kirjaService.getKirjat();
@@ -43,7 +61,38 @@ public class KirjaController {
     public Kirja getKirja(@PathVariable Long id) {
         return kirjaService.getKirjaById(id);
     }
+    /**
+     * Metodi määrittää endpointin GET-pyynnölle /{id}/owned-osoitteeseen. Metodin on tarkoitus katsoa että onko id:n määrittämän kirja jo valmiiksi kirjautuneen käyttäjän kirjahyllyssä.
+     * Kirjan ID:n metodi saa osoiteparametrinä ja kirjahylly haetaan pyynnön mukana tulevan tokenin perusteella.
+     * 
+     * @param id Kirjan ID kokonaislukuna.
+     * @return Kuvaus, joka sisältää tiedon löytyykö tarkasteltu kirja kirjautuneen käyttäjän kirjahyllystä.
+     */
+    @GetMapping("/{id}/owned")
+    public Map<String, Object> isKirjaOwned(@PathVariable Long id){
+      Map<String, Object> response = new HashMap<>();
+      boolean owned = false;
 
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+    
+      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+      KirjaHylly hylly = kirjaHyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
+
+      List<KirjaKopio> lista = kirjaKopioService.getKirjaKopioByKirja(kirjaService.getKirjaById(id));
+      for (KirjaKopio kopio : lista) {
+        if (Objects.equals(kopio.getIdKirjaHylly(), hylly.getId())) {
+          owned = true;
+          break;
+        }
+      }
+
+      response.put("owned", owned);
+
+      return response;
+      
+    }
     /**
      * Metodi määrittää endpointin POST-pyynnöille /api/kirjat-osoitteeseen. Ottaa parametreinaan KirjaDTO-olion, 
      * joka muodostuu pyynnön rungosta ja tämän pohjalta luo tietokantaan lisättävän kirjan olion. 
@@ -110,25 +159,21 @@ public class KirjaController {
     return ResponseEntity.ok(muokattuKirja);
 }
 @PostMapping("/{id}/kuvat")
-public ResponseEntity<String> lisaakuvaKirjalle(@PathVariable Long id,
-                                                @RequestParam("file") MultipartFile file,
-                                                @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
-                                                @RequestParam("taiteilija") String taiteilija,
-                                                @RequestParam("tyyli") String tyyli,
-                                                @RequestParam("kuvaus") String kuvaus,
-                                                @RequestParam("sivunro") Integer sivunro) {
-    try {
-       
-        String tiedostoNimi = TiedostonhallintaService.tallennaKuva(file);
+    public ResponseEntity<String> lisaakuvaKirjalle(
+            @PathVariable Long id,
+            @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
+            @RequestParam("taiteilija") String taiteilija,
+            @RequestParam("tyyli") String tyyli,
+            @RequestParam("kuvaus") String kuvaus,
+            @RequestParam("sivunro") Integer sivunro) {
 
-        
-        kirjaService.lisaaKuvaKirjalle(id, tiedostoNimi, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
-
-        
-        return ResponseEntity.ok(tiedostoNimi);
-    } catch (IOException e) {
-        
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("virhe tallennettaessa tiedostoa.");
+        try {
+            kirjaService.lisaaKuvaKirjalle(id, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
+            return ResponseEntity.ok("Kuva lisätty onnistuneesti.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kirjaa ei löydy id:llä " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Virhe lisättäessä kuvaa.");
+        }
     }
-}
 }
