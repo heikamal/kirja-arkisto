@@ -68,12 +68,6 @@ export class LandingComponent {
     this.myprofile = true;
     this.mybooks = false;
   }
-  show_bookdetails() {
-    event?.preventDefault();
-    this.visible_component = 'bookdetails'
-    this.mybooks = false;
-    this.myprofile = false;
-  }
   show_search() {
     event?.preventDefault();
     this.visible_component = 'search'

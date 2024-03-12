@@ -15,13 +15,5 @@ import { LoginPageComponent } from '../login-page/login-page.component';
 })
 
 
-export class InitialLandingComponent implements OnInit {
-
-  
-  painaus() {
-    
-  }
-  ngOnInit(): void {
-    
-  }
+export class InitialLandingComponent  {
 }
