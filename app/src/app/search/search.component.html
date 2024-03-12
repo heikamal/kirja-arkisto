@@ -4,7 +4,9 @@
   <li *ngFor="let book of filteredBooks">
     <div>
       <br>
-      <p class="underline">{{ book.title }}</p>
+      <p class="underline">
+        <a href="javascript:void(0)" (click)="showBookDetails(book.id)">{{ book.title }}</a>
+      </p>
       <p>Author: {{ book.author }}</p>
       <p>Published: {{ book.date }}</p>
     </div>

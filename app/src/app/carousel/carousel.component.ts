@@ -29,16 +29,12 @@ export class CarouselComponent implements OnInit {
           image_url: "none"
         } as Book;
       });
-      console.log(this.books);
     });
   }
 
   showBookId(bookId: number) {
     const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.width = '4/5';
     dialogConfig.data = { bookId };
-
     const dialogRef = this.dialog.open(BookDetailsComponent, dialogConfig);
   }
 }

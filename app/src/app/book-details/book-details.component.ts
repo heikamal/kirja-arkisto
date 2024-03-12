@@ -16,10 +16,10 @@ export class BookDetailsComponent implements OnInit {
   date: any;
   series: any;
   description: any;
-  series_number: any;
+  series_name: any;
   chosen_book: any;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { bookId: number }, private dataService: DataService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { bookId: number}, private dataService: DataService) {
     this.chosen_book = data.bookId;
   }
 
@@ -30,14 +30,8 @@ export class BookDetailsComponent implements OnInit {
       this.title = jsonObject.nimi;
       this.author = jsonObject.kirjailija;
       this.date = jsonObject.julkaisuVuosi;
-      this.series_number = jsonObject.kirjaSarja;
+      this.series_name = jsonObject.kirjaSarja.title;
       this.description = jsonObject.kuvaus;
-    });
-
-    this.dataService.get_series_info(this.chosen_book).subscribe((response: any[]) => {
-      const jsonStr: string = JSON.stringify(response);
-      const jsonObject: any = JSON.parse(jsonStr);
-      this.series = jsonObject.title;
     });
   }
 }
