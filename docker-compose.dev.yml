@@ -29,7 +29,7 @@ services:
       SENDREPORT_URI: rofl@copter.lol
       API_VERSION: 0.3
       JWT_SECRET: TamaOnTarkkaanVarjeltuSalaisuusAlaKerroYhtaanKenellekaanEdesAidillesiTaiMorokolliTuleeViemaanEnkaMaVoiEnaaSuaSiinaVaiheessaAuttaa
-      JWT_EXPIRATION_MS: 86400000
+      JWT_EXPIRATION_MS: 3600000
       API_ADMIN_PASSWORD: salasana
     ports:
       - '8080:8080'
