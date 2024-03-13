@@ -30,6 +30,7 @@ services:
       API_VERSION: 0.3
       JWT_SECRET: TamaOnTarkkaanVarjeltuSalaisuusAlaKerroYhtaanKenellekaanEdesAidillesiTaiMorokolliTuleeViemaanEnkaMaVoiEnaaSuaSiinaVaiheessaAuttaa
       JWT_EXPIRATION_MS: 86400000
+      API_ADMIN_PASSWORD: salasana
     ports:
       - '8080:8080'
       - '8000:8000'

@@ -16,7 +16,7 @@ public class Kayttaja {
    * Käyttäjän ID. Kokonaisnumero, joka toimii tietokannassa pääavaimena. Arvo määräytyy tietokannan mukaan.
    */
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "idkayttaja")
   private Long id;
 
