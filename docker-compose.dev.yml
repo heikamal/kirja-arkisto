@@ -52,8 +52,8 @@ services:
       MYSQL_DATABASE: kirjakanta
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: userpass
-    ports:
-      - '3306:3306'
+#    ports:
+#      - '3306:3306'
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
