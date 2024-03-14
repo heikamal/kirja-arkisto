@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.3.0
+    volumes:
+      - db_data:/var/lib/mysql
+    cap_add:
+      - SYS_NICE
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: kirjakanta
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD_FILE: /run/secrets/db_user_password
+    secrets:
+      - db_root_password
+      - db_user_password
+
+secrets:
+  db_root_password:
+    external: true
+  db_user_password:
+    external: true
+
+volumes:
+  db_data:
