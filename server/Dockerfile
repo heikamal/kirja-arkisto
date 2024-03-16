@@ -7,7 +7,7 @@ RUN ./mvnw dependency:resolve
 COPY src ./src
 
 FROM base AS build
-RUN ./mvnw package
+RUN ./mvnw clean install
 
 FROM amazoncorretto:21-alpine-jdk AS production
 EXPOSE 8080
