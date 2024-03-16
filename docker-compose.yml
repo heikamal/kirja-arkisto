@@ -15,7 +15,7 @@ services:
       - db_user_password
   server:
     image: heikamal/kirjaarkistoserver
-    entrypoint: "/bin/sh -c 'MYSQL_HOST=database MYSQL_USER=dbuser MYSQL_PASSWORD=`cat /run/secrets/db_user_password` MYSQL_DATABASE=kirjakanta ENVIRONMENT_TAG=dev SENDREPORT_URI=rofl@copter.lol API_VERSION=1.0 JWT_SECRET=`cat /run/secrets/jwt_secret` JWT_EXPIRATION_MS=3600000 API_ADMIN_PASSWORD_FILE=`cat /run/secrets/api_admin_password` java -Djava.security.egd=file:/dev/./urandom -jar /kirjaarkisto.jar'"
+    entrypoint: "/bin/sh -c 'MYSQL_HOST=database MYSQL_USER=dbuser MYSQL_PASSWORD=`cat /run/secrets/db_user_password` MYSQL_DATABASE=kirjakanta ENVIRONMENT_TAG=dev SENDREPORT_URI=rofl@copter.lol API_VERSION=1.0 JWT_SECRET=`cat /run/secrets/jwt_secret` JWT_EXPIRATION_MS=3600000 API_ADMIN_PASSWORD=`cat /run/secrets/api_admin_password` java -Djava.security.egd=file:/dev/./urandom -jar /kirjaarkisto.jar'"
     environment:
       MYSQL_HOST: database
       MYSQL_USER: dbuser
