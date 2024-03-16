@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
+import org.groupt.kirjaarkisto.exceptions.BadUserCredentialsException;
 import org.groupt.kirjaarkisto.exceptions.UserNotFoundException;
 import org.groupt.kirjaarkisto.models.ERole;
 import org.groupt.kirjaarkisto.models.Kayttaja;
@@ -29,6 +30,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -99,10 +101,13 @@ public class AuthController {
    */
   @PostMapping("/signin")
   public JwtResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-    Authentication authentication = authenticationManager.authenticate(
+    Authentication authentication = null;
+    try {
+      authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getNimi(), loginRequest.getSalasana()));
-
+    } catch (AuthenticationException e) {
+      throw new BadUserCredentialsException("Kirjautuminen ei onnistunut!");
+    }
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
     
