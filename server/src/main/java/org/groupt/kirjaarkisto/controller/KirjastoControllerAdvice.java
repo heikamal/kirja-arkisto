@@ -4,9 +4,11 @@ import org.groupt.kirjaarkisto.controller.errors.KirjaArkistoAppError;
 import org.groupt.kirjaarkisto.exceptions.BadIdException;
 import org.groupt.kirjaarkisto.exceptions.BadUserCredentialsException;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaException;
+import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaHyllyException;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaKopioException;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaSarjaException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaException;
+import org.groupt.kirjaarkisto.exceptions.NullKirjaHyllyException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaKopioException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaSarjaException;
 import org.groupt.kirjaarkisto.exceptions.UserNotFoundException;
@@ -66,9 +68,25 @@ public class KirjastoControllerAdvice {
     final KirjaArkistoAppError error = new KirjaArkistoAppError(
       currentApiVersion,
       Integer.toString(HttpStatus.NOT_FOUND.value()), 
-      "Kirjaa ei käytynyt!",
+      "Kirjaa ei löydy!",
       "kirja-exceptions", 
-      "Kirjaa ei käytynyt.",
+      "Kirjaa ei löydy.",
+      "Not found!",
+      sendReportUri
+    );
+
+    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(NonExistingKirjaHyllyException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseEntity<KirjaArkistoAppError> handleNonExistingKirjaHylly() {
+    final KirjaArkistoAppError error = new KirjaArkistoAppError(
+      currentApiVersion,
+      Integer.toString(HttpStatus.NOT_FOUND.value()), 
+      "Kirjahyllya ei löydy!",
+      "kirjahylly-exceptions", 
+      "Haettua kirjahyllyä ei löydy tietokannasta. Käyttäjä voi olla admin tai id ei palauta tietokannasta hyllyä.",
       "Not found!",
       sendReportUri
     );
@@ -82,9 +100,9 @@ public class KirjastoControllerAdvice {
     final KirjaArkistoAppError error = new KirjaArkistoAppError(
       currentApiVersion,
       Integer.toString(HttpStatus.NOT_FOUND.value()), 
-      "Kirja kopioa ei käytynyt!",
+      "Kirjan kopio ei löydy.",
       "kirjakopio-exceptions", 
-      "Kirja kopioa ei käytynyt.",
+      "Kirjasta ei kopiota. Onko kirja varmasti hyllyssä?",
       "Not found!",
       sendReportUri
     );
@@ -117,6 +135,22 @@ public class KirjastoControllerAdvice {
       "Kirjaa on tyhjä kenttiä! Tarkista parametrit",
       "kirja-exceptions", 
       "Kirjaa tyhjä kenttiä.",
+      "Bad request!",
+      sendReportUri
+    );
+
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(NullKirjaHyllyException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<KirjaArkistoAppError> handleNullKirjaHylly() {
+    final KirjaArkistoAppError error = new KirjaArkistoAppError(
+      currentApiVersion,
+      Integer.toString(HttpStatus.BAD_REQUEST.value()), 
+      "Kirjahyllyllä on tyhjä kenttiä! Tarkista parametrit",
+      "kirjahylly-exceptions", 
+      "Kirjahyllyä ei voitu tallentaa tietokantaan.",
       "Bad request!",
       sendReportUri
     );
@@ -162,9 +196,9 @@ public class KirjastoControllerAdvice {
     final KirjaArkistoAppError error = new KirjaArkistoAppError(
       currentApiVersion,
       Integer.toString(HttpStatus.NOT_FOUND.value()), 
-      "Käyttäjäa ei käytynyt!",
+      "Käyttäjäa ei löytynyt!",
       "user-exceptions", 
-      "Käyttäjäa ei käytynyt.",
+      "Käyttäjäa ei ole tietokannassa",
       "Not found!",
       sendReportUri
     );
