@@ -1,4 +1,9 @@
 services:
+  app:
+    image: heikamal/kirjaarkistoapp
+    entrypoint: ["nginx", "-g", "daemon off;"]
+    ports:
+      - '80:80'
   database:
     image: mysql:8.3.0
     volumes:
