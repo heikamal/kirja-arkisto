@@ -28,7 +28,7 @@
                 <app-initial-landing></app-initial-landing>
             </div>
             <div *ngIf="visible_component === 'profile'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
-                <app-profile (myprofile) = 'show_my_profile()' (mybooks)= 'show_my_books()'></app-profile>
+                <app-profile></app-profile>
             </div>
             <div *ngIf="visible_component === 'series'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-series></app-series>
@@ -41,12 +41,6 @@
             </div>
             <div *ngIf="visible_component === 'search'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-search></app-search>
-            </div>
-            <div *ngIf="mybooks" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
-                <app-my-books></app-my-books>
-            </div>
-            <div *ngIf="myprofile" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
-                <app-my-profile></app-my-profile>
             </div>
             <div *ngIf="visible_component === 'photo'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-photo></app-photo>

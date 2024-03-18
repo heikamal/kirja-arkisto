@@ -1,7 +1,8 @@
+// book-details.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { response } from 'express';
 import { AddCopyComponent } from '../add-copy/add-copy.component';
 
@@ -24,8 +25,12 @@ export class BookDetailsComponent implements OnInit {
   image_url: any;
   owned: any;
 
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { bookId: number}, private dataService: DataService, private dialog: MatDialog) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { bookId: number},
+    private dataService: DataService,
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<BookDetailsComponent>
+  ) {
     this.chosen_book = data.bookId;
   }
 
@@ -54,5 +59,7 @@ export class BookDetailsComponent implements OnInit {
       data: { bookId: this.chosen_book, book_title: this.title, series_id: this.series_id}
     });
   }
-  
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
 }

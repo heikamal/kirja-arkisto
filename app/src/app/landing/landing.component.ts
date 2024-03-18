@@ -23,63 +23,34 @@ export class LandingComponent {
   visible_component: string = 'initial';
   is_admin: boolean = true;
 
-  mybooks: boolean = false;
-  myprofile: boolean = false;
-
 
   show_profile() {
     event?.preventDefault();
     this.visible_component = 'profile'
-    this.mybooks = false;
-    this.myprofile = false;
   }
 
   show_series() {
     event?.preventDefault();
     this.visible_component = 'series'
-    this.mybooks = false;
-    this.myprofile = false;
   }
   show_admin() {
     event?.preventDefault();
     this.visible_component = 'admin'
-    this.mybooks = false;
-    this.myprofile = false;
   }
   show_initial() {
     event?.preventDefault();
     this.visible_component = 'initial'
-    this.mybooks = false;
-    this.myprofile = false;
   }
   show_books() {
     event?.preventDefault();
     this.visible_component = 'books'
-    this.mybooks = false;
-    this.myprofile = false;
-  }
-
-  show_my_profile() {
-    this.visible_component = 'landing'
-    this.mybooks = true;
-    this.myprofile = false;
-  }
-  show_my_books() {
-    this.visible_component = 'landing'
-    this.myprofile = true;
-    this.mybooks = false;
   }
   show_search() {
     event?.preventDefault();
     this.visible_component = 'search'
-    this.mybooks = false;
-    this.myprofile = false;
   }
   show_photo() {
     event?.preventDefault();
     this.visible_component = 'photo'
-    this.mybooks = false;
-    this.myprofile = false;
   }
-
 }

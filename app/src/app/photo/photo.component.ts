@@ -9,7 +9,8 @@ import { DataService } from '../data.service';
 @Component({
   selector: 'app-photo',
   standalone: true,
-  imports: [DataService],
+  imports: [],
+  providers: [DataService],
   templateUrl: './photo.component.html',
   styleUrl: './photo.component.css'
 })
