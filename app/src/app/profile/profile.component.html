@@ -1,14 +1,15 @@
 <div class="flex flex-col items-center">
+    <div class="flex max-w-sm items-center bg-nerd-50 rounded-md hover:brightness-75 ml-2" (click)="show_my_profile()">
+        <p class="self-center m-2 md:m-4">{{ username }}</p>
+    </div>
     <div class="flex-1 flex justify-between">
-        <div class="flex max-w-sm items-center bg-nerd-50 rounded-md hover:brightness-75 ml-2" (click)="show_my_profile()">
-            <img src="../../assets/user/profile.jpg" alt="profiilikuva" class="max-h-24 aspect-square p-2">
-            <p class="self-center m-2 md:m-4">{{ username }}</p>
+        <div class="flex items-center ml-2">
+            <p class="text-left whitespace-no-wrap underline hover:brightness-75"
+                [class.underline]="subcomponent === 'my_series'">Omat Sarjat</p>
         </div>
         <div class="flex items-center ml-2">
-            <p class="text-left whitespace-no-wrap underline hover:brightness-75">Omat Sarjat</p>
-        </div>
-        <div class="flex items-center ml-2">
-            <p class="text-left whitespace-no-wrap underline hover:brightness-75" (click)="show_my_books()">Omat Kirjat
+            <p class="text-left whitespace-no-wrap underline hover:brightness-75"
+                [class.underline]="subcomponent === 'my_books'" (click)="show_my_books()">Omat Kirjat
             </p>
         </div>
     </div>
