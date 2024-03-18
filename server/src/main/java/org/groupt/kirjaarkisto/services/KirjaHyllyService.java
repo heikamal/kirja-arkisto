@@ -1,6 +1,8 @@
 package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaHyllyException;
+import org.groupt.kirjaarkisto.exceptions.NullKirjaHyllyException;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.repositories.KirjaHyllyRepository;
 
@@ -34,7 +36,12 @@ public class KirjaHyllyService {
      * @return Kirjahyllyn id:n perusteella oleva kirjahylly.
      */
     public KirjaHylly getKirjahyllyById(Long id) {
-        return KirjahyllyRepository.findById(id).orElse(null);
+        KirjaHylly hylly = KirjahyllyRepository.findById(id).orElse(null);
+        if (hylly == null) {
+          throw new NonExistingKirjaHyllyException("Kirjahyllya ei loydy.");
+        }
+
+        return hylly;
     }
 
     /**
@@ -44,7 +51,12 @@ public class KirjaHyllyService {
      * @return Kirjahyllyn omistajan id:n perusteella oleva kirjahylly.
      */
     public KirjaHylly getKirjaHyllyByOmistaja(Long omistaja) {
-        return KirjahyllyRepository.findByOmistaja(omistaja);
+        KirjaHylly hylly = KirjahyllyRepository.findByOmistaja(omistaja).orElse(null);
+        if (hylly == null) {
+          throw new NonExistingKirjaHyllyException("Käyttäjällä ei kirjahyllyä. Oletko admin?");
+        }
+
+        return hylly;
     }
 
     /**
@@ -55,7 +67,11 @@ public class KirjaHyllyService {
      * @return Tallennettu kirjahylly.
      */
     public KirjaHylly saveKirjaHylly(KirjaHylly kirjahylly) {
+      try {
         return KirjahyllyRepository.save(kirjahylly);
+      } catch (IllegalArgumentException e) {
+        throw new NullKirjaHyllyException("Annettu kirjahylly tyhjä. Tarkasta parametrit.");
+      }
     }
 
     // Lisää tarvittavat liiketoimintalogiikkametodit

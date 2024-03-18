@@ -10,6 +10,4 @@ RUN npm install
 
 EXPOSE 4200 49153
 
-RUN mkdir -p /usr/src/app/data/kuvat
-
 CMD ["ng", "serve", "--host", "0.0.0.0", "--poll", "500"]
