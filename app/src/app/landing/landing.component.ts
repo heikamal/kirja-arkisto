@@ -9,11 +9,12 @@ import { MyBooksComponent } from '../my-books/my-books.component';
 import { MyProfileComponent } from '../my-profile/my-profile.component';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 import { SearchComponent } from '../search/search.component';
-
+import { PhotoComponent } from '../photo/photo.component';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [InitialLandingComponent,ProfileComponent,SeriesComponent,BooksComponent,AdminComponent,CommonModule, MyBooksComponent, MyProfileComponent, BookDetailsComponent, SearchComponent],
+  imports: [InitialLandingComponent,ProfileComponent,SeriesComponent,BooksComponent,AdminComponent,CommonModule, 
+    MyBooksComponent, MyProfileComponent, BookDetailsComponent, SearchComponent, PhotoComponent],
   templateUrl: './landing.component.html',
 })
 
@@ -71,6 +72,12 @@ export class LandingComponent {
   show_search() {
     event?.preventDefault();
     this.visible_component = 'search'
+    this.mybooks = false;
+    this.myprofile = false;
+  }
+  show_photo() {
+    event?.preventDefault();
+    this.visible_component = 'photo'
     this.mybooks = false;
     this.myprofile = false;
   }

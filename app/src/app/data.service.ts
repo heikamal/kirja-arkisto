@@ -16,7 +16,7 @@ export class DataService {
   login_url = 'http://localhost:8080/api/auth/signin';  
   bookshelf_url = 'http://localhost:8080/api/kirjahyllyt/self';  
   bookcopy_url = 'http://localhost:8080/api/kirjakopiot';  
-  photo_url = 'http://localhost:8080/api/id/kuvat';
+  photo_url = 'http://localhost:8080/api/kirjat/kuvat';
   ownership_url = 'http://localhost:8080/api/kirjat'
 
   post_book(data: JSON): Observable<JSON> {

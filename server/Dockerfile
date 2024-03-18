@@ -1,4 +1,4 @@
-FROM amazoncorretto:21-alpine-jdk AS base
+FROM amazoncorretto:21-alpine-jdk as base
 WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
@@ -6,12 +6,8 @@ RUN chmod +x ./mvnw
 RUN ./mvnw dependency:resolve
 COPY src ./src
 
-
-FROM base AS development
-CMD ["./mvnw", "-Pprod", "spring-boot:run", "-Dspring-boot.run.profiles=mysql", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
-
 FROM base AS build
-RUN ./mvnw package
+RUN ./mvnw clean install
 
 FROM amazoncorretto:21-alpine-jdk AS production
 EXPOSE 8080
