@@ -1,4 +1,4 @@
-version: '0.3'
+version: '0.4'
 name: kirjaarkisto-dev
 services:
   app:
@@ -15,7 +15,6 @@ services:
     volumes: 
       - ./app:/usr/src/app
       - node_modules:/usr/src/app/node_modules
-      - kuvat:/usr/src/app/data/kuvat
   server:
     build:
       context: ./server
@@ -28,9 +27,10 @@ services:
       MYSQL_DATABASE: kirjakanta
       ENVIRONMENT_TAG: dev
       SENDREPORT_URI: rofl@copter.lol
-      API_VERSION: 0.3
+      API_VERSION: 0.4
       JWT_SECRET: TamaOnTarkkaanVarjeltuSalaisuusAlaKerroYhtaanKenellekaanEdesAidillesiTaiMorokolliTuleeViemaanEnkaMaVoiEnaaSuaSiinaVaiheessaAuttaa
-      JWT_EXPIRATION_MS: 86400000
+      JWT_EXPIRATION_MS: 3600000
+      API_ADMIN_PASSWORD: salasana
     ports:
       - '8080:8080'
       - '8000:8000'
@@ -52,11 +52,10 @@ services:
       MYSQL_DATABASE: kirjakanta
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: userpass
-    ports:
-      - '3306:3306'
+#    ports:
+#      - '3306:3306'
     volumes:
       - db_data:/var/lib/mysql
-      - ./database/skriptit/luontiskripti.sql:/docker-entrypoint-initdb.d/luontiskripti.sql
     healthcheck:
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       timeout: 20s
@@ -65,4 +64,3 @@ services:
 volumes:
   db_data:
   node_modules:
-  kuvat:
