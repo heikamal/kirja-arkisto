@@ -9,6 +9,9 @@ import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 import org.groupt.kirjaarkisto.repositories.KuvitusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import io.jsonwebtoken.io.IOException;
+import org.groupt.kirjaarkisto.services.TiedostonhallintaService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -24,6 +27,11 @@ public class KuvaService {
   @Autowired
   private KuvitusRepository kuvitusRepository;
 
+
+  @Autowired
+  private TiedostonhallintaService tiedostonhallintaservice;
+
+
     public Kuva getKuvaById(Long id) {
         return kuvaRepository.findById(id).orElse(null);
     }
@@ -36,41 +44,39 @@ public class KuvaService {
       return kuvitusRepository.findByKirja(kirja);
     }
      //kuvan lisäys metodi
-  @Transactional
-  public void lisaaKuvaKirjalle(Long kirjaId, Integer julkaisuvuosi, String taiteilija,
-                                String tyyli, String kuvaus, Integer sivunro) {
-                                  
+     @Transactional
+     public void lisaaKuvaKirjalle(Long kirjaId, MultipartFile tiedosto, Integer julkaisuvuosi, String taiteilija,
+         String tyyli, String kuvaus, Integer sivunro) {
+
       Kirja kirja = kirjaRepository.findById(kirjaId)
-              .orElseThrow(() -> new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId));
-              
-              List<Kuvitus> kirjanKuvitukset = getKuvaByKirja(kirja);
-              
-              if (kirjanKuvitukset.isEmpty()) {
-                // Lisää kuva ja kuvitus vain, jos kirjalla ei ole vielä kuvaa
-                Kuva kuva = new Kuva();
-                kuva.setJulkaisuvuosi(julkaisuvuosi);
-                kuva.setTaiteilija(taiteilija);
-                kuva.setTyyli(tyyli);
-                kuva.setKuvaus(kuvaus);
-        
-                kuvaRepository.save(kuva);
-        
-                Kuvitus kuvitus = new Kuvitus();
-                kuvitus.setKirja(kirja);
-                kuvitus.setKuva(kuva);
-                kuvitus.setSivunro(sivunro);
-        
-                kuvitusRepository.save(kuvitus);
-            } else {
-                // Lisää kuvitus vain, jos kirjalla on jo yksi kuva
-                Kuva ensimmainenKuva = kirjanKuvitukset.get(0).getKuva();
-        
-                Kuvitus kuvitus = new Kuvitus();
-                kuvitus.setKirja(kirja);
-                kuvitus.setKuva(ensimmainenKuva);
-                kuvitus.setSivunro(sivunro);
-        
-                kuvitusRepository.save(kuvitus);
-            }
-    } 
+        .orElseThrow(() -> new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId));
+
+       String tiedostoNimi = tiedostonhallintaservice.tallennaKuva(tiedosto);
+       
+       // Luo kuvaolio ja tallenna tiedostonimi tietokantaan
+       Kuva kuva = new Kuva();
+       kuva.setJulkaisuvuosi(julkaisuvuosi);
+       kuva.setTaiteilija(taiteilija);
+       kuva.setTyyli(tyyli);
+       kuva.setKuvaus(kuvaus);
+       kuva.setTiedostonimi(tiedostoNimi); // Tallennetaan tiedostonimi tietokantaan
+
+       kuvaRepository.save(kuva);
+
+       // Luo kuvitusolio ja tallenna tietokantaan
+       Kuvitus kuvitus = new Kuvitus();
+       kuvitus.setKirja(kirja);
+       kuvitus.setKuva(kuva);
+       kuvitus.setSivunro(sivunro);
+
+       kuvitusRepository.save(kuvitus);
+     }
+  
+     @Transactional
+     public void poistaKuvaKirjalta(Long kirjaId, Long kuvaId) {
+         Kuva kuva = kuvaRepository.findById(kuvaId)
+                 .orElseThrow(() -> new EntityNotFoundException("Kuvaa ei löydy id:llä " + kuvaId));
+ 
+          //TODO  Poista kuva kirjalta
+     }
 }

@@ -1,8 +1,6 @@
 package org.groupt.kirjaarkisto.models;
 import java.sql.Date;
-
 import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
-
 import jakarta.persistence.*;
 
 @Entity
