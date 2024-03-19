@@ -1,4 +1,5 @@
 package org.groupt.kirjaarkisto.services;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaKopioException;
@@ -18,49 +19,54 @@ public class KirjaKopioService {
   /**
    * Repository, jolla voidaan hallita kirjakopioita tietokannassa.
    */
-    @Autowired
-    private KirjaKopioRepository kirjakopioRepository;
+  @Autowired
+  private KirjaKopioRepository kirjakopioRepository;
 
-    /**
-     * Palauttaa kaikki tietokannasta löytyvät kirjakopiot.
-     * 
-     * @return Lista kirjakopioista.
-     */
-    public List<KirjaKopio> getKirjakopiot() {
-        return kirjakopioRepository.findAll();
+  /**
+   * Palauttaa kaikki tietokannasta löytyvät kirjakopiot.
+   * 
+   * @return Lista kirjakopioista.
+   */
+  public List<KirjaKopio> getKirjakopiot() {
+    return kirjakopioRepository.findAll();
+  }
+
+  public List<KirjaKopio> getKirjaKopioByKirja(Kirja kirja) {
+    return kirjakopioRepository.findByBook(kirja);
+  }
+
+  /**
+   * Palauttaa kirjakopion, joka vastaa annettua ID:ta.
+   * 
+   * @param id Kirjakopion ID
+   * @return Tietokannasta haettu kirjakopio.
+   */
+  public KirjaKopio getKirjakopioById(Long id) {
+    KirjaKopio kopio = kirjakopioRepository.findById(id).orElse(null);
+    if (kopio == null) {
+      throw new NonExistingKirjaKopioException("Kirja kopio with ID " + id + " does not exist!");
     }
+    return kopio;
+  }
 
-    public List<KirjaKopio> getKirjaKopioByKirja(Kirja kirja) {
-      return kirjakopioRepository.findByBook(kirja);
-    }
+  /**
+   * Tallentaa kirjakopion tietokantaan. Käyttää repositoryn save-metodia, joka
+   * ylikirjoittaa olemassa olevan kopion.
+   *
+   * @param kirjaKopio tallennettavat kirjakopio.
+   * @return Tallennettu kirjakopio.
+   */
+  public KirjaKopio saveKirjaKopio(KirjaKopio kirjaKopio) {
+    return kirjakopioRepository.save(kirjaKopio);
+  }
 
-    /**
-     * Palauttaa kirjakopion, joka vastaa annettua ID:ta.
-     * 
-     * @param id Kirjakopion ID
-     * @return Tietokannasta haettu kirjakopio.
-     */
-    public KirjaKopio getKirjakopioById(Long id) {
-        KirjaKopio kopio = kirjakopioRepository.findById(id).orElse(null);
-        if (kopio == null) {
-            throw new NonExistingKirjaKopioException("Kirja kopio with ID " + id + " does not exist!");
-        }
-        return kopio;
-    }
+  public List<KirjaKopio> getBySarja(KirjaSarja sarja) {
+    return kirjakopioRepository.findByIdKirjaSarja(sarja.getId());
+  }
 
-    /**
-     * Tallentaa kirjakopion tietokantaan. Käyttää repositoryn save-metodia, joka ylikirjoittaa olemassa olevan kopion.
-     *
-     * @param kirjaKopio tallennettavat kirjakopio.
-     * @return Tallennettu kirjakopio.
-     */
-    public KirjaKopio saveKirjaKopio(KirjaKopio kirjaKopio){
-        return kirjakopioRepository.save(kirjaKopio);
-    }
+  public void remove(KirjaKopio kopio) {
+    kirjakopioRepository.delete(kopio);
+  }
 
-    public List<KirjaKopio> getBySarja(KirjaSarja sarja) {
-        return kirjakopioRepository.findByIdKirjaSarja(sarja.getId());
-    }
-
-    // Lisää tarvittavat liiketoimintalogiikkametodit
+  // Lisää tarvittavat liiketoimintalogiikkametodit
 }
