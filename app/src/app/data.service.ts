@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from './book';
 import { CookieService } from 'ngx-cookie-service';
+import { Series } from './series';
 
 @Injectable({
   providedIn: 'root'
@@ -77,10 +78,10 @@ export class DataService {
     return this.http.post<JSON>(this.series_url, data, { headers });
   }
 
-  get_series(): Observable<JSON> {
+  get_series(): Observable<Series[]> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-    return this.http.get<JSON>(this.series_url, { headers });
+    return this.http.get<Series[]>(this.series_url, { headers });
   }
 
   get_series_info(series_id: string): Observable<any> {
