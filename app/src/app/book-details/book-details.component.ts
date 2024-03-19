@@ -1,9 +1,7 @@
-// book-details.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { response } from 'express';
 import { AddCopyComponent } from '../add-copy/add-copy.component';
 
 @Component({
@@ -24,6 +22,7 @@ export class BookDetailsComponent implements OnInit {
   chosen_book: any;
   image_url: any;
   owned: any;
+  show_full_description: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { bookId: number},
@@ -51,6 +50,10 @@ export class BookDetailsComponent implements OnInit {
       const jsonObject: any = JSON.parse(jsonStr);
       this.owned = jsonObject.owned;
     });
+  }
+
+  toggle_description(): void {
+    this.show_full_description = !this.show_full_description;
   }
   
   add_copy(): void {

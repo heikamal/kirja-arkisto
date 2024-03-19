@@ -25,53 +25,48 @@ export class DataService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<JSON>(this.book_url, data, { headers });
   }
-
   post_book_copy(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<JSON>(this.bookcopy_url, data, { headers });
   }
-
   post_photo(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<JSON>(this.photo_url, data, { headers });
   }
-
-
   get_books(): Observable<Book[]>{
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.get<Book[]>(this.book_url, { headers });
   }
-
   get_book(book_id: string): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     const url = `${this.book_url}/${book_id}`;
     return this.http.get<JSON>(url, { headers });
   }
-  
   get_photo(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<JSON>(this.photo_url, data, { headers });
   }
-  
-
   get_bookshelf(): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.get<JSON>(this.bookshelf_url, { headers });
   }
-
+  post_series_to_bookshelf(data: JSON): Observable<JSON> {
+    const accessToken = this.cookieService.get('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    return this.http.post<JSON>(this.bookshelf_url, data, { headers });
+  }
   remove_book(book_id: string): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     const url = `${this.book_url}/${book_id}`;
     return this.http.delete<any>(url, { headers });
   }
-
   post_series(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
@@ -83,25 +78,21 @@ export class DataService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.get<Series[]>(this.series_url, { headers });
   }
-
   get_series_info(series_id: string): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     const url = `${this.series_url}/${series_id}`;
     return this.http.get<JSON>(url, { headers });
   }
-
   remove_series(series_id: string): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     const url = `${this.series_url}/${series_id}`;
     return this.http.delete<any>(url, { headers });
   }
-
   register_user(data: JSON): Observable<JSON> {
     return this.http.post<JSON>(this.registeration_url, data);
   }
-
   login_user(data: JSON): Observable<JSON> {
     return this.http.post<JSON>(this.login_url, data);
   }
