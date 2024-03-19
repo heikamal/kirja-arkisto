@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from '../data.service';
+import { Series } from '../series'; // Import the Series interface
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin',
@@ -14,7 +15,6 @@ import { DataService } from '../data.service';
 
 export class AdminComponent {
 
-  
   chosen_book_id: any;
   remove_book_id: any;
   remove_series_id: any;
@@ -23,9 +23,10 @@ export class AdminComponent {
   book_data: any;
   single_book_data: any;
   series_data: any;
+  seriesList: Series[] = [];
+
   constructor(@Inject(FormBuilder) fb: FormBuilder,
     private dataService: DataService
-
   ) {
     this.book_form = fb.group({
       nimi: ['', Validators.maxLength(45)],
@@ -41,6 +42,14 @@ export class AdminComponent {
       kustantaja: ['', Validators.maxLength(45)],
       kuvaus: ['', Validators.maxLength(255)],
       luokittelu: ['', Validators.maxLength(45)],
+    });
+
+    this.loadSeries();
+  }
+
+  loadSeries() {
+    this.dataService.get_series().subscribe(response => {
+      this.seriesList = response;
     });
   }
   remove_book() {
@@ -81,6 +90,7 @@ export class AdminComponent {
     if (this.series_form.valid) {
       this.dataService.post_series(this.series_form.value).subscribe(response => {
         console.log('Response:', response);
+        this.loadSeries();
       })
     } (error: HttpErrorResponse) => {
       console.error('Error:', error);
@@ -89,6 +99,7 @@ export class AdminComponent {
   remove_series() {
     this.dataService.remove_series(this.remove_series_id).subscribe(() => {
       this.show_series();
+      this.loadSeries();
     }, error => {
       console.error('Error occurred while removing book:', error);
     });
