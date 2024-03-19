@@ -29,7 +29,7 @@ export class SearchComponent implements OnInit {
           author: bookData.kirjailija,
           date: bookData.julkaisuVuosi,
           series: bookData.jarjestysNro,
-          image_url: "none"
+          image_url: bookData.imageUrl
         } as Book;
       });
       this.filteredBooks = this.books;

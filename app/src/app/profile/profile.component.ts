@@ -4,11 +4,12 @@ import { MyBooksComponent } from '../my-books/my-books.component';
 import { CookieService } from 'ngx-cookie-service';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
+import { MySeriesComponent } from '../my-series/my-series.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MyProfileComponent, MyBooksComponent, CommonModule],
+  imports: [MyProfileComponent, MyBooksComponent, CommonModule, MySeriesComponent],
   providers: [DataService],
   templateUrl: './profile.component.html'
 })
@@ -33,6 +34,10 @@ export class ProfileComponent {
   show_my_books() {
     event?.preventDefault();
     this.subcomponent = 'my_books'
+  }
+  show_my_series() {
+    event?.preventDefault();
+    this.subcomponent = 'my_series'
   }
   get_bookshelf() {
     this.data.get_bookshelf().subscribe(response => {

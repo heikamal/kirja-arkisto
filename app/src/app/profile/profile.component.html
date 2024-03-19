@@ -5,7 +5,7 @@
     <div class="flex-1 flex justify-between">
         <div class="flex items-center ml-2">
             <p class="text-left whitespace-no-wrap underline hover:brightness-75"
-                [class.underline]="subcomponent === 'my_series'">Omat Sarjat</p>
+                [class.underline]="subcomponent === 'my_series'"(click)="show_my_series()">Omat Sarjat</p>
         </div>
         <div class="flex items-center ml-2">
             <p class="text-left whitespace-no-wrap underline hover:brightness-75"
@@ -15,6 +15,9 @@
     </div>
     <div *ngIf="subcomponent === 'my_books'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
         <app-my-books></app-my-books>
+    </div>
+    <div *ngIf="subcomponent === 'my_series'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
+        <app-my-series></app-my-series>
     </div>
     <div *ngIf="subcomponent === 'my_profile'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
         <app-my-profile></app-my-profile>
