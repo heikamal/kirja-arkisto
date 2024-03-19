@@ -9,9 +9,9 @@ import java.nio.file.Paths;
 
 @Service
 public class TiedostonhallintaService {
-private static final String KUVAKANSIO = "kuvat";
+    private static final String KUVAKANSIO = "kuvat";
 
-    public static String tallennaKuva(MultipartFile file) throws IOException {
+    public String tallennaKuva(MultipartFile file) {
         String tiedostoNimi = file.getOriginalFilename();
         Path tallennusPolku = Paths.get(KUVAKANSIO).toAbsolutePath().normalize();
         Path tallennusTiedosto = tallennusPolku.resolve(tiedostoNimi);
@@ -20,8 +20,11 @@ private static final String KUVAKANSIO = "kuvat";
         if (!tallennusKansio.exists()) {
             tallennusKansio.mkdirs();
         }
-
-        file.transferTo(tallennusTiedosto.toFile());
+        try {
+            file.transferTo(tallennusTiedosto.toFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return tiedostoNimi;
     }
     
