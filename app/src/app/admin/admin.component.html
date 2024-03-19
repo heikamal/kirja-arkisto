@@ -5,24 +5,22 @@
     <input formControlName="kirjailija" placeholder="Kirjailija" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
     <input formControlName="julkaisuVuosi" type="number" placeholder="Julkaisuvuosi"
       class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
-    <select formControlName="sarja" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto"
-      [disabled]="seriesList.length === 0">
-      <option *ngFor="let series of seriesList" [value]="series.id">{{ series.title }}</option>
-    </select>
     <input formControlName="kuvaus" placeholder="Kuvaus" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
     <input formControlName="jarjestysNro" type="number" placeholder="Järjestysnumero"
       class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+    <select formControlName="sarja" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto"
+      [disabled]="series_list.length === 0">
+      <option *ngFor="let series of series_list" [value]="series.id">{{ series.title }}</option>
+    </select>
     <div class="flex flex-col">
       <button class="rounded-lg border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3" type="submit"
-        [disabled]="seriesList.length === 0">
-        POST
+        [disabled]="series_list.length === 0">
+        LISÄÄ
       </button>
-      <span *ngIf="seriesList.length === 0" class="text-red-600 text-sm">You need to add series before adding a
-        book</span>
+      <span *ngIf="series_list.length === 0" class="text-red-600 text-sm">Lisätäksesi kirjan sinun täytyy ensin lisätä kirjasarja.</span>
     </div>
   </form>
-  <p class="text-white mt-4 md:mt-6">Value: {{ book_form.value | json }}</p>
-  <p class="text-white">Validation status: {{ book_form.status }}</p>
+  <p class="text-white">{{ book_form.status }}</p>
   <hr class="my-4 border-b-2 border-neutral-500">
   <p>Lisää kirjasarja</p>
   <form (ngSubmit)="submit_series()" [formGroup]="series_form" class="flex flex-col items-center">
@@ -32,35 +30,24 @@
     <input formControlName="luokittelu" placeholder="Luokittelu" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
     <div>
       <button class="rounded-lg border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
-        type="submit">POST</button>
+        type="submit">LISÄÄ</button>
     </div>
-    <p class="text-white mt-4 md:mt-6">Value: {{ series_form.value | json }}</p>
-    <p class="text-white">Validation status: {{ series_form.status }}</p>
+    <p class="text-white">{{ series_form.status }}</p>
   </form>
   <hr class="my-4 border-b-2 border-neutral-500">
-  <p>DEBUG POISTA KIRJA</p>
-  <input class="w-auto" type="number" placeholder="ID" [(ngModel)]="remove_book_id">
+  <p>POISTA KIRJA</p>
+  <select [(ngModel)]="remove_book_id" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto"
+    [disabled]="book_list.length === 0">
+    <option *ngFor="let book of book_list" [value]="book.id">{{ book.title }}</option>
+  </select>
   <button class="rounded-lg border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
-    (click)="remove_book()">REMOVE</button>
+    (click)="remove_book()">POISTA</button>
   <hr class="my-4 border-b-2 border-neutral-500">
-  <p>DEBUG HAE KIRJAT</p>
+  <p>POISTA SARJA</p>
+  <select [(ngModel)]="remove_series_id" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto"
+    [disabled]="series_list.length === 0">
+    <option *ngFor="let series of series_list" [value]="series.id">{{ series.title }}</option>
+  </select>
   <button class="rounded-lg border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
-    (click)="show_books()">GET</button>
-  <p class="text-white mt-4 md:mt-6" *ngIf="book_data">Fetched Data: {{ book_data | json }}</p>
-  <hr class="my-4 border-b-2 border-neutral-500">
-  <p>DEBUG HAE YKSI KIRJA</p>
-  <input class="w-auto" type="number" placeholder="ID" [(ngModel)]="chosen_book_id">
-  <button class="rounded-lg border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
-    (click)="show_book()">GET</button>
-  <p class="text-white mt-4 md:mt-6" *ngIf="single_book_data">Fetched Data: {{ single_book_data | json }}</p>
-  <hr class="my-4 border-b-2 border-neutral-500">
-  <p>DEBUG POISTA SARJA</p>
-  <input class="w-auto" type="number" placeholder="ID" [(ngModel)]="remove_series_id">
-  <button class="rounded-lg border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
-    (click)="remove_series()">REMOVE</button>
-  <hr class="my-4 border-b-2 border-neutral-500">
-  <p>DEBUG HAE SARJAT</p>
-  <button class="rounded-lg border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
-    (click)="show_series()">GET</button>
-  <p class="text-white mt-4 md:mt-6" *ngIf="series_data">Fetched Data: {{ series_data | json }}</p>
+    (click)="remove_series()">POISTA</button>
 </div>
