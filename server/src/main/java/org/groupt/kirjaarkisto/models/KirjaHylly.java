@@ -68,4 +68,8 @@ public class KirjaHylly {
     public void addToOmatSarjat(KirjaSarja sarja) {
       this.omatSarjat.add(sarja);
     }
+
+    public void removeFromOmatSarjat(KirjaSarja sarja) {
+      this.omatSarjat.remove(sarja);
+    }
 }

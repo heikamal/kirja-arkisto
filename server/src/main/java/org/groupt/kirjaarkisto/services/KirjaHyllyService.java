@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaHyllyException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaHyllyException;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
+import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.repositories.KirjaHyllyRepository;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class KirjaHyllyService {
    * Repository hallitsemaan kirjahyllyjä tietokannassa.
    */
     @Autowired
-    private KirjaHyllyRepository KirjahyllyRepository;
+    private KirjaHyllyRepository kirjahyllyRepository;
 
     /**
      * Metodi hakee kaikki kirjahyllyt.
@@ -26,7 +27,7 @@ public class KirjaHyllyService {
      * @return Kaikki tietokannassa olevat kirjahyllyt listana.
      */
     public List<KirjaHylly> getKirjahyllyt() {
-        return KirjahyllyRepository.findAll();
+        return kirjahyllyRepository.findAll();
     }
 
     /**
@@ -36,7 +37,7 @@ public class KirjaHyllyService {
      * @return Kirjahyllyn id:n perusteella oleva kirjahylly.
      */
     public KirjaHylly getKirjahyllyById(Long id) {
-        KirjaHylly hylly = KirjahyllyRepository.findById(id).orElse(null);
+        KirjaHylly hylly = kirjahyllyRepository.findById(id).orElse(null);
         if (hylly == null) {
           throw new NonExistingKirjaHyllyException("Kirjahyllya ei loydy.");
         }
@@ -51,7 +52,7 @@ public class KirjaHyllyService {
      * @return Kirjahyllyn omistajan id:n perusteella oleva kirjahylly.
      */
     public KirjaHylly getKirjaHyllyByOmistaja(Long omistaja) {
-        KirjaHylly hylly = KirjahyllyRepository.findByOmistaja(omistaja).orElse(null);
+        KirjaHylly hylly = kirjahyllyRepository.findByOmistaja(omistaja).orElse(null);
         if (hylly == null) {
           throw new NonExistingKirjaHyllyException("Käyttäjällä ei kirjahyllyä. Oletko admin?");
         }
@@ -68,10 +69,14 @@ public class KirjaHyllyService {
      */
     public KirjaHylly saveKirjaHylly(KirjaHylly kirjahylly) {
       try {
-        return KirjahyllyRepository.save(kirjahylly);
+        return kirjahyllyRepository.save(kirjahylly);
       } catch (IllegalArgumentException e) {
         throw new NullKirjaHyllyException("Annettu kirjahylly tyhjä. Tarkasta parametrit.");
       }
+    }
+
+    public List<KirjaHylly> getKirjaHyllytBySarjat(List<KirjaSarja> sarjat) {
+      return kirjahyllyRepository.findByOmatSarjatIn(sarjat);
     }
 
     // Lisää tarvittavat liiketoimintalogiikkametodit
