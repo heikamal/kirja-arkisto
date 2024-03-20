@@ -1,17 +1,37 @@
-<div class="flex items-center justify-center flex-col"> <!-- Changed flex direction to column -->
+<div class="flex items-center justify-center flex-col">
   <div>
-    <input type="text" placeholder="Search by title" [(ngModel)]="searchTerm" (input)="filterBooks()">
+    <input type="text" placeholder="Etsi nimen perusteella" [(ngModel)]="searchTerm"
+      (input)="searchType === 'books' ? filterBooks() : filterSeries()" class="text-center">
+  </div>
+  <div>
+    <button (click)="toggleSearchType()">
+      {{ searchType === 'books' ? 'Etsi sarjoja' : 'Etsi kirjoja' }}
+    </button>
   </div>
   <ul>
-    <li *ngFor="let book of filteredBooks">
-      <div class="text-center">
-        <br>
-        <p class="underline">
-          <a href="javascript:void(0)" (click)="showBookDetails(book.id)">{{ book.title }}</a>
-        </p>
-        <p>Author: {{ book.author }}</p>
-        <p>Published: {{ book.date }}</p>
-      </div>
-    </li>
+    <ng-container *ngIf="searchType === 'books'; else seriesList">
+      <li *ngFor="let book of filteredBooks">
+        <div class="text-center">
+          <br>
+          <p class="underline">
+            <a href="javascript:void(0)" (click)="showBookDetails(book.id)">{{ book.title }}</a>
+          </p>
+          <p>Author: {{ book.author }}</p>
+          <p>Published: {{ book.date }}</p>
+        </div>
+      </li>
+    </ng-container>
+    <ng-template #seriesList>
+      <li *ngFor="let series of filteredSeries">
+        <div class="text-center">
+          <br>
+          <p class="underline">
+            <a href="javascript:void(0)" (click)="showSeriesDetails(series.id)">{{ series.title }}</a>
+          </p>
+          <p>Category: {{ series.category }}</p>
+          <p>Publisher: {{ series.publisher }}</p>
+        </div>
+      </li>
+    </ng-template>
   </ul>
 </div>
