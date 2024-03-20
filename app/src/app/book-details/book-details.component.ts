@@ -59,7 +59,7 @@ export class BookDetailsComponent implements OnInit {
   add_copy(): void {
     const dialogRef = this.dialog.open(AddCopyComponent, {
       width: '400px',
-      data: { bookId: this.chosen_book, book_title: this.title, series_id: this.series_id}
+      data: { bookId: this.chosen_book, title: this.title, series_id: this.series_id}
     });
   }
   closeDialog(): void {
