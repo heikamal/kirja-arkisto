@@ -29,8 +29,8 @@ class KirjaarkistoApplicationTests {
 
   @Test
 	void contextLoads() throws Exception {
-    /*mvc.perform(get("/api").contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk());*/
+    mvc.perform(get("/api/test/").contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk());
 	}
 
 }
