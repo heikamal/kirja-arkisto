@@ -58,7 +58,7 @@ public class KirjaKopio {
       this.editions = dto.getPainos();
       this.editionYear = dto.getPainosVuosi();
       this.book = kirja;
-      this.purchasePrice = dto.getMyyntiHinta();
+      this.purchasePrice = dto.getOstoHinta();
       this.purchaseDate = dto.getOstoPvm();
       this.condition = dto.getKunto();
       this.description = dto.getKuvaus();
