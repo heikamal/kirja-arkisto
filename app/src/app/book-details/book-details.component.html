@@ -15,10 +15,10 @@
                         <p><span class="font-extrabold">Kirjailija:</span> {{ author }}</p>
                         <p><span class="font-extrabold">Vuosi:</span> {{ date }}</p>
                         <p><span class="font-extrabold">Sarja:</span> {{ series_name }}</p>
-                        <div class="max-h-72 overflow-hidden">
+                        <div class="max-h-72 overflow-hidden" *ngIf="description">
                             <p class="whitespace-normal break-words"><span class="font-extrabold">Kirjan kuvaus: </span>{{ show_full_description ? description : (description.length > 100 ? description.substring(0, 100) + '...' : description) }}</p>
                         </div>
-                        <button *ngIf="description.length > 100" (click)="toggle_description()" class="text-blue-500 underline mt-2 focus:outline-none">{{ show_full_description ? 'Näytä vähemmän' : 'Näytä enemmän' }}</button>
+                        <button *ngIf="description && description.length > 100" (click)="toggle_description()" class="text-blue-500 underline mt-2 focus:outline-none">{{ show_full_description ? 'Näytä vähemmän' : 'Näytä enemmän' }}</button>                        
                     </div>
                 </div>
             </div>
