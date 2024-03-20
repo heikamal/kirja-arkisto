@@ -58,17 +58,21 @@ public class KirjaHyllyController {
 
       List<SarjaResponse> sarjat = new ArrayList<>();
 
+      List<KirjaKopioResponse> k = new ArrayList<>();
+
       for (KirjaSarja sarja : hylly.getOmatSarjat()) {
         List<KirjaKopio> kopiot = kirjaKopioService.getBySarja(sarja);
         List<KirjaKopioResponse> kopioResponseList = new ArrayList<>();
         for (KirjaKopio kopio : kopiot) {
-          kopioResponseList.add(new KirjaKopioResponse(kopio, new KirjaResponse(kopio.getBook())));
+          KirjaKopioResponse kopioResponse = new KirjaKopioResponse(kopio, new KirjaResponse(kopio.getBook()));
+          kopioResponseList.add(kopioResponse);
+          k.add(kopioResponse);
         }
         SarjaResponse a = new SarjaResponse(sarja, kopioResponseList, true);
         sarjat.add(a);
       }
 
-      return new HyllyResponse(hylly, sarjat);
+      return new HyllyResponse(hylly, sarjat, k);
     }
 
     @PostMapping("/self")

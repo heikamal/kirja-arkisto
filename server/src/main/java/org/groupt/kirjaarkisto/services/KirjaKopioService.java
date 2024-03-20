@@ -1,12 +1,18 @@
 package org.groupt.kirjaarkisto.services;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import io.jsonwebtoken.io.IOException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaKopioException;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.models.Valokuva;
 import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
+import org.groupt.kirjaarkisto.repositories.KuvaRepository;
+import org.groupt.kirjaarkisto.repositories.ValokuvaRepository;
 
 import java.util.List;
 
@@ -21,6 +27,16 @@ public class KirjaKopioService {
    */
   @Autowired
   private KirjaKopioRepository kirjakopioRepository;
+
+  @Autowired
+  private ValokuvaRepository valokuvaRepository;
+
+  @Autowired
+  private KuvaRepository kuvaRepository;
+
+
+  @Autowired
+  private TiedostonhallintaService tiedostonhallintaService;
 
   /**
    * Palauttaa kaikki tietokannasta löytyvät kirjakopiot.
@@ -68,5 +84,23 @@ public class KirjaKopioService {
     kirjakopioRepository.delete(kopio);
   }
 
-  // Lisää tarvittavat liiketoimintalogiikkametodit
+  @Transactional
+  public void lisaaKuvaKirjakopiolle(Long kirjakopioId, MultipartFile tiedosto, Integer julkaisuvuosi,
+      String taiteilija, String tyyli, String kuvaus, Integer sivunro) throws IOException {
+    KirjaKopio kirjakopio = kirjakopioRepository.findById(kirjakopioId)
+        .orElseThrow(() -> new EntityNotFoundException("Kirjakopiota ei löydy id:llä " + kirjakopioId));
+
+    // Tallenna tiedosto ja palauta sen polku
+    String tiedostoNimi = tiedostonhallintaService.tallennaKuva(tiedosto);
+
+    // Luo uusi valokuva
+    Valokuva valokuva = new Valokuva();
+    valokuva.setKuvanimi(tiedosto.getOriginalFilename());
+    valokuva.setKirjaKopio(kirjakopio);
+    valokuva.setTiedostonimi(tiedostoNimi);
+    valokuva.setSivunnro(sivunro);
+
+    // Tallenna valokuva tietokantaan
+    valokuvaRepository.save(valokuva);
+  }
 }
