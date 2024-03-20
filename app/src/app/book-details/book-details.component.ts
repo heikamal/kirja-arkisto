@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { response } from 'express';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { AddCopyComponent } from '../add-copy/add-copy.component';
 
 @Component({
@@ -23,9 +22,14 @@ export class BookDetailsComponent implements OnInit {
   chosen_book: any;
   image_url: any;
   owned: any;
+  show_full_description: boolean = false;
 
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { bookId: number}, private dataService: DataService, private dialog: MatDialog) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { bookId: number},
+    private dataService: DataService,
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<BookDetailsComponent>
+  ) {
     this.chosen_book = data.bookId;
   }
 
@@ -47,6 +51,10 @@ export class BookDetailsComponent implements OnInit {
       this.owned = jsonObject.owned;
     });
   }
+
+  toggle_description(): void {
+    this.show_full_description = !this.show_full_description;
+  }
   
   add_copy(): void {
     const dialogRef = this.dialog.open(AddCopyComponent, {
@@ -54,5 +62,7 @@ export class BookDetailsComponent implements OnInit {
       data: { bookId: this.chosen_book, book_title: this.title, series_id: this.series_id}
     });
   }
-  
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
 }

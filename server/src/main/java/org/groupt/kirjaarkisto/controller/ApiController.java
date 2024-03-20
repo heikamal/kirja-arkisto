@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
+@RequestMapping("/api/test")
 public class ApiController {
 
   /**
@@ -22,7 +24,7 @@ public class ApiController {
    *
    * @return Kuvaus, joka pitää sisällään uniikin id:n ja merkkijonon "Harri, voisitko hakee mulle tulisiemeniä? Niää sais harvinaisesta kasvista, joka kasvaa mettässä."
    */
-  @GetMapping("/api")
+  @GetMapping("/")
   public Map<String,Object> api() {
     Map<String,Object> model = new HashMap<String,Object>();
     model.put("id", UUID.randomUUID().toString());
@@ -30,7 +32,7 @@ public class ApiController {
     return model;
   }
 
-  @GetMapping("/api/user")
+  @GetMapping("/user")
   @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
   public Map<String,Object> userAccess() {
     Map<String,Object> model = new HashMap<String,Object>();
@@ -39,7 +41,7 @@ public class ApiController {
     return model;
   }
 
-  @GetMapping("/api/admin")
+  @GetMapping("/admin")
   @PreAuthorize("hasRole('ADMIN')")
   public Map<String,Object> adminAccess() {
     Map<String,Object> model = new HashMap<String,Object>();

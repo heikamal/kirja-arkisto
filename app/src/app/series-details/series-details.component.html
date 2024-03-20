@@ -1,18 +1,27 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
-    <div class="bg-neutral-800 p-6 rounded-lg max-w-4xl overflow-y-auto">
-      <img src="../../assets/example/example_02.jpg">
-      <div class="mt-4">
-        <p>sarjan nimi: {{title}}</p>
-        <p>kustantaja:  {{kustantaja}}</p>
-        <p>kuvaus:  {{kuvaus}} </p>
-        <p>luokittelu: {{luokittelu}}  </p>
-        <button class="bg-gray-800 text-amber-500 font-bold py-2 px-4 rounded inline-flex items-center border border-amber-500">
-          <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-            <rect x="7" y="0" width="6" height="20"/>
-            <rect x="0" y="7" width="20" height="6"/>
-          </svg>    
-        </button>
+  <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl min-w-2xl">
+    <div class="relative">
+    </div>
+    <div class="md:flex md:justify-between">
+      <div class="md:flex-shrink-0 max-w-xs">
+        <div class="text-center md:text-left">
+          <p><span class="font-extrabold">Sarjan nimi:</span> {{ title }}</p>
+          <p><span class="font-extrabold">Kustantaja:</span> {{ publisher }}</p>
+          <p><span class="font-extrabold">Kuvaus:</span> {{ description }}</p>
+          <p><span class="font-extrabold">Luokittelu:</span> {{ category }}</p>
+        </div>
       </div>
     </div>
+    <div mat-dialog-actions class="m-4 md:m-1 md:w-1/2 flex justify-between">
+      <button mat-button (click)="closeDialog()"
+        class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
+        <p *ngIf="is_owned" class="bg-green-500 rounded-md m-1 p-2 text-white text-xs whitespace-nowrap">OMISTETTU
+        </p>
+      <ng-container *ngIf="!is_owned">
+        <button mat-button (click)="add_series_to_bookshelf()"
+          class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Lisää
+          kirjahyllyyn</button>
+      </ng-container>
+    </div>
   </div>
-  
+</div>

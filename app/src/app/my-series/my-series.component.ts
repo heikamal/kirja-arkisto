@@ -6,12 +6,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SeriesDetailsComponent } from '../series-details/series-details.component';
 
 @Component({
-  selector: 'app-series',
+  selector: 'app-my-series',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './series.component.html'
+  templateUrl: './my-series.component.html'
 })
-export class SeriesComponent {
+export class MySeriesComponent {
   series: Series[] = [];
   displayedSeries: Series[] = [];
   remainingSeries: Series[] = [];
@@ -19,15 +19,17 @@ export class SeriesComponent {
   constructor(private dataService: DataService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.dataService.get_series().subscribe((response: any[]) => {
-      this.series = response.map((seriesData: any) => {
-        return {
-          id: seriesData.id,
-          title: seriesData.title,
-          publisher: seriesData.publisher,
-          description: seriesData.description,
-          category: seriesData.category,
-        } as Series;
+    this.dataService.get_bookshelf().subscribe((response: any) => {
+      this.series = [];
+      response.sarjat.forEach((s: any) => {
+        const series: Series = {
+          id: s.id,
+          title: s.title,
+          publisher: s.kustantaja,
+          description: s.kuvaus,
+          category: s.luokittelu
+        };
+        this.series.push(series);
       });
       this.displayedSeries = this.series.slice(0, 8);
       this.remainingSeries = this.series.slice(8);
