@@ -2,7 +2,6 @@ package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import io.jsonwebtoken.io.IOException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -10,8 +9,6 @@ import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaKopioException;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
-import org.groupt.kirjaarkisto.models.Kuva;
-import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.models.Valokuva;
 import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
