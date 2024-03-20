@@ -1,14 +1,17 @@
-<input type="text" placeholder="Search by title" [(ngModel)]="searchTerm" (input)="filterBooks()">
-
-<ul>
-  <li *ngFor="let book of filteredBooks">
-    <div>
-      <br>
-      <p class="underline">
-        <a href="javascript:void(0)" (click)="showBookDetails(book.id)">{{ book.title }}</a>
-      </p>
-      <p>Author: {{ book.author }}</p>
-      <p>Published: {{ book.date }}</p>
-    </div>
-  </li>
-</ul>
+<div class="flex items-center justify-center flex-col"> <!-- Changed flex direction to column -->
+  <div>
+    <input type="text" placeholder="Search by title" [(ngModel)]="searchTerm" (input)="filterBooks()">
+  </div>
+  <ul>
+    <li *ngFor="let book of filteredBooks">
+      <div class="text-center">
+        <br>
+        <p class="underline">
+          <a href="javascript:void(0)" (click)="showBookDetails(book.id)">{{ book.title }}</a>
+        </p>
+        <p>Author: {{ book.author }}</p>
+        <p>Published: {{ book.date }}</p>
+      </div>
+    </li>
+  </ul>
+</div>

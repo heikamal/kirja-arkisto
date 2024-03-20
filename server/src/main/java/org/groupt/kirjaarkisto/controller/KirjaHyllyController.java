@@ -3,6 +3,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+
+
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
@@ -19,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/kirjahyllyt")
@@ -76,7 +80,19 @@ public class KirjaHyllyController {
 
       KirjaHylly hylly = kirjahyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
 
-      hylly.addToOmatSarjat(kirjaSarjaService.getKirjasarjaById(sarja.getSarjaId()));
+      List<KirjaSarja> sarjat = hylly.getOmatSarjat();
+      boolean found = false;
+
+      for(KirjaSarja k : sarjat) {
+        if (Objects.equals(k.getId(), sarja.getSarjaId())) {
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        hylly.addToOmatSarjat(kirjaSarjaService.getKirjasarjaById(sarja.getSarjaId()));
+      }
 
       return kirjahyllyService.saveKirjaHylly(hylly);
     }
