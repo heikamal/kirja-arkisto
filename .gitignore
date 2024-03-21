@@ -65,6 +65,7 @@ server/target/
 server/!.mvn/wrapper/maven-wrapper.jar
 server/!**/src/main/**/target/
 server/!**/src/test/**/target/
+server/kuvat
 
 ### STS ###
 server/.apt_generated

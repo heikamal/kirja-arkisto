@@ -32,7 +32,7 @@ public class Kuva {
     @OneToMany(mappedBy = "kuva")
     private List<Kuvitus> kuvitukset;
 
-    @Column(name = "picByte", length = 1000)
+    @Column(name = "picbyte", length = 10000000)
     private byte[] picByte;
 
     public Kuva() {
