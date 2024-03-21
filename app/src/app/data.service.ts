@@ -30,6 +30,12 @@ export class DataService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<JSON>(this.bookcopy_url, data, { headers });
   }
+  get_book_copy(copy_id: number): Observable<any> {
+    const accessToken = this.cookieService.get('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    const url = `${this.bookcopy_url}/${copy_id}`;
+    return this.http.get<JSON>(url, { headers });
+  }
   post_photo(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
