@@ -45,7 +45,7 @@ public class KuvaService {
     }
      //kuvan lisäys metodi
      @Transactional
-     public void lisaaKuvaKirjalle(Long kirjaId, MultipartFile tiedosto, Integer julkaisuvuosi, String taiteilija,
+     public Kuvitus lisaaKuvaKirjalle(Long kirjaId, MultipartFile tiedosto, Integer julkaisuvuosi, String taiteilija,
          String tyyli, String kuvaus, Integer sivunro) {
 
       Kirja kirja = kirjaRepository.findById(kirjaId)
@@ -69,7 +69,7 @@ public class KuvaService {
        kuvitus.setKuva(kuva);
        kuvitus.setSivunro(sivunro);
 
-       kuvitusRepository.save(kuvitus);
+       return kuvitusRepository.save(kuvitus);
      }
   
      @Transactional

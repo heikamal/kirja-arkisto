@@ -15,6 +15,7 @@ import org.groupt.kirjaarkisto.services.KirjaKopioService;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 import org.groupt.kirjaarkisto.services.KuvaService;
+import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaException;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
@@ -166,7 +167,7 @@ public class KirjaController {
     }
 
     @PostMapping("/{id}/kuvat")
-    public ResponseEntity<String> lisaakuvaKirjalle(
+    public Kuvitus lisaakuvaKirjalle(
             @PathVariable Long id,
             @RequestParam("tiedosto") MultipartFile tiedosto,
             @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
@@ -176,13 +177,9 @@ public class KirjaController {
             @RequestParam("sivunro") Integer sivunro) {
 
         try {
-            kuvaservice.lisaaKuvaKirjalle(id, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
-            return ResponseEntity.ok("Kuva lisätty onnistuneesti.");
+            return kuvaservice.lisaaKuvaKirjalle(id, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kirjaa ei löydy id:llä " + id);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Virhe lisättäessä kuvaa.");
+            throw new NonExistingKirjaException("Ei saatana ei helvetti");
         }
     }
   
