@@ -26,7 +26,7 @@
         <div mat-dialog-actions class="m-4 md:m-1 md:w-1/2 flex">
             <button mat-button (click)="closeDialog()"
                 class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
-            <button *ngIf="!owned" (click)="add_copy()"
+            <button (click)="add_copy()"
                 class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Lisää</button>
         </div>
     </div>
