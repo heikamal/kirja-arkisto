@@ -50,13 +50,8 @@ public class KirjaController {
     private KuvaService kuvaservice;
 
     @GetMapping
-    public List<KirjaResponse> getKirjat() {
-        List<Kirja> kirjat = kirjaService.getKirjat();
-        List<KirjaResponse> kirjaResponses = new ArrayList<>();
-        for (Kirja kirja : kirjat) {
-            kirjaResponses.add(new KirjaResponse(kirja));
-        }
-        return kirjaResponses;        
+    public List<Kirja> getKirjat() {
+        return kirjaService.getKirjat();     
     }
 
     @GetMapping("/{id}")
