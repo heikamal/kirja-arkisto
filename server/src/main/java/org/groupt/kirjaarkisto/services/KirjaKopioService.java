@@ -2,7 +2,6 @@ package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import io.jsonwebtoken.io.IOException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaKopioException;
@@ -14,6 +13,7 @@ import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 import org.groupt.kirjaarkisto.repositories.ValokuvaRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
