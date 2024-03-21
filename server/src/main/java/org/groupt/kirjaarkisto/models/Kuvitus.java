@@ -99,29 +99,29 @@ public class Kuvitus {
     private Long idkuva;
 
 
-  public KuvitusId() {
-  }
+    public KuvitusId() {
+    }
 
-  public KuvitusId(Long idkirja, Long idkuva) {
-    this.idkirja = idkirja;
-    this.idkuva = idkuva;
-  }
+    public KuvitusId(Long idkirja, Long idkuva) {
+      this.idkirja = idkirja;
+      this.idkuva = idkuva;
+    }
 
-  public Long getIdkirja() {
-    return idkirja;
-  }
+    public Long getIdkirja() {
+      return idkirja;
+    }
 
-  public void setIdkirja(Long idkirja) {
-    this.idkirja = idkirja;
-  }
+    public void setIdkirja(Long idkirja) {
+      this.idkirja = idkirja;
+    }
 
-  public Long getIdkuva() {
-    return idkuva;
-  }
+    public Long getIdkuva() {
+      return idkuva;
+    }
 
-  public void setIdkuva(Long idkuva) {
-    this.idkuva = idkuva;
-  }
+    public void setIdkuva(Long idkuva) {
+      this.idkuva = idkuva;
+    }
   }
 
 }
