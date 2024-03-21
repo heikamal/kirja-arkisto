@@ -1,33 +1,38 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
-    <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl md:min-w-96 w-max max-h-screen overflow-y-auto">
+    <div class="bg-neutral-800 p-6 rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
         <div class="relative">
             <img *ngIf="!image_url" src="../../assets/miscellaneous/cover_not_available.png"
                 class="max-h-96 p-2 mx-auto">
             <img *ngIf="image_url" [src]="image_url" class="max-h-96 p-2 mx-auto">
-            <p *ngIf="owned" class="absolute bottom-0 right-0 text-xs bg-green-500 text-white px-1 rounded">OMISTETTU
-            </p>
         </div>
-        <div class="md:flex">
-            <div class="md:flex-1 max-w-xs">
-                <div class="text-center md:text-left overflow-hidden">
+        <div class="flex justify-center items-center">
+            <div class="flex-1 max-w-xs">
+                <div class="text-center overflow-hidden">
                     <div>
-                        <p><span class="font-extrabold">Kirjan nimi:</span> {{ title }}</p>
-                        <p><span class="font-extrabold">Kirjailija:</span> {{ author }}</p>
-                        <p><span class="font-extrabold">Vuosi:</span> {{ date }}</p>
-                        <p><span class="font-extrabold">Sarja:</span> {{ series_name }}</p>
+                        <p><span class="font-extrabold">Kirjan nimi:</span><br> {{ title }}</p>
+                        <p><span class="font-extrabold">Kirjailija:</span><br> {{ author }}</p>
+                        <p><span class="font-extrabold">Vuosi:</span><br> {{ date }}</p>
+                        <p><span class="font-extrabold">Sarja:</span><br> {{ series_name }}</p>
                         <div class="max-h-72 overflow-hidden" *ngIf="description">
-                            <p class="whitespace-normal break-words"><span class="font-extrabold">Kirjan kuvaus: </span>{{ show_full_description ? description : (description.length > 100 ? description.substring(0, 100) + '...' : description) }}</p>
+                            <p class="whitespace-normal break-words"><span class="font-extrabold">Kirjan kuvaus:
+                                </span><br>{{ show_full_description ? description : (description.length > 100 ?
+                                description.substring(0, 100) + '...' : description) }}</p>
                         </div>
-                        <button *ngIf="description && description.length > 100" (click)="toggle_description()" class="text-blue-500 underline mt-2 focus:outline-none">{{ show_full_description ? 'Näytä vähemmän' : 'Näytä enemmän' }}</button>                        
+                        <button *ngIf="description && description.length > 100" (click)="toggle_description()"
+                            class="text-blue-500 underline mt-2 focus:outline-none">{{ show_full_description ? 'Näytä
+                            vähemmän' : 'Näytä enemmän' }}</button>
                     </div>
                 </div>
             </div>
-        </div>            
-        <div mat-dialog-actions class="m-4 md:m-1 md:w-1/2 flex">
+        </div>
+        <div mat-dialog-actions class="m-4 md:m-1 w-full flex justify-center">
             <button mat-button (click)="closeDialog()"
-                class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
+                class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
             <button (click)="add_copy()"
-                class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Lisää</button>
+                class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Lisää</button>
+            <p *ngIf="owned" class="rounded-md m-1 p-3 text-green-500 whitespace-nowrap">
+                Kirjahyllyssä
+            </p>
         </div>
     </div>
 </div>
