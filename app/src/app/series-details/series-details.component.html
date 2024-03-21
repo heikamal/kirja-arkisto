@@ -1,18 +1,18 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
-  <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl min-w-2xl">
+  <div class="bg-neutral-800 p-6 rounded-lg max-w-2xl w-full">
     <div class="relative">
     </div>
-    <div class="md:flex md:justify-between">
-      <div class="md:flex-shrink-0 max-w-xs">
-        <div class="text-center md:text-left">
-          <p><span class="font-extrabold">Sarjan nimi:</span> {{ title }}</p>
-          <p><span class="font-extrabold">Kustantaja:</span> {{ publisher }}</p>
-          <p><span class="font-extrabold">Kuvaus:</span> {{ description }}</p>
-          <p><span class="font-extrabold">Luokittelu:</span> {{ category }}</p>
+    <div class="flex justify-center">
+      <div class="flex-shrink-0 max-w-xs">
+        <div class="text-center">
+          <p><span class="font-extrabold">Sarjan nimi:</span><br>{{ title }}</p>
+          <p><span class="font-extrabold">Kustantaja:</span><br> {{ publisher }}</p>
+          <p><span class="font-extrabold">Luokittelu:</span><br> {{ category }}</p>
+          <p><span class="font-extrabold">Kuvaus:</span><br> {{ description }}</p>
         </div>
       </div>
     </div>
-    <div mat-dialog-actions class="m-4 md:m-1 md:w-1/2 flex justify-between">
+    <div mat-dialog-actions class="m-4 md:m-1 w-full flex justify-center">
       <button mat-button (click)="closeDialog()"
         class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
         <p *ngIf="is_owned" class="bg-green-500 rounded-md m-1 p-2 text-white text-xs whitespace-nowrap">OMISTETTU
@@ -23,5 +23,6 @@
           kirjahyllyyn</button>
       </ng-container>
     </div>
+    <app-carousel [seriesId]="chosen_series"></app-carousel>
   </div>
 </div>

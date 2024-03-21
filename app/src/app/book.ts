@@ -5,4 +5,5 @@ export interface Book {
     date: number;
     series: number;
     image_url: string;
+    is_owned: boolean;
   }

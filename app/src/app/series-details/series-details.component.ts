@@ -4,11 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { Series } from '../series';
+import { CarouselComponent } from '../carousel/carousel.component';
 
 @Component({
   selector: 'app-series-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,CarouselComponent],
   providers: [DataService],
   templateUrl: './series-details.component.html'
 })
