@@ -1,4 +1,6 @@
 package org.groupt.kirjaarkisto.models;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -26,6 +28,9 @@ public class Kuva {
 
     @Column(name = "tiedostonimi")
     private String tiedostonimi;
+
+    @OneToMany(mappedBy = "kuva")
+    private List<Kuvitus> kuvitukset;
 
   
     public Long getIdkuva() {

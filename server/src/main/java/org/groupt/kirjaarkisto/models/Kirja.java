@@ -29,7 +29,7 @@ public class Kirja {
     @Column(name = "kuvaus")
     private String kuvaus;
 
-    @OneToMany(mappedBy = "kirja", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "kirja")
     private List<Kuvitus> kuvitukset;
 
     public Kirja() {
