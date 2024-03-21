@@ -21,8 +21,10 @@ import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
+import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +50,13 @@ public class KirjaController {
     private KuvaService kuvaservice;
 
     @GetMapping
-    public List<Kirja> getKirjat() {
-        return kirjaService.getKirjat();
+    public List<KirjaResponse> getKirjat() {
+        List<Kirja> kirjat = kirjaService.getKirjat();
+        List<KirjaResponse> kirjaResponses = new ArrayList<>();
+        for (Kirja kirja : kirjat) {
+            kirjaResponses.add(new KirjaResponse(kirja));
+        }
+        return kirjaResponses;        
     }
 
     @GetMapping("/{id}")

@@ -32,6 +32,16 @@ public class Kuvitus {
 
   private Integer sivunro;
 
+  public Kuvitus() {
+  }
+
+  public Kuvitus(Kirja kirja, Kuva kuva, Integer sivunro) {
+    this.id = new KuvitusId(kirja.getId(), kuva.getIdkuva());
+    this.kirja = kirja;
+    this.kuva = kuva;
+    this.sivunro = sivunro;
+  }
+
   /* 
   /**
    * @return Long return the id
@@ -87,41 +97,6 @@ public class Kuvitus {
    */
   public void setSivunro(Integer sivunro) {
     this.sivunro = sivunro;
-  }
-
-  @Embeddable
-  class KuvitusId implements Serializable {
-
-    @Column(name = "idkirja")
-    private Long idkirja;
-
-    @Column(name = "idkuva")
-    private Long idkuva;
-
-
-    public KuvitusId() {
-    }
-
-    public KuvitusId(Long idkirja, Long idkuva) {
-      this.idkirja = idkirja;
-      this.idkuva = idkuva;
-    }
-
-    public Long getIdkirja() {
-      return idkirja;
-    }
-
-    public void setIdkirja(Long idkirja) {
-      this.idkirja = idkirja;
-    }
-
-    public Long getIdkuva() {
-      return idkuva;
-    }
-
-    public void setIdkuva(Long idkuva) {
-      this.idkuva = idkuva;
-    }
   }
 
 }

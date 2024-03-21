@@ -78,13 +78,12 @@ public class KuvaService {
        kuva.setTiedostonimi(tiedostoNimi); // Tallennetaan tiedostonimi tietokantaan
        kuva.setPicByte(compressBytes(tiedosto.getBytes()));
 
-       kuvaRepository.save(kuva);
+       Kuva lisatty = kuvaRepository.save(kuva);
+
+       System.out.println("Lisätty kuva... Jatketaan kvuitukseen");
 
        // Luo kuvitusolio ja tallenna tietokantaan
-       Kuvitus kuvitus = new Kuvitus();
-       kuvitus.setKirja(kirja);
-       kuvitus.setKuva(kuva);
-       kuvitus.setSivunro(sivunro);
+       Kuvitus kuvitus = new Kuvitus(kirja, lisatty, sivunro);
 
        return kuvitusRepository.save(kuvitus);
      }
