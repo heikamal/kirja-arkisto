@@ -174,7 +174,7 @@ public class KirjaController {
             @RequestParam("taiteilija") String taiteilija,
             @RequestParam("tyyli") String tyyli,
             @RequestParam("kuvaus") String kuvaus,
-            @RequestParam("sivunro") Integer sivunro) {
+            @RequestParam("sivunro") Integer sivunro) throws java.io.IOException {
 
         try {
             return kuvaservice.lisaaKuvaKirjalle(id, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);

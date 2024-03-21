@@ -32,7 +32,23 @@ public class Kuva {
     @OneToMany(mappedBy = "kuva")
     private List<Kuvitus> kuvitukset;
 
-  
+    @Column(name = "picByte", length = 1000)
+    private byte[] picByte;
+
+    public Kuva() {
+      super();
+    }
+
+    public Kuva(String kuvanimi, Integer julkaisuvuosi, String taiteilija, String tyyli, String kuvaus, String tiedostonimi, byte[] picByte) {
+      this.kuvanimi = kuvanimi;
+      this.julkaisuvuosi = julkaisuvuosi;
+      this.taiteilija = taiteilija;
+      this.tyyli = tyyli;
+      this.kuvaus = kuvaus;
+      this.tiedostonimi = tiedostonimi;
+      this.picByte = picByte;
+    }
+
     public Long getIdkuva() {
         return idkuva;
         
@@ -128,6 +144,22 @@ public class Kuva {
      */
     public void setTiedostonimi(String tiedostonimi) {
         this.tiedostonimi = tiedostonimi;
+    }
+
+    public List<Kuvitus> getKuvitukset() {
+        return kuvitukset;
+    }
+
+    public void setKuvitukset(List<Kuvitus> kuvitukset) {
+        this.kuvitukset = kuvitukset;
+    }
+
+    public byte[] getPicByte() {
+        return picByte;
+    }
+
+    public void setPicByte(byte[] picByte) {
+        this.picByte = picByte;
     }
 
 }
