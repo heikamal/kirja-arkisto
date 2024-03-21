@@ -1,5 +1,8 @@
 package org.groupt.kirjaarkisto.models;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -30,6 +33,7 @@ public class Kirja {
     private String kuvaus;
 
     @OneToMany(mappedBy = "kirja")
+    @JsonManagedReference
     private List<Kuvitus> kuvitukset;
 
     public Kirja() {

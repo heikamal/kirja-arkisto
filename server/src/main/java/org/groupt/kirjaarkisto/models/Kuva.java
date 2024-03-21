@@ -1,6 +1,8 @@
 package org.groupt.kirjaarkisto.models;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -30,6 +32,7 @@ public class Kuva {
     private String tiedostonimi;
 
     @OneToMany(mappedBy = "kuva")
+    @JsonBackReference
     private List<Kuvitus> kuvitukset;
 
     @Column(name = "picbyte", length = 10000000)

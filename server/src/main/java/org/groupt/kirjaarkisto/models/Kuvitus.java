@@ -2,6 +2,9 @@ package org.groupt.kirjaarkisto.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -23,11 +26,13 @@ public class Kuvitus {
   @ManyToOne
   @MapsId("idkirja")
   @JoinColumn(name = "idkirja")
+  @JsonBackReference
   private Kirja kirja;
 
   @ManyToOne
   @MapsId("idkuva")
   @JoinColumn(name = "idkuva")
+  @JsonManagedReference
   private Kuva kuva;
 
   private Integer sivunro;
