@@ -1,20 +1,26 @@
 package org.groupt.kirjaarkisto.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "valokuva")
 public class Valokuva {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idkuva")
-    private Long idkuva;
+    @ManyToOne
+    @MapsId("idkuva")
+    @JoinColumn(name = "idkuva")
+    @JsonManagedReference
+    private Kuva kuva;
 
     @Column(name = "kuvanimi")
     private String kuvanimi;
 
     @ManyToOne
+    @MapsId("idkirjakopio")
     @JoinColumn(name = "idkirjakopio")
+    @JsonBackReference
     private KirjaKopio kirjaKopio;
 
     @Column(name = "sivunnro")
@@ -23,23 +29,26 @@ public class Valokuva {
     @Column(name = "tiedostonimi")
     private String tiedostonimi; 
 
-    
+    @Column(name = "picbyte", length = 10000000)
+    private byte[] picByte;
+   
     // Getters and setters
-
+    
     /**
      * @return Long return the idkuva
-     */
-    public Long getIdkuva() {
+     *  public Long getIdkuva() {
         return idkuva;
     }
-
+     * 
+     */
+   
     /**
      * @param idkuva the idkuva to set
-     */
-    public void setIdkuva(Long idkuva) {
+     *   public void setIdkuva(Long idkuva) {
         this.idkuva = idkuva;
     }
-
+     */
+  
     /**
      * @return String return the kuvanimi
      */
