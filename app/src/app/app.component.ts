@@ -1,7 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { LandingComponent } from "./landing/landing.component";
 import { LoginPageComponent } from './login-page/login-page.component';
-import { RegisterationComponent } from './registeration/registeration.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +8,7 @@ import { CommonModule } from '@angular/common';
     selector: 'app-root',
     standalone: true,
     templateUrl: './app.component.html',
-    imports: [LandingComponent, LoginPageComponent, RegisterationComponent, RouterModule, CommonModule]
+    imports: [LandingComponent, LoginPageComponent, RouterModule, CommonModule]
 })
 export class AppComponent {
   login: boolean = true;
