@@ -7,4 +7,5 @@ import org.groupt.kirjaarkisto.models.Kirja;
 public interface KirjaKopioRepository extends JpaRepository<KirjaKopio, Long> {
     List<KirjaKopio> findByBook(Kirja book);
     List<KirjaKopio> findByIdKirjaSarja(Long idKirjaSarja);
+    List<KirjaKopio> findByIdKirjaSarjaAndIdKirjaHylly(Long idKirjaSarja, Long idKirjaHylly);
 }

@@ -76,6 +76,10 @@ public class KirjaKopioService {
     return kirjakopioRepository.save(kirjaKopio);
   }
 
+  public List<KirjaKopio> getByOmaSarja(Long hyllyId, Long sarjaId) {
+    return kirjakopioRepository.findByIdKirjaSarjaAndIdKirjaHylly(sarjaId, hyllyId);
+  }
+
   public List<KirjaKopio> getBySarja(KirjaSarja sarja) {
     return kirjakopioRepository.findByIdKirjaSarja(sarja.getId());
   }

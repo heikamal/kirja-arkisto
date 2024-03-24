@@ -4,6 +4,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaSarjaException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaSarjaException;
+import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import java.util.List;
 import org.groupt.kirjaarkisto.repositories.KirjaSarjaRepository;
