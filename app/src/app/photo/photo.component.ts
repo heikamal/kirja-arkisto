@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataService } from '../data.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -23,8 +24,14 @@ export class PhotoComponent {
   retrieveResonse: any;
   message: any;
   imageName: any;
-
-  constructor(private dataService: DataService, fb: FormBuilder, private httpClient: HttpClient, private cookieService: CookieService) {
+   
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { bookId: number, title: string },
+    private dataService: DataService,
+    private dialog: MatDialog,
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<PhotoComponent>
+  ) {
     this.photo_form = fb.group({
       tiedosto : [null],
       julkaisuvuosi: [''],
@@ -35,11 +42,14 @@ export class PhotoComponent {
       kuvannimi : ['', Validators.maxLength(45)]
     });
   }
+
+  
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
-    bookid : string = "1";
+    bookid : string = this.data.bookId.toString();
 
+    
     onUpload() {
       if (this.photo_form.valid) {
         const formData = new FormData();
@@ -60,29 +70,14 @@ export class PhotoComponent {
           console.error('File input not found');
         }
         
-        const accessToken = this.cookieService.get('accessToken');
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${accessToken}`,
-        });
-  
-        this.httpClient.post("http://localhost:8080/api/kirjat/" + this.bookid + "/kuvat", formData, { headers, observe: 'response' })
-          .subscribe(
-            (response) => {
-              console.log(response);
-              if (response.status === 200) {
-                this.message = 'Image uploaded successfully';
-              } else {
-                this.message = 'Image not uploaded successfully';
-              }
-            },
-            (error: HttpErrorResponse) => {
-              console.error('Error:', error);
-              this.message = 'Error uploading image';
-            }
-          );
-      } else {
-        console.error('Form is invalid');
-      }
+        this.dataService.post_photo(this.bookid, formData).subscribe((response) => {
+          console.log(response);
+        })
+      
     }
   }
-  
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+}

@@ -1,3 +1,4 @@
+<div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
 <form (ngSubmit)="onUpload()" [formGroup]="photo_form" class="flex flex-col items-center">
     <input type="file" formControlName="tiedosto" name="tiedosto" (change)="onFileSelected($event)" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
     <input type = "number" formControlName="julkaisuvuosi" placeholder="julkaisuvuosi" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
@@ -11,5 +12,8 @@
     <p class="text-white">Validation status: {{ photo_form.status }}</p>
     <p class="text-white">Validation status: {{ message }}</p>
     </form>
+    <button mat-button (click)="closeDialog()"
+    class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
+</div>
     
     

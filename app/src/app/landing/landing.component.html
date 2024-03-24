@@ -18,9 +18,7 @@
         <button (click)="show_search()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75 border-r-2">
             <a href="#" class="p-2 md:p-4 text-black block">Haku</a>
         </button>
-        <button (click)="show_photo()" class="border-black bg-neutral-500 border-2 rounded-md m-1 hover:brightness-75">
-            <a href="#" class="p-2 md:p-4 text-black block">kuvat</a>
-        </button>
+       
     </nav>
     <div class="flex flex-grow justify-center">
         <div class="flex flex-col h-full mt-5 max-w-screen-lg w-full">
@@ -41,9 +39,6 @@
             </div>
             <div *ngIf="visible_component === 'search'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
                 <app-search></app-search>
-            </div>
-            <div *ngIf="visible_component === 'photo'" class="text-md md:text-lg lg:text-2xl text-amber-500 font-bold">
-                <app-photo></app-photo>
             </div>
         </div>
     </div>
