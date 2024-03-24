@@ -28,33 +28,44 @@ export class LandingComponent implements OnInit {
   is_admin: boolean = false;
   
   ngOnInit(): void {
-  const roles_cookie = this.cookieService.get('roles');
-  this.is_admin = roles_cookie.includes("ROLE_ADMIN")
+    const roles_cookie = this.cookieService.get('roles');
+    this.is_admin = roles_cookie.includes("ROLE_ADMIN");
   }
 
   show_profile() {
     event?.preventDefault();
-    this.visible_component = 'profile'
+    this.visible_component = 'profile';
   }
 
   show_series() {
     event?.preventDefault();
-    this.visible_component = 'series'
+    this.visible_component = 'series';
   }
+  
   show_admin() {
     event?.preventDefault();
-    this.visible_component = 'admin'
+    this.visible_component = 'admin';
   }
+  
   show_initial() {
     event?.preventDefault();
-    this.visible_component = 'initial'
+    this.visible_component = 'initial';
   }
+  
   show_books() {
     event?.preventDefault();
-    this.visible_component = 'books'
+    this.visible_component = 'books';
   }
+  
   show_search() {
     event?.preventDefault();
-    this.visible_component = 'search'
+    this.visible_component = 'search';
+  }
+  
+  logout() {
+    this.cookieService.delete('accessToken');
+    this.cookieService.delete('roles');
+    this.cookieService.delete('user');
+    window.location.reload();
   }
 }
