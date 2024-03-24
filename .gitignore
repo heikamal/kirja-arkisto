@@ -50,6 +50,7 @@ app/npm-debug.log
 /app//libpeerconnection.log
 /app/testem.log
 /app//typings
+/app/data
 
 # System files
 /app/.DS_Store
