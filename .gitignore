@@ -3,6 +3,7 @@
 #########
 
 .vscode
+/secrets
 
 
 ########
@@ -49,6 +50,7 @@ app/npm-debug.log
 /app//libpeerconnection.log
 /app/testem.log
 /app//typings
+/app/data
 
 # System files
 /app/.DS_Store
@@ -64,6 +66,7 @@ server/target/
 server/!.mvn/wrapper/maven-wrapper.jar
 server/!**/src/main/**/target/
 server/!**/src/test/**/target/
+server/kuvat
 
 ### STS ###
 server/.apt_generated

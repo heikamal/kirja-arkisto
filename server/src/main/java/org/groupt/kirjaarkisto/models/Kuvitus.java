@@ -1,80 +1,107 @@
 package org.groupt.kirjaarkisto.models;
+
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "kuvitus")
 public class Kuvitus {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idkuva")
-    private Long id;
+  /*
+   * @Id
+   * 
+   * @GeneratedValue(strategy = GenerationType.IDENTITY)
+   * 
+   * @Column(name = "idkuva")
+   * private Long id;
+   */
 
-    @ManyToOne
-    @JoinColumn(name = "idkirja")
-    private Kirja kirja;
+  @EmbeddedId
+  private KuvitusId id;
 
-    @ManyToOne
-    @JoinColumn(name = "idkuva", insertable = false, updatable = false)
-    private Kuva kuva;
+  @ManyToOne
+  @MapsId("idkirja")
+  @JoinColumn(name = "idkirja")
+  @JsonBackReference
+  private Kirja kirja;
 
-    private Integer sivunro;
+  @ManyToOne
+  @MapsId("idkuva")
+  @JoinColumn(name = "idkuva")
+  @JsonManagedReference
+  private Kuva kuva;
 
-    
+  private Integer sivunro;
 
-    /**
-     * @return Long return the id
-     */
-    public Long getId() {
-        return id;
-    }
+  public Kuvitus() {
+  }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Kuvitus(Kirja kirja, Kuva kuva, Integer sivunro) {
+    this.id = new KuvitusId(kirja.getId(), kuva.getIdkuva());
+    this.kirja = kirja;
+    this.kuva = kuva;
+    this.sivunro = sivunro;
+  }
 
-    /**
-     * @return Kirja return the kirja
-     */
-    public Kirja getKirja() {
-        return kirja;
-    }
+  /* 
+  /**
+   * @return Long return the id
+   *
+  public Long getId() {
+    return id;
+  }
 
-    /**
-     * @param kirja the kirja to set
-     */
-    public void setKirja(Kirja kirja) {
-        this.kirja = kirja;
-    }
+  /**
+   * @param id the id to set
+   *
+  public void setId(Long id) {
+    this.id = id;
+  }*/
 
-    /**
-     * @return Kuva return the kuva
-     */
-    public Kuva getKuva() {
-        return kuva;
-    }
+  /**
+   * @return Kirja return the kirja
+   */
+  public Kirja getKirja() {
+    return kirja;
+  }
 
-    /**
-     * @param kuva the kuva to set
-     */
-    public void setKuva(Kuva kuva) {
-        this.kuva = kuva;
-    }
+  /**
+   * @param kirja the kirja to set
+   */
+  public void setKirja(Kirja kirja) {
+    this.kirja = kirja;
+  }
 
-    /**
-     * @return Integer return the sivunro
-     */
-    public Integer getSivunro() {
-        return sivunro;
-    }
+  /**
+   * @return Kuva return the kuva
+   */
+  public Kuva getKuva() {
+    return kuva;
+  }
 
-    /**
-     * @param sivunro the sivunro to set
-     */
-    public void setSivunro(Integer sivunro) {
-        this.sivunro = sivunro;
-    }
+  /**
+   * @param kuva the kuva to set
+   */
+  public void setKuva(Kuva kuva) {
+    this.kuva = kuva;
+  }
+
+  /**
+   * @return Integer return the sivunro
+   */
+  public Integer getSivunro() {
+    return sivunro;
+  }
+
+  /**
+   * @param sivunro the sivunro to set
+   */
+  public void setSivunro(Integer sivunro) {
+    this.sivunro = sivunro;
+  }
 
 }

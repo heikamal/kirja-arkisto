@@ -1,0 +1,24 @@
+<div class="text-center">
+  <div class="flex flex-col items-center bg-nerd-50 rounded-md mt-4 p-4 min-w-max">
+    <div class="flex flex-wrap justify-between">
+      <ng-container *ngIf="displayedSeries.length > 0; else noSeries">
+        <div class="text-center bg-nerd-50 rounded-md mt-4 flex-shrink-0 relative sm:w-1/2 md:w-1/3"
+          *ngFor="let series of displayedSeries">
+          <div class="h-full p-2 transition-all duration-300 hover:brightness-75 cursor-pointer"
+            (click)="show_series_details(series.id)">
+            <p>{{ series.title }}</p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noSeries>
+        <div class="flex justify-center items-center bg-nerd-50 rounded-md mt-4 w-full py-8">
+          <p>Kun lisäät sarjoja tietokantaan, ne tulevät näkymään tässä.</p>
+        </div>
+      </ng-template>
+    </div>
+    <button *ngIf="remainingSeries.length > 0" (click)="load_more_series()"
+      class="mt-4 underline font-bold py-2 px-4 rounded">
+      Load More
+    </button>
+  </div>
+</div>

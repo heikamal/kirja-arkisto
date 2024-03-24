@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * Luokka implementoimaan AuthenticationEntryPoint-rajapinta.
  */
-@Component
+//@Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
   /**

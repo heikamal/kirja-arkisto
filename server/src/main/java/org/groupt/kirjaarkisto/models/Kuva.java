@@ -1,4 +1,8 @@
 package org.groupt.kirjaarkisto.models;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -27,7 +31,27 @@ public class Kuva {
     @Column(name = "tiedostonimi")
     private String tiedostonimi;
 
-  
+    @OneToMany(mappedBy = "kuva")
+    @JsonBackReference
+    private List<Kuvitus> kuvitukset;
+
+    @Column(name = "picbyte", length = 10000000)
+    private byte[] picByte;
+
+    public Kuva() {
+      super();
+    }
+
+    public Kuva(String kuvanimi, Integer julkaisuvuosi, String taiteilija, String tyyli, String kuvaus, String tiedostonimi, byte[] picByte) {
+      this.kuvanimi = kuvanimi;
+      this.julkaisuvuosi = julkaisuvuosi;
+      this.taiteilija = taiteilija;
+      this.tyyli = tyyli;
+      this.kuvaus = kuvaus;
+      this.tiedostonimi = tiedostonimi;
+      this.picByte = picByte;
+    }
+
     public Long getIdkuva() {
         return idkuva;
         
@@ -123,6 +147,22 @@ public class Kuva {
      */
     public void setTiedostonimi(String tiedostonimi) {
         this.tiedostonimi = tiedostonimi;
+    }
+
+    public List<Kuvitus> getKuvitukset() {
+        return kuvitukset;
+    }
+
+    public void setKuvitukset(List<Kuvitus> kuvitukset) {
+        this.kuvitukset = kuvitukset;
+    }
+
+    public byte[] getPicByte() {
+        return picByte;
+    }
+
+    public void setPicByte(byte[] picByte) {
+        this.picByte = picByte;
     }
 
 }

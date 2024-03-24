@@ -8,13 +8,15 @@ public class HyllyResponse {
   private Long id;
   private Long omistaja;
   private List<SarjaResponse> sarjat;
+  private List<KirjaKopioResponse> kopiot;
 
   public HyllyResponse() {}
 
-  public HyllyResponse(KirjaHylly hylly, List<SarjaResponse> sarjat) {
+  public HyllyResponse(KirjaHylly hylly, List<SarjaResponse> sarjat, List<KirjaKopioResponse> kopiot) {
     this.id = hylly.getId();
     this.omistaja = hylly.getOmistaja();
     this.sarjat = sarjat;
+    this.kopiot = kopiot;
   }
 
 
@@ -40,6 +42,14 @@ public class HyllyResponse {
 
   public void setKirjat(List<SarjaResponse> sarjat) {
     this.sarjat = sarjat;
+  }
+
+  public List<KirjaKopioResponse> getKopiot() {
+    return this.kopiot;
+  }
+
+  public void setKopiot(List<KirjaKopioResponse> kopiot) {
+    this.kopiot = kopiot;
   }
 
 }

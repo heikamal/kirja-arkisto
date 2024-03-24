@@ -1,6 +1,6 @@
 package org.groupt.kirjaarkisto.security;
 
-import org.groupt.kirjaarkisto.security.jwt.AuthEntryPointJwt;
+//import org.groupt.kirjaarkisto.security.jwt.AuthEntryPointJwt;
 import org.groupt.kirjaarkisto.security.jwt.AuthTokenFilter;
 import org.groupt.kirjaarkisto.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class WebSecurityConfig {
   @Autowired
   UserDetailsServiceImpl userDetailsService;
 
-  @Autowired
-  private AuthEntryPointJwt unauthorizedHandler;
+//  @Autowired
+//  private AuthEntryPointJwt unauthorizedHandler;
 
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -54,7 +54,7 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+        //.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
           auth.requestMatchers("/api/auth/**").permitAll()

@@ -1,8 +1,15 @@
 package org.groupt.kirjaarkisto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import io.jsonwebtoken.io.IOException;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
@@ -30,8 +37,10 @@ public class KirjaKopioController {
   @Autowired
   private KirjaSarjaService kirjaSarjaService;
 
-    @Autowired
-    private KirjaKopioService kirjakopioService;
+  @Autowired
+  private KirjaKopioService kirjakopioService;
+
+
 
     @GetMapping
     public List<KirjaKopio> getKirjakopiot() {
@@ -77,5 +86,23 @@ public class KirjaKopioController {
       return kirjakopioService.saveKirjaKopio(kopio);
     }
 
-    // Lisää tarvittavat endpointit (POST, PUT, DELETE) kirjakopioille
+    @PostMapping("/{kirjakopioId}")
+    public ResponseEntity<String> lisaaValokuvaKirjakopiolle(
+        @PathVariable Long kirjakopioId,
+        @RequestParam("tiedosto") MultipartFile tiedosto,
+        @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
+        @RequestParam("taiteilija") String taiteilija,
+        @RequestParam("tyyli") String tyyli,
+        @RequestParam("kuvaus") String kuvaus,
+        @RequestParam("sivunro") Integer sivunro) throws java.io.IOException {
+      try {
+        kirjakopioService.lisaaKuvaKirjakopiolle(kirjakopioId, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus,
+            sivunro);
+        return ResponseEntity.ok("Valokuva lisätty kirjakopiolle onnistuneesti.");
+      } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kirjakopiota ei löydy id:llä " + kirjakopioId);
+      } catch (IOException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Tiedoston tallentaminen epäonnistui.");
+      }
+    }
 }

@@ -1,0 +1,41 @@
+<div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
+    <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl">
+      <div style="display: grid; gap: 1rem;">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Painos (Edition):</span>
+          <span>{{ copy?.edition }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Painos vuosi (Edition Year):</span>
+          <span>{{ copy?.editionYear }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Osto hinta (Purchase Price):</span>
+          <span>{{ copy?.purchasePrice }}€</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Osto päivämäärä (Purchase Date):</span>
+          <span>{{ copy?.purchaseDate }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Kunto (Condition):</span>
+          <span>{{ copy?.condition }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Kuvaus (Description):</span>
+          <span>{{ copy?.description }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Myynti päivämäärä (Sale Date):</span>
+          <span>{{ copy?.saleDate }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Myynti hinta (Sale Price):</span>
+          <span>{{ copy?.salePrice }}€</span>
+        </div>
+      </div>
+      <button mat-button (click)="closeDialog()"
+        class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
+    </div>
+  </div>
+  

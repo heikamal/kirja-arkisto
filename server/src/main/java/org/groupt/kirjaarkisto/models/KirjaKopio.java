@@ -1,8 +1,6 @@
 package org.groupt.kirjaarkisto.models;
 import java.sql.Date;
-
 import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -60,7 +58,7 @@ public class KirjaKopio {
       this.editions = dto.getPainos();
       this.editionYear = dto.getPainosVuosi();
       this.book = kirja;
-      this.purchasePrice = dto.getMyyntiHinta();
+      this.purchasePrice = dto.getOstoHinta();
       this.purchaseDate = dto.getOstoPvm();
       this.condition = dto.getKunto();
       this.description = dto.getKuvaus();

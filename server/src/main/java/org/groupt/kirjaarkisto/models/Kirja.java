@@ -1,5 +1,8 @@
 package org.groupt.kirjaarkisto.models;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -29,7 +32,8 @@ public class Kirja {
     @Column(name = "kuvaus")
     private String kuvaus;
 
-    @OneToMany(mappedBy = "kirja", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "kirja")
+    @JsonManagedReference
     private List<Kuvitus> kuvitukset;
 
     public Kirja() {
