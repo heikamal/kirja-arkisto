@@ -28,8 +28,10 @@
         <div mat-dialog-actions class="m-4 md:m-1 w-full flex justify-center">
             <button mat-button (click)="closeDialog()"
                 class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
-            <button (click)="add_copy()"
-                class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Lisää</button>
+                <button (click)="add_copy()"
+                class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Lisää kirjahyllyyn</button>
+            <button (click)="add_photo()"
+                class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Lisää kuva</button>
             <p *ngIf="owned" class="rounded-md m-1 p-3 text-green-500 whitespace-nowrap">
                 Kirjahyllyssä
             </p>

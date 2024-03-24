@@ -3,6 +3,7 @@ import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { AddCopyComponent } from '../add-copy/add-copy.component';
+import { PhotoComponent } from '../photo/photo.component';
 
 @Component({
   selector: 'app-book-details',
@@ -60,6 +61,15 @@ export class BookDetailsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddCopyComponent, {
       width: '400px',
       data: { bookId: this.chosen_book, title: this.title, series_id: this.series_id}
+    });
+  }
+  add_photo(): void {
+    if (this.dialogRef && this.dialogRef.componentInstance instanceof AddCopyComponent) {
+      this.dialogRef.close();
+    }
+    const dialogRef = this.dialog.open(PhotoComponent, {
+      width: '400px',
+      data: { bookId: this.chosen_book, title: this.title }
     });
   }
   closeDialog(): void {

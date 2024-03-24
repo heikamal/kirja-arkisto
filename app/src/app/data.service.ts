@@ -17,7 +17,7 @@ export class DataService {
   login_url = 'http://localhost:8080/api/auth/signin';  
   bookshelf_url = 'http://localhost:8080/api/kirjahyllyt/self';  
   bookcopy_url = 'http://localhost:8080/api/kirjakopiot';  
-  photo_url = 'http://localhost:8080/api/kirjat/kuvat';
+  photo_url = 'http://localhost:8080/api/kirjat';
   ownership_url = 'http://localhost:8080/api/kirjat'
 
   post_book(data: JSON): Observable<JSON> {
@@ -36,10 +36,10 @@ export class DataService {
     const url = `${this.bookcopy_url}/${copy_id}`;
     return this.http.get<JSON>(url, { headers });
   }
-  post_photo(data: JSON): Observable<JSON> {
+  post_photo( bookid : string, formdata : FormData): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-    return this.http.post<JSON>(this.photo_url, data, { headers });
+    return this.http.post<any>(this.photo_url + `/${bookid}` + '/kuvat', formdata, { headers });
   }
   get_books(): Observable<Book[]>{
     const accessToken = this.cookieService.get('accessToken');
@@ -52,10 +52,10 @@ export class DataService {
     const url = `${this.book_url}/${book_id}`;
     return this.http.get<JSON>(url, { headers });
   }
-  get_photo(data: JSON): Observable<JSON> {
+  get_photo(kuvaid : string): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-    return this.http.post<JSON>(this.photo_url, data, { headers });
+    return this.http.get<any>(this.photo_url + `/${kuvaid}` + '/kuvitukset', { headers });
   }
   get_bookshelf(): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');

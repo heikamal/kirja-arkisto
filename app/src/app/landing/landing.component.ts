@@ -57,8 +57,4 @@ export class LandingComponent implements OnInit {
     event?.preventDefault();
     this.visible_component = 'search'
   }
-  show_photo() {
-    event?.preventDefault();
-    this.visible_component = 'photo'
-  }
 }
