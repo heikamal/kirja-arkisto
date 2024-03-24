@@ -21,6 +21,8 @@ export class AdminComponent {
   remove_series_id: any;
   book_form: FormGroup;
   series_form: FormGroup;
+  registration_form: FormGroup;
+  roles: string[] = ["user"]
   book_data: any;
   single_book_data: any;
   series_data: any;
@@ -44,6 +46,11 @@ export class AdminComponent {
       kustantaja: ['', Validators.maxLength(45)],
       kuvaus: ['', Validators.maxLength(255)],
       luokittelu: ['', Validators.maxLength(45)],
+    });
+    this.registration_form = fb.group({
+      nimi: ['', Validators.maxLength(45)],
+      salasana: ['', Validators.maxLength(45)],
+      rooli: [this.roles]
     });
 
     this.load_series();
@@ -99,5 +106,11 @@ export class AdminComponent {
     }, error => {
       console.error('Error occurred while removing book:', error);
     });
+  }
+  register_user() {
+    this.dataService.register_user(this.registration_form
+  .value).subscribe(response => {
+      console.log('Response:', response);
+    })
   }
 }

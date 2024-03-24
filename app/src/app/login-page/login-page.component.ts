@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter, Inject } from '@angular/core';
-import { RegisterationComponent } from '../registeration/registeration.component';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../data.service';
@@ -10,13 +9,12 @@ import { json } from 'stream/consumers';
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [RegisterationComponent, ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   providers: [DataService, CookieService],
   templateUrl: './login-page.component.html'
 })
 export class LoginPageComponent {
   login_form: FormGroup;
-
 
   constructor(@Inject(FormBuilder) fb: FormBuilder,
     private dataService: DataService, private cookieService: CookieService
@@ -28,7 +26,6 @@ export class LoginPageComponent {
     })
   }
 
-  @Output("Register") Register: EventEmitter<any> = new EventEmitter();
   @Output("Landing") Landing: EventEmitter<any> = new EventEmitter();
   title = 'login';
 
@@ -43,15 +40,11 @@ export class LoginPageComponent {
       const tokenType: string = jsonObject.tokenType;
       const nimi: string = jsonObject.nimi;
       const type: string = jsonObject.roolit;
-      console.log(accessToken); // This will print the access token
+      console.log(accessToken);
       this.cookieService.set("accessToken",  accessToken);
       this.cookieService.set("user", nimi);
       this.cookieService.set("roles", type);
     })
     this.Landing.emit();
-  }
-
-  emitToggleEvent() {
-    this.Register.emit();
   }
 }
