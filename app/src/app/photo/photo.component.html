@@ -11,9 +11,8 @@
     <p class="text-white mt-4 md:mt-6">Value: {{ photo_form.value | json }}</p>
     <p class="text-white">Validation status: {{ photo_form.status }}</p>
     <p class="text-white">Validation status: {{ message }}</p>
+    <button mat-button (click)="closeDialog()"class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
     </form>
-    <button mat-button (click)="closeDialog()"
-    class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
 </div>
     
     
