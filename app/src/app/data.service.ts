@@ -47,10 +47,10 @@ export class DataService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<any>(this.photo_url + `/${bookid}` + '/kuvat', formdata, { headers });
   }
-  post_valokuva( bookid : string, formdata : FormData): Observable<any> {
+  post_valokuva( copybookid : string, formdata : FormData): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-    return this.http.post<any>(this.valokuva_url + `/${bookid}` + '/kuvat', formdata, { headers });
+    return this.http.post<any>(this.valokuva_url + `/${copybookid}` + '/kuvat', formdata, { headers });
   }
   get_books(): Observable<Book[]>{
     const accessToken = this.cookieService.get('accessToken');
