@@ -24,25 +24,40 @@ export class CarouselComponent implements OnInit {
       if (this.seriesId) {
         this.books = response.filter(book => book.kirjaSarja.id === this.seriesId)
           .map((bookData: any) => {
-            this.base64Data = bookData.kuvitukset[0].kuva.picByte;
-            bookData.image_url = 'data:image/jpeg;base64,' + this.base64Data;
+            let image_url = 'none';
+      
+            try {
+              if (bookData.kuvitukset && bookData.kuvitukset.length > 0 && bookData.kuvitukset[0].kuva.picByte) {
+                this.base64Data = bookData.kuvitukset[0].kuva.picByte;
+                image_url = 'data:image/jpeg;base64,' + this.base64Data;
+              }
+            } catch (error) {
+              console.error("Error processing image:", error);
+            }
+      
             const book: Book = {
               id: bookData.id,
               title: bookData.nimi,
               author: bookData.kirjailija,
               date: bookData.julkaisuVuosi,
               series: bookData.jarjestysNro,
-              image_url: bookData.image_url,
+              image_url: image_url,
               is_owned: false
             };
+      
             this.dataService.get_ownership(book.id).subscribe((ownershipResponse: any) => {
-              const jsonStr: string = JSON.stringify(ownershipResponse);
-              const jsonObject: any = JSON.parse(jsonStr);
-              book.is_owned = jsonObject.owned;
+              try {
+                const jsonStr: string = JSON.stringify(ownershipResponse);
+                const jsonObject: any = JSON.parse(jsonStr);
+                book.is_owned = jsonObject.owned;
+              } catch (error) {
+                console.error("Error parsing ownership data:", error);
+              }
             });
             return book;
           });
-      } else {
+      }
+       else {
         this.books = response.map((bookData: any) => {
           let image_url = 'none';
           try {
