@@ -1,4 +1,5 @@
 package org.groupt.kirjaarkisto.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,85 +41,82 @@ public class KirjaKopioController {
   @Autowired
   private KirjaKopioService kirjakopioService;
 
+  @GetMapping
+  public List<KirjaKopio> getKirjakopiot() {
+    return kirjakopioService.getKirjakopiot();
+  }
 
+  @GetMapping("/{id}")
+  public KirjaKopio getKirjakopio(@PathVariable Long id) {
+    return kirjakopioService.getKirjakopioById(id);
+  }
 
-    @GetMapping
-    public List<KirjaKopio> getKirjakopiot() {
-        return kirjakopioService.getKirjakopiot();
-    }
+  @PostMapping
+  public KirjaKopio addKirjaKopio(@RequestBody KirjaKopioDTO kirjaKopio) {
 
-    @GetMapping("/{id}")
-    public KirjaKopio getKirjakopio(@PathVariable Long id) {
-        return kirjakopioService.getKirjakopioById(id);
-    }
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    @PostMapping
-    public KirjaKopio addKirjaKopio(@RequestBody KirjaKopioDTO kirjaKopio) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-    
-      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    KirjaHylly hylly = kirjaHyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
 
-      KirjaHylly hylly = kirjaHyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
+    List<KirjaSarja> sarjat = hylly.getOmatSarjat();
 
-      List<KirjaSarja> sarjat = hylly.getOmatSarjat();
+    boolean found = false;
 
-      boolean found = false;
-
-      for(KirjaSarja sarja : sarjat) {
-        if (Objects.equals(sarja.getId(), kirjaKopio.getIdKirjaSarja())) {
-          found = true;
-          break;
-        }
-      }
-
-      if (!found) {
-        hylly.addToOmatSarjat(kirjaSarjaService.getKirjasarjaById(kirjaKopio.getIdKirjaSarja()));
-        kirjaHyllyService.saveKirjaHylly(hylly);
-      }
-
-      Kirja kirja = kirjaService.getKirjaById(kirjaKopio.getKirjaId());
-
-
-      KirjaKopio kopio = new KirjaKopio(kirjaKopio, kirja, hylly.getId());
-
-      return kirjakopioService.saveKirjaKopio(kopio);
-    }
-
-    @PostMapping("/{kirjakopioId}")
-    public ResponseEntity<String> lisaaValokuvaKirjakopiolle(
-        @PathVariable Long kirjakopioId,
-        @RequestParam("tiedosto") MultipartFile tiedosto,
-        @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
-        @RequestParam("taiteilija") String taiteilija,
-        @RequestParam("tyyli") String tyyli,
-        @RequestParam("kuvaus") String kuvaus,
-        @RequestParam("sivunro") Integer sivunro) throws java.io.IOException {
-      try {
-        kirjakopioService.lisaaKuvaKirjakopiolle(kirjakopioId, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus,
-            sivunro);
-        return ResponseEntity.ok("Valokuva lisätty kirjakopiolle onnistuneesti.");
-      } catch (EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kirjakopiota ei löydy id:llä " + kirjakopioId);
-      } catch (IOException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Tiedoston tallentaminen epäonnistui.");
+    for (KirjaSarja sarja : sarjat) {
+      if (Objects.equals(sarja.getId(), kirjaKopio.getIdKirjaSarja())) {
+        found = true;
+        break;
       }
     }
 
-    @PutMapping("/{kirjakopioId}")
-    public KirjaKopio updateKirjakopio(@PathVariable Long kirjakopioId, @RequestBody KirjaKopioDTO kirjakopio) {
-      KirjaKopio kopio = kirjakopioService.getKirjakopioById(kirjakopioId);
-      kopio.setTitle(kirjakopio.getNimi());
-      kopio.setEditions(kirjakopio.getPainos());
-      kopio.setEditionYear(kirjakopio.getPainosVuosi());
-      kopio.setPurchasePrice(kirjakopio.getOstoHinta());
-      kopio.setPurchaseDate(kirjakopio.getOstoPvm());
-      kopio.setCondition(kirjakopio.getKunto());
-      kopio.setDescription(kirjakopio.getKuvaus());
-      kopio.setSaleDate(kirjakopio.getMyyntiPvm());
-      kopio.setSalePrice(kirjakopio.getMyyntiHinta());
-
-      return kirjakopioService.saveKirjaKopio(kopio);
+    if (!found) {
+      hylly.addToOmatSarjat(kirjaSarjaService.getKirjasarjaById(kirjaKopio.getIdKirjaSarja()));
+      kirjaHyllyService.saveKirjaHylly(hylly);
     }
+
+    Kirja kirja = kirjaService.getKirjaById(kirjaKopio.getKirjaId());
+
+    KirjaKopio kopio = new KirjaKopio(kirjaKopio, kirja, hylly.getId());
+
+    return kirjakopioService.saveKirjaKopio(kopio);
+  }
+
+  @PostMapping("/{kirjakopioId}")
+  public ResponseEntity<String> lisaaValokuvaKirjakopiolle(
+      @PathVariable Long kirjakopioId,
+      @RequestParam("tiedosto") MultipartFile tiedosto,
+      @RequestParam("julkaisuvuosi") Integer julkaisuvuosi,
+      @RequestParam("taiteilija") String taiteilija,
+      @RequestParam("tyyli") String tyyli,
+      @RequestParam("kuvaus") String kuvaus,
+      @RequestParam("sivunro") Integer sivunro) throws java.io.IOException {
+    try {
+      kirjakopioService.lisaaKuvaKirjakopiolle(kirjakopioId, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus,
+          sivunro);
+      return ResponseEntity.ok("Valokuva lisätty kirjakopiolle onnistuneesti.");
+    } catch (EntityNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kirjakopiota ei löydy id:llä " + kirjakopioId);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Tiedoston tallentaminen epäonnistui.");
+    }
+  }
+
+  @PutMapping("/{kirjakopioId}")
+  public KirjaKopio updateKirjakopio(@PathVariable Long kirjakopioId, @RequestBody KirjaKopioDTO kirjakopio) {
+    KirjaKopio kopio = kirjakopioService.getKirjakopioById(kirjakopioId);
+    kopio.setTitle(kirjakopio.getNimi());
+    kopio.setEditions(kirjakopio.getPainos());
+    kopio.setEditionYear(kirjakopio.getPainosVuosi());
+    kopio.setPurchasePrice(kirjakopio.getOstoHinta());
+    kopio.setPurchaseDate(kirjakopio.getOstoPvm());
+    kopio.setCondition(kirjakopio.getKunto());
+    kopio.setDescription(kirjakopio.getKuvaus());
+    kopio.setSaleDate(kirjakopio.getMyyntiPvm());
+    kopio.setSalePrice(kirjakopio.getMyyntiHinta());
+
+    return kirjakopioService.saveKirjaKopio(kopio);
+  }
 }

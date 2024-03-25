@@ -1,4 +1,5 @@
 package org.groupt.kirjaarkisto.models;
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -174,7 +175,7 @@ public class Kuva {
      * Palauttaa sitä kutsuvan kuvan kuvitukset listana
      */
     public List<Kuvitus> getKuvitukset() {
-        return kuvitukset;
+        return new ArrayList<>(kuvitukset);
     }
      /**
      * Asettaa kuvalle kuvituksia
