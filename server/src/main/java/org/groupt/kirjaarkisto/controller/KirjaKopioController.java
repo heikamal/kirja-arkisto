@@ -92,10 +92,11 @@ public class KirjaKopioController {
       @RequestParam("taiteilija") String taiteilija,
       @RequestParam("tyyli") String tyyli,
       @RequestParam("kuvaus") String kuvaus,
-      @RequestParam("sivunro") Integer sivunro) throws java.io.IOException {
+      @RequestParam("sivunro") Integer sivunro,
+      @RequestParam("kuvannimi") String kuvannimi) throws java.io.IOException {
     try {
       kirjakopioService.lisaaKuvaKirjakopiolle(kirjakopioId, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus,
-          sivunro);
+          sivunro, kuvannimi);
       return ResponseEntity.ok("Valokuva lisätty kirjakopiolle onnistuneesti.");
     } catch (EntityNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kirjakopiota ei löydy id:llä " + kirjakopioId);

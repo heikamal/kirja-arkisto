@@ -9,6 +9,7 @@ import jakarta.persistence.Embeddable;
  * Käytännössä se siis yksilöi kuvitukset siihen liittyvien kuvien ja kirjojen pääavaimien ja tunnisteiden perusteella
  */
 @Embeddable
+public
 class KuvitusId implements Serializable {
 
   @Column(name = "idkirja")

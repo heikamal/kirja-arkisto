@@ -7,10 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Service
+//@Service
 public class TiedostonhallintaService {
     private static final String KUVAKANSIO = "kuvat";
 
+    /* 
     public String tallennaKuva(MultipartFile file) {
         String tiedostoNimi = file.getOriginalFilename();
         Path tallennusPolku = Paths.get(KUVAKANSIO).toAbsolutePath().normalize();
@@ -32,5 +33,5 @@ public class TiedostonhallintaService {
         Path tallennettuPolku = Paths.get(KUVAKANSIO).resolve(tiedostoNimi).normalize();
 
         Files.deleteIfExists(tallennettuPolku);
-    }
+    }*/
 }
