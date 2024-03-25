@@ -84,7 +84,7 @@ public class KirjaKopioController {
     return kirjakopioService.saveKirjaKopio(kopio);
   }
 
-  @PostMapping("/{kirjakopioId}")
+  @PostMapping("/{kirjakopioId}/kuvat")
   public ResponseEntity<String> lisaaValokuvaKirjakopiolle(
       @PathVariable Long kirjakopioId,
       @RequestParam("tiedosto") MultipartFile tiedosto,
