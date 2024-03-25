@@ -66,7 +66,6 @@ export class PhotoComponent {
           } else {
             console.error('No files selected');
             this.openErrorDialog();
-            
           }
         } else {
           console.error('File input not found');
@@ -75,14 +74,12 @@ export class PhotoComponent {
         
         this.dataService.post_photo(this.bookid, formData).subscribe((response) => {
           console.log(response);
-          
+          this.dialogRef.close();
         })
       
     }
   }
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
+
   openErrorDialog(): void {
     const dialogRef = this.dialog.open(ErrorDialogComponent, {
       width: '250px',
