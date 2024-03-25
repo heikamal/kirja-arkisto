@@ -47,7 +47,11 @@ public class KirjaHyllyController {
     public KirjaHylly getKirjahylly(@PathVariable Long id) {
         return kirjahyllyService.getKirjahyllyById(id);
     }
-
+    /**
+     * GET-Endpoint kirjahyllyjen hakuun. URL-osoite: /api/kirjahyllyt/self
+     * Palauttaa siis kirjautuneen käyttäjän kirjahyllyn
+     * @return Hylly
+     */
     @GetMapping("/self")
     public HyllyResponse getOwnKirjaHylly() {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -76,7 +80,13 @@ public class KirjaHyllyController {
 
       return new HyllyResponse(hylly, sarjat, k);
     }
-
+    /**
+     * POST-endpoint joka käsittelee sarjojen lisäyksen kirjahyllyyn. URL-osoite: /api/kirjahyllyt/self
+     * 
+     * Muistutus: Kaikki kirjat kuuluvat kirjasarjaan
+     * 
+     * @param sarja lisättävä sarja
+     */
     @PostMapping("/self")
     public KirjaHylly addSarja(@NonNull @RequestBody OmaSarjaDTO sarja) {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -102,6 +112,4 @@ public class KirjaHyllyController {
 
       return kirjahyllyService.saveKirjaHylly(hylly);
     }
-
-    // Lisää tarvittavat endpointit (POST, PUT, DELETE) kirjahyllyille
 }

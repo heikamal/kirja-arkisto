@@ -75,4 +75,14 @@ class KuvitusId implements Serializable {
       return false;
     return true;
   }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " idkirja='" + getIdkirja() + "'" +
+      ", idkuva='" + getIdkuva() + "'" +
+      "}";
+  }
+
 }
