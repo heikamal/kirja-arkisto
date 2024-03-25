@@ -41,8 +41,8 @@ public class KirjaKopioService {
   private KuvaRepository kuvaRepository;
 
 
-  @Autowired
-  private TiedostonhallintaService tiedostonhallintaService;
+  //@Autowired
+  //private TiedostonhallintaService tiedostonhallintaService;
 
   /**
    * Palauttaa kaikki tietokannasta löytyvät kirjakopiot.
@@ -96,18 +96,18 @@ public class KirjaKopioService {
 
   @Transactional
   public void lisaaKuvaKirjakopiolle(Long kirjakopioId, MultipartFile tiedosto, Integer julkaisuvuosi,
-      String taiteilija, String tyyli, String kuvaus, Integer sivunro) throws IOException {
+      String taiteilija, String tyyli, String kuvaus, Integer sivunro, String nimi) throws IOException {
     KirjaKopio kirjakopio = kirjaKopioRepository.findById(kirjakopioId)
         .orElseThrow(() -> new EntityNotFoundException("Kirjakopiota ei löydy id:llä " + kirjakopioId));
 
     // Tallenna tiedosto ja palauta sen polku
-    String tiedostoNimi = tiedostonhallintaService.tallennaKuva(tiedosto);
+    //String tiedostoNimi = tiedostonhallintaService.tallennaKuva(tiedosto);
 
     // Luo uusi valokuva
     Valokuva valokuva = new Valokuva();
     valokuva.setKuvanimi(tiedosto.getOriginalFilename());
     valokuva.setKirjaKopio(kirjakopio);
-    valokuva.setTiedostonimi(tiedostoNimi);
+    valokuva.setTiedostonimi(nimi);
     valokuva.setSivunnro(sivunro);
 
     valokuva.setPicByte(compressBytes(tiedosto.getBytes()));

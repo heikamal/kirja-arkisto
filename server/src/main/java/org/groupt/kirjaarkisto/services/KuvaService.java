@@ -33,8 +33,8 @@ public class KuvaService {
   private KuvitusRepository kuvitusRepository;
 
 
-  @Autowired
-  private TiedostonhallintaService tiedostonhallintaservice;
+  //@Autowired
+  //private TiedostonhallintaService tiedostonhallintaservice;
 
     public void poistaKuva(Long id) {
         kuvaRepository.deleteById(id);
@@ -67,7 +67,7 @@ public class KuvaService {
       Kirja kirja = kirjaRepository.findById(kirjaId)
         .orElseThrow(() -> new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId));
 
-       String tiedostoNimi = tiedostonhallintaservice.tallennaKuva(tiedosto);
+       //String tiedostoNimi = tiedostonhallintaservice.tallennaKuva(tiedosto);
        
        // Luo kuvaolio ja tallenna tiedostonimi tietokantaan
        Kuva kuva = new Kuva();
@@ -75,7 +75,7 @@ public class KuvaService {
        kuva.setTaiteilija(taiteilija);
        kuva.setTyyli(tyyli);
        kuva.setKuvaus(kuvaus);
-       kuva.setTiedostonimi(tiedostoNimi); // Tallennetaan tiedostonimi tietokantaan
+       kuva.setTiedostonimi(nimi); // Tallennetaan tiedostonimi tietokantaan
        kuva.setPicByte(compressBytes(tiedosto.getBytes()));
        kuva.setKuvanimi(nimi);
 

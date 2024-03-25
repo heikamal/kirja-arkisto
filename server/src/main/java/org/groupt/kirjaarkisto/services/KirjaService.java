@@ -74,7 +74,7 @@ public class KirjaService {
     Kirja book = kirjaRepository.findById(id)
         .orElseThrow(() -> new NonExistingKirjaException("Kirjaa ei käytynyt id:llä " + id));
     for (Kuvitus k : book.getKuvitukset()) {
-      System.out.println("Poistetaan kuva: " + k.getKuva().getIdkuva());
+      System.out.println("Poistetaan kuva: " + k.getId().getIdkuva());
       kuvaService.poistaKuva(k.getKuva().getIdkuva());
       kuvitusRepository.delete(k);
     }
