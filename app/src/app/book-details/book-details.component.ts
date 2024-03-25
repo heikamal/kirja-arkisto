@@ -23,6 +23,10 @@ export class BookDetailsComponent implements OnInit {
   chosen_book: any;
   image_url: any;
   owned: any;
+  kuvitukset: any;
+  retrieveResonse: any;
+  base64Data: any;
+  retrievedImage : any;
   show_full_description: boolean = false;
 
   constructor(
@@ -36,6 +40,7 @@ export class BookDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.get_book(this.chosen_book).subscribe((response: any[]) => {
+      
       const jsonStr: string = JSON.stringify(response);
       const jsonObject: any = JSON.parse(jsonStr);
       this.title = jsonObject.nimi;
@@ -44,7 +49,10 @@ export class BookDetailsComponent implements OnInit {
       this.series_name = jsonObject.kirjaSarja.title;
       this.series_id = jsonObject.kirjaSarja.id;
       this.description = jsonObject.kuvaus;
-      this.image_url = jsonObject.image_url;
+      this.retrieveResonse = response;
+      this.base64Data = this.retrieveResonse.kuvitukset[0].kuva.picByte;
+      this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+      this.image_url = this.retrievedImage;
     });
     this.dataService.get_ownership(this.chosen_book).subscribe((response: any) => {
       const jsonStr: string = JSON.stringify(response);
@@ -75,4 +83,5 @@ export class BookDetailsComponent implements OnInit {
   closeDialog(): void {
     this.dialogRef.close();
   }
+ 
 }

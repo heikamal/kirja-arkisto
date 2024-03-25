@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { DataService } from '../data.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 
 @Component({
@@ -65,19 +66,29 @@ export class PhotoComponent {
             formData.append('tiedosto', file);
           } else {
             console.error('No files selected');
+            this.openErrorDialog();
+            
           }
         } else {
           console.error('File input not found');
+          this.openErrorDialog();
         }
         
         this.dataService.post_photo(this.bookid, formData).subscribe((response) => {
           console.log(response);
+          
         })
       
     }
   }
   closeDialog(): void {
     this.dialogRef.close();
+  }
+  openErrorDialog(): void {
+    const dialogRef = this.dialog.open(ErrorDialogComponent, {
+      width: '250px',
+      data: { message: 'Tarkista kentät, kuvaa ei pystytty lisäämään' }
+    });
   }
 
 }
