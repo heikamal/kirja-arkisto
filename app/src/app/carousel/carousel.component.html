@@ -7,7 +7,7 @@
             <div class="relative group">
               <img *ngIf="book.image_url === 'none'" src="../../assets/miscellaneous/cover_not_available.png" [alt]="book.title"
                 class="h-48 md:h-64 md:w-48 w-32 p-2 hover:brightness-75" (click)="show_book_details(book.id)">
-              <img *ngIf="book.image_url" [src]="book.image_url" [alt]="book.title"
+              <img *ngIf="book.image_url !== 'none'" [src]="book.image_url" [alt]="book.title"
                 class=" h-48 md:h-64 md:w-48 w-32 p-2 hover:brightness-75" (click)="show_book_details(book.id)">
               <div *ngIf="book.is_owned" class="absolute top-0 right-0 mr-2 mt-2 text-green-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
