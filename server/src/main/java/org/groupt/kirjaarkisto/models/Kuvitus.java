@@ -1,24 +1,20 @@
 package org.groupt.kirjaarkisto.models;
-
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.*;
 
+/**
+
+ * Tämä luokka edustaa "Kuvitus"-entiteettiä
+ * Se yhdistää tietyn kuvan (Kuva-luokka) kirjaan (Kirja-luokkaan) ja sisältää sivunumeron.
+ * jossa kuvitus esiintyy kirjassa.
+ * 
+ * Kuvalla voi siis olla monta kuvitusta. (Siis monia kuvia kirjasta, esimerkiksi eri sivuilta)
+ */
 @Entity
 @Table(name = "kuvitus")
 public class Kuvitus {
 
-  /*
-   * @Id
-   * 
-   * @GeneratedValue(strategy = GenerationType.IDENTITY)
-   * 
-   * @Column(name = "idkuva")
-   * private Long id;
-   */
 
   @EmbeddedId
   private KuvitusId id;
@@ -40,6 +36,7 @@ public class Kuvitus {
   public Kuvitus() {
   }
 
+  //parametrillinen konstruktori :D
   public Kuvitus(Kirja kirja, Kuva kuva, Integer sivunro) {
     this.id = new KuvitusId(kirja.getId(), kuva.getIdkuva());
     this.kirja = kirja;
@@ -47,58 +44,50 @@ public class Kuvitus {
     this.sivunro = sivunro;
   }
 
-  /* 
-  /**
-   * @return Long return the id
-   *
-  public Long getId() {
-    return id;
-  }
 
   /**
-   * @param id the id to set
-   *
-  public void setId(Long id) {
-    this.id = id;
-  }*/
-
-  /**
-   * @return Kirja return the kirja
+   * Palauttaa kirjan mihin kuvitus kuuluu
+   * @return Kirja
    */
   public Kirja getKirja() {
     return kirja;
   }
 
   /**
-   * @param kirja the kirja to set
+   * Asettaa kuvitukselle kirjan
+   * @param kirja 
    */
   public void setKirja(Kirja kirja) {
     this.kirja = kirja;
   }
 
   /**
-   * @return Kuva return the kuva
+   * Palauttaa kuvan mihin kuvitus kuuluu
+   * @return Kuva 
    */
   public Kuva getKuva() {
     return kuva;
   }
 
   /**
-   * @param kuva the kuva to set
+   * Asettaa kuvan mihin kuvitus kuuluu
+   * @param kuva
    */
   public void setKuva(Kuva kuva) {
     this.kuva = kuva;
   }
 
   /**
-   * @return Integer return the sivunro
+   * Palauttaa kuvituksen sivunumeron kokonaislukuna
+   * @return Integer sivunro
    */
   public Integer getSivunro() {
     return sivunro;
   }
 
   /**
-   * @param sivunro the sivunro to set
+   * Asettaa kuvituksen sivunumeron kokonaislukuna
+   * @param sivunro
    */
   public void setSivunro(Integer sivunro) {
     this.sivunro = sivunro;

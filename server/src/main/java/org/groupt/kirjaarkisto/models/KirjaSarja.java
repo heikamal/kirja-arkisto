@@ -1,38 +1,44 @@
 package org.groupt.kirjaarkisto.models;
 import jakarta.persistence.*;
-
+    /**
+     * Tämä on spring model-luokka kirjasarjoille
+     * Jokainen kirja kuuluu kirjasarjaan
+     */
 @Entity
 @Table(name = "kirjasarja")
 public class KirjaSarja {
+
+    /**
+     * Pääavaimen määrittely, kirjasarjan id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idkirjasarja")
     private Long id;
 
+    /**
+     * Kirjasarjan nimi
+     */
     @Column(name = "kirjasarja")
     private String title;
 
+    /**
+     * Kirjasarjan kustantaja, WSOY? Otava?
+     */
     @Column
     private String kustantaja;
 
+    /**
+     * Kuvaus kirjasarjasta
+     */
     @Column
     private String kuvaus;
 
+    /**
+     * Kirjasarjan luokittelu TAI GENRE
+     */
     @Column
     private String luokittelu;
-
-
-    //vittu poista tää :D
-    /** 
-    * @OneToMany(mappedBy = "kirjasarja", cascade = CascadeType.ALL)
-        private List<Kirja> kirjat;
-    */
-   
-    //vittu poista tää :D
-    /** 
-    * @OneToMany(mappedBy = "kirjasarja", cascade = CascadeType.ALL)
-        private List<Kirja> kirjat;
-    */
 
     /**
      * Parametritön alustaja
@@ -42,6 +48,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Palauttaa kirjasarjan id:n
      * @return Long return the id
      */
     public Long getId() {
@@ -49,6 +56,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Asettaa kirjasarjan id:n
      * @param id the id to set
      */
     public void setId(Long id) {
@@ -56,6 +64,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Palauttaa kirjasarjan nimen
      * @return String return the title
      */
     public String getTitle() {
@@ -63,6 +72,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Asettaa kirjasarjan nimen
      * @param title the title to set
      */
     public void setTitle(String title) {
@@ -70,6 +80,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Palauttaa kirjasarjan kustantajan
      * @return String return the kustantaja
      */
     public String getKustantaja() {
@@ -77,6 +88,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Asettaa kirjasarjan kustantajan
      * @param kustantaja the kustantaja to set
      */
     public void setKustantaja(String kustantaja) {
@@ -84,6 +96,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Palauttaa kirjasarjan kuvauksen
      * @return String return the kuvaus
      */
     public String getKuvaus() {
@@ -91,6 +104,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Asettaa kirjasarjan kuvauksen
      * @param kuvaus the kuvaus to set
      */
     public void setKuvaus(String kuvaus) {
@@ -98,6 +112,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Palauttaa kirjasarjan genren
      * @return String return the luokittelu
      */
     public String getLuokittelu() {
@@ -105,6 +120,7 @@ public class KirjaSarja {
     }
 
     /**
+     * Asettaa kirjasarjan genren
      * @param luokittelu the luokittelu to set
      */
     public void setLuokittelu(String luokittelu) {

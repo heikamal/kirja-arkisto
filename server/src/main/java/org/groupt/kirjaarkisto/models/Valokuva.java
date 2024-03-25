@@ -2,6 +2,14 @@ package org.groupt.kirjaarkisto.models;
 
 import jakarta.persistence.*;
 
+/**
+ * Valokuva luokka ja/tai entiteetti on käytännössä kirjakopioiden kuvitus.
+ *
+ * Sitä käytetään erottelemaan Kirjan ja kirjakopioiden "kuvitukset" tai kuvat
+ * Käytännössä siis valokuvat ovat käyttäjän itse ottamia kuvia jotka lisätään kirjakopioille omaan kirjahyllyyn.
+ * 
+ * Tiedot: idkuva (tunniste), kuvan nimi, sivunumero, tiedostonimi, kuvan bittimuoto tietokantaan tallennusta varten ja siihen liittyvä kirjakopio
+ */
 @Entity
 @Table(name = "valokuva")
 public class Valokuva {
@@ -26,24 +34,10 @@ public class Valokuva {
   @Column(name = "picbyte", length = 10000000)
   private byte[] picByte;
 
-  // Getters and setters
+  // Getters ja setters
 
   /**
-   * @return Long return the idkuva
-   *         public Long getIdkuva() {
-   *         return idkuva;
-   *         }
-   * 
-   */
-
-  /**
-   * @param idkuva the idkuva to set
-   *               public void setIdkuva(Long idkuva) {
-   *               this.idkuva = idkuva;
-   *               }
-   */
-
-  /**
+   * Palauttaa valokuvan nimen merkkijonona
    * @return String return the kuvanimi
    */
   public String getKuvanimi() {
@@ -51,58 +45,69 @@ public class Valokuva {
   }
 
   /**
-   * @param kuvanimi the kuvanimi to set
+   * Asettaa valokuvan nimen
+   * @param kuvanimi nimi
    */
   public void setKuvanimi(String kuvanimi) {
     this.kuvanimi = kuvanimi;
   }
 
   /**
-   * @return KirjaKopio return the kirjaKopio
+   * palauttaa kirjakopion mihin valokuva kuuluu
+   * @return KirjaKopio kirjakopio
    */
   public KirjaKopio getKirjaKopio() {
     return kirjaKopio;
   }
 
   /**
-   * @param kirjaKopio the kirjaKopio to set
+   * asettaa kirjakopion mihin valokuva kuuluu
+   * @param kirjaKopio 
    */
   public void setKirjaKopio(KirjaKopio kirjaKopio) {
     this.kirjaKopio = kirjaKopio;
   }
 
   /**
-   * @return Integer return the sivunnro
+   * Palauttaa sivunumeron kokonaislukuna
+   * @return Integer sivunnro
    */
   public Integer getSivunnro() {
     return sivunnro;
   }
 
   /**
-   * @param sivunnro the sivunnro to set
+   * asettaa sivunumeron kokonaislukuna
+   * @param sivunnro sivunnro
    */
   public void setSivunnro(Integer sivunnro) {
     this.sivunnro = sivunnro;
   }
 
   /**
-   * @return String return the tiedostonimi
+   * legacy-metodi
    */
   public String getTiedostonimi() {
     return tiedostonimi;
   }
 
   /**
-   * @param tiedostonimi the tiedostonimi to set
+   * legacy-metodi
    */
   public void setTiedostonimi(String tiedostonimi) {
     this.tiedostonimi = tiedostonimi;
   }
-
+  /**
+   * asettaa valokuvan id:n
+   * @param idkuva
+   */
   public void setIdkuva(Long idkuva) {
     this.idkuva = idkuva;
   }
-
+  /**
+   * palauttaa valokuvan id:n
+   * @return Long idkuva
+   */
   public Long getIdkuva() {
     return this.idkuva;
   }

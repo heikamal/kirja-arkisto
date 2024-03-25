@@ -1,10 +1,15 @@
 package org.groupt.kirjaarkisto.models;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
 
+/**
+ * Tämä luokka edustaa "Kuva"-oliota kirja-arkistosovelluksessa.
+ * 
+ * Se sisältää tietoa kuvasta, kuten sen nimi, julkaisuvuosi, taiteilija, tyyli, kuvaus,
+ * tiedostonimi ja itse kuvan bittitiedot. Se ylläpitää myös luetteloa "Kuvitus"-olioista.
+ * jotka edustavat tähän kuvaan liittyviä kuvituksia.
+ */
 @Entity
 @Table(name = "kuva")
 public class Kuva {
@@ -28,6 +33,7 @@ public class Kuva {
     @Column(name = "kuvaus")
     private String kuvaus;
 
+    //legacy koodia
     @Column(name = "tiedostonimi")
     private String tiedostonimi;
 
@@ -52,13 +58,17 @@ public class Kuva {
       this.picByte = picByte;
     }
 
+     /**
+     * Palauttaa kuvan id:n
+     * @return idkuva
+     */
     public Long getIdkuva() {
         return idkuva;
         
     }
 
-
     /**
+     * Asettaa kuvan id:n
      * @param idkuva the idkuva to set
      */
     public void setIdkuva(Long idkuva) {
@@ -66,41 +76,47 @@ public class Kuva {
     }
 
     /**
-     * @return String return the kuvanimi
+     * Palauttaa kuvan nimen
+     * @return String kuvanimi
      */
     public String getKuvanimi() {
         return kuvanimi;
     }
 
     /**
-     * @param kuvanimi the kuvanimi to set
+     * Asettaa kuvan nimen
+     * @param kuvanimi kuvan nimi
      */
     public void setKuvanimi(String kuvanimi) {
         this.kuvanimi = kuvanimi;
     }
 
     /**
-     * @return Integer return the julkaisuvuosi
+     * Palauttaa kuvan julkaisuvuoden kokonaislukuna
+     * @return Integer julkaisuvuosi
      */
     public Integer getJulkaisuvuosi() {
         return julkaisuvuosi;
     }
 
     /**
-     * @param julkaisuvuosi the julkaisuvuosi to set
+     * Asettaa kuvan julkaisuvuoden kokonaislukuna
+     * @param julkaisuvuosi 1999 esim
      */
     public void setJulkaisuvuosi(Integer julkaisuvuosi) {
         this.julkaisuvuosi = julkaisuvuosi;
     }
 
     /**
-     * @return String return the taiteilija
+     * Palauttaa kuvan taiteilijan nimen merkkijonona
+     * @return String taiteilija
      */
     public String getTaiteilija() {
         return taiteilija;
     }
 
     /**
+     * Asettaa kuvan taiteilijan nimen merkkijonona
      * @param taiteilija the taiteilija to set
      */
     public void setTaiteilija(String taiteilija) {
@@ -108,6 +124,7 @@ public class Kuva {
     }
 
     /**
+     * Palauttaa kuvan tyylin merkkijonona
      * @return String return the tyyli
      */
     public String getTyyli() {
@@ -115,6 +132,7 @@ public class Kuva {
     }
 
     /**
+     * Asettaa kuvan tyylin merkkijonona
      * @param tyyli the tyyli to set
      */
     public void setTyyli(String tyyli) {
@@ -122,6 +140,7 @@ public class Kuva {
     }
 
     /**
+     * Palauttaa kuvan kuvauksen merkkijonona, genre?
      * @return String return the kuvaus
      */
     public String getKuvaus() {
@@ -129,6 +148,7 @@ public class Kuva {
     }
 
     /**
+     * Asettaa kuvan kuvauksen merkkijonona, genre?
      * @param kuvaus the kuvaus to set
      */
     public void setKuvaus(String kuvaus) {
@@ -136,6 +156,7 @@ public class Kuva {
     }
 
     /**
+     * Palauttaa kuvan tiedostonimen, muodossa originalfilename tai millä nimellä tiedosto on ladattu palvelimelle
      * @return String return the tiedostonimi
      */
     public String getTiedostonimi() {
@@ -143,20 +164,29 @@ public class Kuva {
     }
 
     /**
+     * Asettaa kuvan tiedostonimen. pitäisi olla tarpeeton
      * @param tiedostonimi the tiedostonimi to set
      */
     public void setTiedostonimi(String tiedostonimi) {
         this.tiedostonimi = tiedostonimi;
     }
-
+     /**
+     * Palauttaa sitä kutsuvan kuvan kuvitukset listana
+     */
     public List<Kuvitus> getKuvitukset() {
         return kuvitukset;
     }
-
+     /**
+     * Asettaa kuvalle kuvituksia
+     * @param kuvitukset kuvituslista
+     */
     public void setKuvitukset(List<Kuvitus> kuvitukset) {
         this.kuvitukset = kuvitukset;
     }
-
+     /**
+     * Palauttaa kuvan bittimuodossa
+     * @return byte[]
+     */
     public byte[] getPicByte() {
         return picByte;
     }
