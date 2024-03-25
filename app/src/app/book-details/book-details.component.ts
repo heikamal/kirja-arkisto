@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { AddCopyComponent } from '../add-copy/add-copy.component';
 import { PhotoComponent } from '../photo/photo.component';
+import { PhotosComponent } from '../photos/photos.component';
 
 @Component({
   selector: 'app-book-details',
@@ -77,6 +78,12 @@ export class BookDetailsComponent implements OnInit {
       this.dialogRef.close();
     }
     const dialogRef = this.dialog.open(PhotoComponent, {
+      width: '400px',
+      data: { bookId: this.chosen_book, title: this.title }
+    });
+  }
+  show_photos(): void {
+    const dialogRef = this.dialog.open(PhotosComponent, {
       width: '400px',
       data: { bookId: this.chosen_book, title: this.title }
     });
