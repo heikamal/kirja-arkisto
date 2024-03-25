@@ -48,6 +48,7 @@ public class KuvaService {
       Kuva kuva = kuvaRepository.findById(id).orElse(null);
       Kuva img = new Kuva();
       if (kuva != null) {
+        img.setIdkuva(id);
         img.setKuvanimi(kuva.getKuvanimi());
         img.setJulkaisuvuosi(kuva.getJulkaisuvuosi());
         img.setTaiteilija(kuva.getTaiteilija());

@@ -107,7 +107,12 @@ public class KirjaKopioController {
 
   @PutMapping("/{kirjakopioId}")
   public KirjaKopio updateKirjakopio(@PathVariable Long kirjakopioId, @RequestBody KirjaKopioDTO kirjakopio) {
+
+
     KirjaKopio kopio = kirjakopioService.getKirjakopioById(kirjakopioId);
+
+    System.out.println(kopio);
+
     kopio.setTitle(kirjakopio.getNimi());
     kopio.setEditions(kirjakopio.getPainos());
     kopio.setEditionYear(kirjakopio.getPainosVuosi());
@@ -117,6 +122,8 @@ public class KirjaKopioController {
     kopio.setDescription(kirjakopio.getKuvaus());
     kopio.setSaleDate(kirjakopio.getMyyntiPvm());
     kopio.setSalePrice(kirjakopio.getMyyntiHinta());
+
+    System.out.println(kopio);
 
     return kirjakopioService.saveKirjaKopio(kopio);
   }
