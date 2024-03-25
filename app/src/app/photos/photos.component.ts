@@ -16,7 +16,7 @@ export class PhotosComponent implements OnInit{
   retrievedImage : any;
   image_url: any;
   i : any;
-  number : number = 0;
+  number : number = -1;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { bookId: number },
     private dataService: DataService,
@@ -27,23 +27,19 @@ export class PhotosComponent implements OnInit{
     }
     ngOnInit(): void {
       this.dataService.get_book(this.chosen_book).subscribe((response) => {
-        for (this.i in response.kuvitukset) {
-        this.base64Data = response.kuvitukset[this.number].kuva.picByte;
-        this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
-        const imgElement = document.createElement('img');
-        imgElement.src = this.retrievedImage;
-        // Append image element to some container in your HTML, such as a div with id "imageContainer"
-        const imageContainer = document.getElementById('imageContainer');
-        if (imageContainer) {
-          imageContainer.appendChild(imgElement);
-        } else {
-          console.error("Element with id 'imageContainer' not found.");
-        }
-        this.number = this.number+1;
-      };
-    
-    });
-
+        response.kuvitukset.forEach((imageData: any) => {
+        console.log(response.kuvitukset);
+          const base64Data = imageData.kuva.picByte;
+          const retrievedImage = 'data:image/jpeg;base64,' + base64Data;
+          const imgElement = document.createElement('img');
+          imgElement.src = retrievedImage;
+          const imageContainer = document.getElementById('imageContainer');
+          if (imageContainer) {
+            imageContainer.appendChild(imgElement);
+          } else {
+            console.error("Element with id 'imageContainer' not found.");
+          }
+        });
+      });
+    }
   }
-}
- 
