@@ -111,7 +111,7 @@ public class KirjaKopioController {
 
     KirjaKopio kopio = kirjakopioService.getKirjakopioById(kirjakopioId);
 
-    System.out.println(kirjakopio);
+    System.out.println(kopio);
 
     kopio.setTitle(kirjakopio.getNimi());
     kopio.setEditions(kirjakopio.getPainos());
@@ -122,6 +122,8 @@ public class KirjaKopioController {
     kopio.setDescription(kirjakopio.getKuvaus());
     kopio.setSaleDate(kirjakopio.getMyyntiPvm());
     kopio.setSalePrice(kirjakopio.getMyyntiHinta());
+
+    System.out.println(kopio);
 
     return kirjakopioService.saveKirjaKopio(kopio);
   }
