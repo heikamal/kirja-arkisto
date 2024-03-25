@@ -19,7 +19,8 @@ export class DataService {
   bookcopy_url = 'http://localhost:8080/api/kirjakopiot';  
   photo_url = 'http://localhost:8080/api/kirjat';
   ownership_url = 'http://localhost:8080/api/kirjat'
-
+  valokuva_url = 'http://localhost:8080/api/kirjakopiot'
+  
   post_book(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
@@ -30,11 +31,12 @@ export class DataService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<JSON>(this.bookcopy_url, data, { headers });
   }
-  edit_book_copy(data: JSON): Observable<JSON> {
+  edit_book_copy(copy_id: number, data: any): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-    return this.http.put<JSON>(this.bookcopy_url, data, { headers });
-  }
+    const url = `${this.bookcopy_url}/${copy_id}`;
+    return this.http.put<any>(url, data, { headers });
+  }  
   get_book_copy(copy_id: number): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
@@ -45,6 +47,11 @@ export class DataService {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
     return this.http.post<any>(this.photo_url + `/${bookid}` + '/kuvat', formdata, { headers });
+  }
+  post_valokuva( bookid : string, formdata : FormData): Observable<any> {
+    const accessToken = this.cookieService.get('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    return this.http.post<any>(this.valokuva_url + `/${bookid}` + '/kuvat', formdata, { headers });
   }
   get_books(): Observable<Book[]>{
     const accessToken = this.cookieService.get('accessToken');

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { HttpErrorResponse } from '@angular/common/http';
 import { BookCopy } from '../book-copy';
 import { CommonModule } from '@angular/common';
+import { ValokuvaComponent } from '../valokuva/valokuva.component';
 
 @Component({
   standalone: true,
@@ -112,7 +113,7 @@ export class BookCopyDetailsComponent implements OnInit {
     const editedData = this.copy_form.value;
     
     // Call the edit_book_copy method to update the data
-    this.dataService.edit_book_copy(editedData).subscribe(
+    this.dataService.edit_book_copy(this.data.copyId, editedData).subscribe(
       (response: any) => {
         console.log('Data edited successfully:', response);
         // Update the copy object with edited data
@@ -128,7 +129,15 @@ export class BookCopyDetailsComponent implements OnInit {
       }
     );
   }
-  
+  add_photos(): void {
+    if (this.dialogRef && this.dialogRef.componentInstance instanceof BookCopyDetailsComponent) {
+      this.dialogRef.close();
+    }
+    const dialogRef = this.dialog.open(ValokuvaComponent, {
+      width: '400px',
+      data: { bookcopyid: this.data.copyId}
+    });
+  }
 
   closeDialog(): void {
     this.dialogRef.close();
