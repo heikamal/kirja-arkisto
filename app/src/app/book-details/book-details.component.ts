@@ -53,6 +53,7 @@ export class BookDetailsComponent implements OnInit {
       this.base64Data = this.retrieveResonse.kuvitukset[0].kuva.picByte;
       this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
       this.image_url = this.retrievedImage;
+      console.log(this.image_url);
     });
     this.dataService.get_ownership(this.chosen_book).subscribe((response: any) => {
       const jsonStr: string = JSON.stringify(response);

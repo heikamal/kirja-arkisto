@@ -18,18 +18,27 @@ export class BooksComponent {
   retrieveResonse: any;
   base64Data: any;
   retrievedImage : any;
+  url : any;
+  image_url : string = "";
   constructor(private dataService: DataService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+   
     this.dataService.get_books().subscribe((response: any[]) => {
       this.books = response.map((bookData: any) => {
+        this.dataService.get_book(bookData.id).subscribe((bookresponse: any) => {
+          const base64Data = bookresponse.kuvitukset[0].kuva.picByte;
+          this.url = 'data:image/jpeg;base64,' + base64Data;
+          bookData.image_url = this.url;
+          console.log(bookData.image_url);
+        });
         return {
           id: bookData.id,
           title: bookData.nimi,
           author: bookData.kirjailija,
           date: bookData.julkaisuVuosi,
           series: bookData.jarjestysNro,
-          image_url: bookData.image_url
+          image_url: bookData.image_url,
         } as Book;
       });
      
