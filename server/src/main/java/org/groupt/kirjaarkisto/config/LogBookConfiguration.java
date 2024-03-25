@@ -17,7 +17,8 @@ public class LogBookConfiguration {
       case "dev":
         return Logbook.builder().bodyFilter(jsonPath("$.*.kuva.picByte").delete())
             .bodyFilter(jsonPath("$.kuvitukset.*.kuva.picByte").delete())
-            .bodyFilter(jsonPath("$.*.kuvitukset.*.kuva.picByte").delete()).build();
+            .bodyFilter(jsonPath("$.*.kuvitukset.*.kuva.picByte").delete())
+            .bodyFilter(jsonPath("$.*.book.kuvitukset.*.kuva.picByte").delete()).build();
       case "test":
         return Logbook.create();
       default:
