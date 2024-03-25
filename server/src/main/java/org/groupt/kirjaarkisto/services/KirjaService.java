@@ -25,11 +25,20 @@ public class KirjaService {
   private KuvaService kuvaService;
 
   public List<Kirja> getKirjat() {
-    return kirjaRepository.findAll();
+    List<Kirja> kirjat = kirjaRepository.findAll();
+    List<Kirja> palautus = new ArrayList<>();
+    for (Kirja kirja : kirjat) {
+      palautus.add(handlePics(kirja));
+    }
+    return palautus;
   }
 
   public List<KirjaResponse> getKirjatBySarja(KirjaSarja sarja) {
-    List<Kirja> kirjat = kirjaRepository.findByKirjaSarja(sarja);
+    List<Kirja> alkuKirjat = kirjaRepository.findByKirjaSarja(sarja);
+    List<Kirja> kirjat = new ArrayList<>();
+    for (Kirja kirja : alkuKirjat) {
+      kirjat.add(handlePics(kirja));
+    }
     List<KirjaResponse> response = new ArrayList<>();
     for (Kirja kirja : kirjat) {
       response.add(new KirjaResponse(kirja));
@@ -40,12 +49,7 @@ public class KirjaService {
   public Kirja getKirjaById(Long id) {
     Kirja kirja = kirjaRepository.findById(id).orElse(null);
     if (kirja != null) {
-      List<Kuvitus> kuvitukset = kirja.getKuvitukset();
-      for (Kuvitus k : kuvitukset) {
-        Kuva kuva = kuvaService.getKuvaById(k.getKuva().getIdkuva());
-        k.setKuva(kuva);
-      }
-      return kirja;
+      return handlePics(kirja);
     } else {
       throw new NonExistingKirjaException("Kirja with ID " + id + " does not exist!");
     }
@@ -68,6 +72,16 @@ public class KirjaService {
     } catch (IllegalArgumentException e) {
       throw new BadIdException("Annettu Id ei tullut perille asti. Tarkasta parametrit.");
     }
+  }
+
+  private Kirja handlePics(Kirja kirja) {
+    if (kirja.getKuvitukset() != null) {
+      for (Kuvitus k : kirja.getKuvitukset()) {
+        Kuva kuva = kuvaService.getKuvaById(k.getKuva().getIdkuva());
+        k.setKuva(kuva);
+      }
+    }
+    return kirja;
   }
 
   // kirjan muokkaus.
