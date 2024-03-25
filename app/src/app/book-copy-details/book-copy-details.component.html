@@ -1,41 +1,103 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
-    <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl">
-      <div style="display: grid; gap: 1rem;">
-        <div style="display: flex; justify-content: space-between;">
-          <span>Painos (Edition):</span>
-          <span>{{ copy?.edition }}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Painos vuosi (Edition Year):</span>
-          <span>{{ copy?.editionYear }}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Osto hinta (Purchase Price):</span>
-          <span>{{ copy?.purchasePrice }}€</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Osto päivämäärä (Purchase Date):</span>
-          <span>{{ copy?.purchaseDate }}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Kunto (Condition):</span>
-          <span>{{ copy?.condition }}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Kuvaus (Description):</span>
-          <span>{{ copy?.description }}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Myynti päivämäärä (Sale Date):</span>
-          <span>{{ copy?.saleDate }}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Myynti hinta (Sale Price):</span>
-          <span>{{ copy?.salePrice }}€</span>
-        </div>
+  <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl">
+    <div style="display: grid; gap: 1rem;">
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Painos (Edition):</span>
+        <ng-container *ngIf="!editing; else editEdition">
+          <span class="text-white">{{ copy?.edition }}</span>
+        </ng-container>
+        <ng-template #editEdition>
+          <input *ngIf="editing" type="number" [(ngModel)]="editedCopy.edition" class="text-black text-center">
+        </ng-template>
       </div>
-      <button mat-button (click)="closeDialog()"
-        class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
+
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Painos vuosi (Edition Year):</span>
+        <ng-container *ngIf="!editing; else editEditionYear">
+          <span class="text-white">{{ copy?.editionYear }}</span>
+        </ng-container>
+        <ng-template #editEditionYear>
+          <input *ngIf="editing" type="number" [(ngModel)]="editedCopy.editionYear" class="text-black text-center">
+        </ng-template>
+      </div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Osto hinta (Purchase Price):</span>
+        <ng-container *ngIf="!editing; else editPurchasePrice">
+          <span class="text-white">{{ copy?.purchasePrice }}€</span>
+        </ng-container>
+        <ng-template #editPurchasePrice>
+          <input *ngIf="editing" type="number" [(ngModel)]="editedCopy.purchasePrice" class="text-black text-center">
+        </ng-template>
+      </div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Osto päivämäärä (Purchase Date):</span>
+        <ng-container *ngIf="!editing; else editPurchaseDate">
+          <span class="text-white">{{ copy?.purchaseDate }}</span>
+        </ng-container>
+        <ng-template #editPurchaseDate>
+          <input *ngIf="editing" type="date" [(ngModel)]="editedCopy.purchaseDate" class="text-black text-center">
+        </ng-template>
+      </div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Kunto (Condition):</span>
+        <ng-container *ngIf="!editing; else editCondition">
+          <span class="text-white">{{ copy?.condition }}</span>
+        </ng-container>
+        <ng-template #editCondition>
+          <select *ngIf="editing" [(ngModel)]="editedCopy.condition" class="text-black text-center">
+            <option value="5">K5 - Uusi</option>
+            <option value="4">K4 - Uudenveroinen</option>
+            <option value="3">K3 - Hyvä</option>
+            <option value="2">K2 - Tyydyttävä</option>
+            <option value="1">K1 - Kehno</option>
+          </select>
+        </ng-template>
+      </div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Kuvaus (Description):</span>
+        <ng-container *ngIf="!editing; else editDescription">
+          <span class="text-white">{{ copy?.description }}</span>
+        </ng-container>
+        <ng-template #editDescription>
+          <textarea *ngIf="editing" [(ngModel)]="editedCopy.description" class="text-black text-center"></textarea>
+        </ng-template>
+      </div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Myynti päivämäärä (Sale Date):</span>
+        <ng-container *ngIf="!editing; else editSaleDate">
+          <span class="text-white">{{ copy?.saleDate }}</span>
+        </ng-container>
+        <ng-template #editSaleDate>
+          <input *ngIf="editing" type="date" [(ngModel)]="editedCopy.saleDate" class="text-black text-center">
+        </ng-template>
+      </div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <span class="text-white">Myynti hinta (Sale Price):</span>
+        <ng-container *ngIf="!editing; else editSalePrice">
+          <span class="text-white">{{ copy?.salePrice }}€</span>
+        </ng-container>
+        <ng-template #editSalePrice>
+          <input *ngIf="editing" type="number" [(ngModel)]="editedCopy.salePrice" class="text-black text-center">
+        </ng-template>
+      </div>
+    </div>
+
+    <div>
+      <button mat-button (click)="toggleEdit()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">
+        {{ editing ? 'Lopeta Muokkaus' : 'Muokkaa' }}
+      </button>
+      <button mat-button (click)="saveChanges()" *ngIf="editing" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">
+        Tallenna
+      </button>
+      <button mat-button (click)="closeDialog()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">
+        Sulje
+      </button>
     </div>
   </div>
-  
+</div>

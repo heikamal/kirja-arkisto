@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import io.jsonwebtoken.io.IOException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -21,10 +20,8 @@ import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
-import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,6 +165,20 @@ public class KirjaController {
         return ResponseEntity.ok(muokattuKirja);
     }
 
+    /**
+     * Endpoint kuvan lisäyspyynnöille URL-osoitteessa: /api/kirjat/{id}/kuvat ({id} on kirjan id mille lisätään kuva)
+     * 
+     * Ottaa siis parametrinä kuvan tiedot ja kutsuu service-luokan metodia kuvan tallentamiseksi
+     *  
+     * @param id kirjan id mille kuva lisätään
+     * @param tiedosto frontendissa valittu kuva
+     * @param julkaisuvuosi kuvan julkaisuvuosi kokonaislukuna
+     * @param taiteilija kuvan taiteilija
+     * @param tyyli kuvan tyyli
+     * @param kuvaus kuvan kuvaus :D
+     * @param sivunro sivunro kokonaislukuna, jos sellaista on
+     * @throws java.io.IOException
+     */
     @PostMapping("/{id}/kuvat")
     public Kuvitus lisaakuvaKirjalle(
             @PathVariable Long id,
@@ -185,7 +196,15 @@ public class KirjaController {
             throw new NonExistingKirjaException("Ei saatana ei helvetti");
         }
     }
-  
+    /**
+     * Endpoint joka käsittelee DELETE-requestit kuville. URL-osoite: /api/kirjat/{kirjaId}/kuva/{kuvaId}
+     * 
+     * Poistaa parametrien osoittaman kuvan kirjalta
+     * 
+     * @param kirjaId kirjan id miltä kuva poistetaan
+     * @param kuvaId kuvan id mikä halutaan poistaa
+     * @return HTTP-status eli OK,NOT_FOUND tai INTERNAL_SERVER_ERROR
+     */
     @DeleteMapping("/{kirjaId}/kuva/{kuvaId}")
     public ResponseEntity<String> poistaKuvaKirjalta(
             @PathVariable Long kirjaId,
@@ -201,7 +220,11 @@ public class KirjaController {
                     .body("Kuvan poistaminen kirjalta epäonnistui");
         }
     }
-
+    /**
+     * GET-Endpoint joka palauttaa tietyn kirjan kuvitukset listana. URL-osoite: /api/kirjat/{id}/kuvitukset
+     * @param kirja jonka kuvitukset haetaan
+     * @return Kirjan kuvitukset listana
+     */
     @GetMapping("/{id}/kuvitukset")
     public List<Kuvitus> getKuvituksetByKirja(@PathVariable Long id) {
       Kirja kirja = kirjaService.getKirjaById(id);
