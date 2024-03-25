@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, Output, EventEmitter, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
@@ -29,10 +29,11 @@ export class LoginPageComponent{
   ngOnInit() {
     const accessTokenExists = this.cookieService.check("accessToken");
     if (accessTokenExists) {
-      this.emitLanding();
+      setTimeout(() => {
+        this.emitLanding();
+      });
     }
   }
-
 
   @Output("Landing") Landing: EventEmitter<any> = new EventEmitter();
   title = 'login';

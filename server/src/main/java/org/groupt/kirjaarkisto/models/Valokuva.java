@@ -99,4 +99,21 @@ public class Valokuva {
     this.tiedostonimi = tiedostonimi;
   }
 
+  public void setIdkuva(Long idkuva) {
+    this.idkuva = idkuva;
+  }
+
+  public Long getIdkuva() {
+    return this.idkuva;
+  }
+
+  public byte[] getPicByte() {
+    return this.picByte;
+  }
+
+  public void setPicByte(byte[] picByte) {
+    this.picByte = picByte;
+  }
+
+
 }
