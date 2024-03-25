@@ -65,7 +65,6 @@ public class Kuva {
      */
     public Long getIdkuva() {
         return idkuva;
-        
     }
 
     /**
@@ -195,5 +194,20 @@ public class Kuva {
     public void setPicByte(byte[] picByte) {
         this.picByte = picByte;
     }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " idkuva='" + getIdkuva() + "'" +
+      ", kuvanimi='" + getKuvanimi() + "'" +
+      ", julkaisuvuosi='" + getJulkaisuvuosi() + "'" +
+      ", taiteilija='" + getTaiteilija() + "'" +
+      ", tyyli='" + getTyyli() + "'" +
+      ", kuvaus='" + getKuvaus() + "'" +
+      ", tiedostonimi='" + getTiedostonimi() + "'" +
+      "," + "'" +
+      "}";
+  }
 
 }

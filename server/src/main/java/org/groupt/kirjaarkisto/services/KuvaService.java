@@ -62,7 +62,7 @@ public class KuvaService {
      //kuvan lisäys metodi
      @Transactional
      public Kuvitus lisaaKuvaKirjalle(Long kirjaId, MultipartFile tiedosto, Integer julkaisuvuosi, String taiteilija,
-         String tyyli, String kuvaus, Integer sivunro) throws java.io.IOException {
+         String tyyli, String kuvaus, Integer sivunro, String nimi) throws java.io.IOException {
 
       Kirja kirja = kirjaRepository.findById(kirjaId)
         .orElseThrow(() -> new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId));
@@ -77,6 +77,7 @@ public class KuvaService {
        kuva.setKuvaus(kuvaus);
        kuva.setTiedostonimi(tiedostoNimi); // Tallennetaan tiedostonimi tietokantaan
        kuva.setPicByte(compressBytes(tiedosto.getBytes()));
+       kuva.setKuvanimi(nimi);
 
        Kuva lisatty = kuvaRepository.save(kuva);
 

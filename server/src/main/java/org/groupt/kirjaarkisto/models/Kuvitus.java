@@ -2,6 +2,7 @@ package org.groupt.kirjaarkisto.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.util.Objects;
 
 /**
 
@@ -42,6 +43,14 @@ public class Kuvitus {
     this.kirja = kirja;
     this.kuva = kuva;
     this.sivunro = sivunro;
+  }
+
+  public KuvitusId getId() {
+    return id;
+  }
+
+  public void setId(KuvitusId id) {
+    this.id = id;
   }
 
 
@@ -92,5 +101,17 @@ public class Kuvitus {
   public void setSivunro(Integer sivunro) {
     this.sivunro = sivunro;
   }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " id='" + getId() + "'" +
+      ", kirja='" + getKirja() + "'" +
+      ", kuva='" + getKuva() + "'" +
+      ", sivunro='" + getSivunro() + "'" +
+      "}";
+  }
+  
 
 }

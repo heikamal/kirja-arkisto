@@ -176,10 +176,11 @@ public class KirjaController {
             @RequestParam("taiteilija") String taiteilija,
             @RequestParam("tyyli") String tyyli,
             @RequestParam("kuvaus") String kuvaus,
-            @RequestParam("sivunro") Integer sivunro) throws java.io.IOException {
+            @RequestParam("sivunro") Integer sivunro,
+            @RequestParam("kuvannimi") String nimi) throws java.io.IOException {
 
         try {
-            return kuvaservice.lisaaKuvaKirjalle(id, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
+            return kuvaservice.lisaaKuvaKirjalle(id, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro, nimi);
         } catch (EntityNotFoundException e) {
             throw new NonExistingKirjaException("Ei saatana ei helvetti");
         }
@@ -202,8 +203,12 @@ public class KirjaController {
     }
 
     @GetMapping("/{id}/kuvitukset")
-    public ResponseEntity<List<Kuvitus>> getKuvituksetByKirja(@PathVariable Kirja kirja) {
-        List<Kuvitus> kuvitukset = kuvaservice.getKuvaByKirja(kirja);
-        return ResponseEntity.ok(kuvitukset);
+    public List<Kuvitus> getKuvituksetByKirja(@PathVariable Long id) {
+      Kirja kirja = kirjaService.getKirjaById(id);
+      List<Kuvitus> kuvitukset = kuvaservice.getKuvaByKirja(kirja);
+      for (Kuvitus k : kuvitukset) {
+        System.out.println(k.getKuva());
+      }
+      return kuvitukset;
     }
 }
