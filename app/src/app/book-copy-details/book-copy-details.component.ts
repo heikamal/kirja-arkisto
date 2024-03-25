@@ -113,7 +113,7 @@ export class BookCopyDetailsComponent implements OnInit {
     const editedData = this.copy_form.value;
     
     // Call the edit_book_copy method to update the data
-    this.dataService.edit_book_copy(editedData).subscribe(
+    this.dataService.edit_book_copy(this.data.copyId, editedData).subscribe(
       (response: any) => {
         console.log('Data edited successfully:', response);
         // Update the copy object with edited data
