@@ -15,14 +15,17 @@ import { BookDetailsComponent } from '../book-details/book-details.component';
 export class CarouselComponent implements OnInit {
   @Input() seriesId?: number;
   books: Book[] = [];
-
+  base64Data : any;
   constructor(private dataService: DataService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.dataService.get_books().subscribe((response: any[]) => {
+      
       if (this.seriesId) {
         this.books = response.filter(book => book.kirjaSarja.id === this.seriesId)
           .map((bookData: any) => {
+            this.base64Data = bookData.kuvitukset[0].kuva.picByte;
+            bookData.image_url = 'data:image/jpeg;base64,' + this.base64Data;
             const book: Book = {
               id: bookData.id,
               title: bookData.nimi,
@@ -41,6 +44,8 @@ export class CarouselComponent implements OnInit {
           });
       } else {
         this.books = response.map((bookData: any) => {
+          this.base64Data = bookData.kuvitukset[0].kuva.picByte;
+          bookData.image_url = 'data:image/jpeg;base64,' + this.base64Data;
           return {
             id: bookData.id,
             title: bookData.nimi,
