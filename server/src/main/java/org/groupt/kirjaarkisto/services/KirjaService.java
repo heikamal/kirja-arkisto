@@ -12,6 +12,8 @@ import org.groupt.kirjaarkisto.models.Kuva;
 import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
+import org.groupt.kirjaarkisto.repositories.KuvitusRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class KirjaService {
 
   @Autowired
   private KuvaService kuvaService;
+
+  @Autowired
+  private KuvitusRepository kuvitusRepository;
 
   public List<Kirja> getKirjat() {
     List<Kirja> kirjat = kirjaRepository.findAll();
@@ -66,12 +71,14 @@ public class KirjaService {
 
   // tää pooistaa :D
   public void deleteKirja(Long id) {
-    kirjaRepository.deleteById(id);
-    try {
-      kirjaRepository.deleteById(id);
-    } catch (IllegalArgumentException e) {
-      throw new BadIdException("Annettu Id ei tullut perille asti. Tarkasta parametrit.");
+    Kirja book = kirjaRepository.findById(id)
+        .orElseThrow(() -> new NonExistingKirjaException("Kirjaa ei käytynyt id:llä " + id));
+    for (Kuvitus k : book.getKuvitukset()) {
+      System.out.println("Poistetaan kuva: " + k.getKuva().getIdkuva());
+      kuvaService.poistaKuva(k.getKuva().getIdkuva());
+      kuvitusRepository.delete(k);
     }
+    kirjaRepository.delete(book);
   }
 
   private Kirja handlePics(Kirja kirja) {
