@@ -3,7 +3,7 @@
         <div class="relative">
             <img *ngIf="!image_url" src="../../assets/miscellaneous/cover_not_available.png"
                 class="max-h-96 p-2 mx-auto">
-            <img *ngIf="image_url" [src]="image_url" class="max-h-96 p-2 mx-auto">
+            <img *ngIf="image_url" [src]="retrievedImage" class="max-h-96 p-2 mx-auto">
         </div>
         <div class="flex justify-center items-center">
             <div class="flex-1 max-w-xs">
@@ -13,6 +13,7 @@
                         <p><span class="font-extrabold">Kirjailija:</span><br> {{ author }}</p>
                         <p><span class="font-extrabold">Vuosi:</span><br> {{ date }}</p>
                         <p><span class="font-extrabold">Sarja:</span><br> {{ series_name }}</p>
+                        <p>kuvitukset: {{ kuvitukset }}</p>
                         <div class="max-h-72 overflow-hidden" *ngIf="description">
                             <p class="whitespace-normal break-words"><span class="font-extrabold">Kirjan kuvaus:
                                 </span><br>{{ show_full_description ? description : (description.length > 100 ?

@@ -15,7 +15,9 @@ export class BooksComponent {
   books: Book[] = [];
   displayedBooks: Book[] = [];
   remainingBooks: Book[] = [];
-
+  retrieveResonse: any;
+  base64Data: any;
+  retrievedImage : any;
   constructor(private dataService: DataService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class BooksComponent {
           image_url: bookData.image_url
         } as Book;
       });
+     
       this.displayedBooks = this.books.slice(0, 8);
       this.remainingBooks = this.books.slice(8);
     });
