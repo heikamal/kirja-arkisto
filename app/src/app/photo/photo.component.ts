@@ -13,8 +13,7 @@ import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, FormsModule],
   providers: [DataService],
-  templateUrl: './photo.component.html',
-  styleUrl: './photo.component.css'
+  templateUrl: './photo.component.html'
 })
 export class PhotoComponent {
   
