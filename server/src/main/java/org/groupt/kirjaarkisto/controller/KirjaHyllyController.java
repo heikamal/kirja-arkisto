@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.models.Valokuva;
 import org.groupt.kirjaarkisto.payload.HyllyResponse;
 import org.groupt.kirjaarkisto.payload.KirjaKopioResponse;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
@@ -64,7 +65,8 @@ public class KirjaHyllyController {
         List<KirjaKopio> kopiot = kirjaKopioService.getByOmaSarja(hylly.getId(), sarja.getId());
         List<KirjaKopioResponse> kopioResponseList = new ArrayList<>();
         for (KirjaKopio kopio : kopiot) {
-          KirjaKopioResponse kopioResponse = new KirjaKopioResponse(kopio, new KirjaResponse(kopio.getBook()));
+          List<Valokuva> kuvat = kirjaKopioService.getValokuvatByKirjaKopio(kopio);
+          KirjaKopioResponse kopioResponse = new KirjaKopioResponse(kopio, new KirjaResponse(kopio.getBook()), kuvat);
           kopioResponseList.add(kopioResponse);
           k.add(kopioResponse);
         }

@@ -9,12 +9,18 @@ import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.models.Valokuva;
+import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
 import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 import org.groupt.kirjaarkisto.repositories.ValokuvaRepository;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 /**
  * Palveluluokka kirjakopioiden hallintaa varten.
@@ -26,7 +32,7 @@ public class KirjaKopioService {
    * Repository, jolla voidaan hallita kirjakopioita tietokannassa.
    */
   @Autowired
-  private KirjaKopioRepository kirjakopioRepository;
+  private KirjaKopioRepository kirjaKopioRepository;
 
   @Autowired
   private ValokuvaRepository valokuvaRepository;
@@ -44,11 +50,11 @@ public class KirjaKopioService {
    * @return Lista kirjakopioista.
    */
   public List<KirjaKopio> getKirjakopiot() {
-    return kirjakopioRepository.findAll();
+    return kirjaKopioRepository.findAll();
   }
 
   public List<KirjaKopio> getKirjaKopioByKirja(Kirja kirja) {
-    return kirjakopioRepository.findByBook(kirja);
+    return kirjaKopioRepository.findByBook(kirja);
   }
 
   /**
@@ -58,7 +64,7 @@ public class KirjaKopioService {
    * @return Tietokannasta haettu kirjakopio.
    */
   public KirjaKopio getKirjakopioById(Long id) {
-    KirjaKopio kopio = kirjakopioRepository.findById(id).orElse(null);
+    KirjaKopio kopio = kirjaKopioRepository.findById(id).orElse(null);
     if (kopio == null) {
       throw new NonExistingKirjaKopioException("Kirja kopio with ID " + id + " does not exist!");
     }
@@ -73,25 +79,25 @@ public class KirjaKopioService {
    * @return Tallennettu kirjakopio.
    */
   public KirjaKopio saveKirjaKopio(KirjaKopio kirjaKopio) {
-    return kirjakopioRepository.save(kirjaKopio);
+    return kirjaKopioRepository.save(kirjaKopio);
   }
 
   public List<KirjaKopio> getByOmaSarja(Long hyllyId, Long sarjaId) {
-    return kirjakopioRepository.findByIdKirjaSarjaAndIdKirjaHylly(sarjaId, hyllyId);
+    return kirjaKopioRepository.findByIdKirjaSarjaAndIdKirjaHylly(sarjaId, hyllyId);
   }
 
   public List<KirjaKopio> getBySarja(KirjaSarja sarja) {
-    return kirjakopioRepository.findByIdKirjaSarja(sarja.getId());
+    return kirjaKopioRepository.findByIdKirjaSarja(sarja.getId());
   }
 
   public void remove(KirjaKopio kopio) {
-    kirjakopioRepository.delete(kopio);
+    kirjaKopioRepository.delete(kopio);
   }
 
   @Transactional
   public void lisaaKuvaKirjakopiolle(Long kirjakopioId, MultipartFile tiedosto, Integer julkaisuvuosi,
       String taiteilija, String tyyli, String kuvaus, Integer sivunro) throws IOException {
-    KirjaKopio kirjakopio = kirjakopioRepository.findById(kirjakopioId)
+    KirjaKopio kirjakopio = kirjaKopioRepository.findById(kirjakopioId)
         .orElseThrow(() -> new EntityNotFoundException("Kirjakopiota ei löydy id:llä " + kirjakopioId));
 
     // Tallenna tiedosto ja palauta sen polku
@@ -104,7 +110,63 @@ public class KirjaKopioService {
     valokuva.setTiedostonimi(tiedostoNimi);
     valokuva.setSivunnro(sivunro);
 
+    valokuva.setPicByte(compressBytes(tiedosto.getBytes()));
+
     // Tallenna valokuva tietokantaan
     valokuvaRepository.save(valokuva);
+  }
+
+  public void poistaValokuva(Long id) {
+    valokuvaRepository.deleteById(id);
+  }
+
+  public List<Valokuva> getValokuvatByKirjaKopio(KirjaKopio kopio) {
+    List<Valokuva> valokuvat = valokuvaRepository.findByKirjaKopio(kopio);
+    List<Valokuva> vastaus = new ArrayList<>();
+    for (Valokuva valokuva : valokuvat) {
+      Valokuva v = new Valokuva();
+      v.setIdkuva(valokuva.getIdkuva());
+      v.setKuvanimi(valokuva.getKuvanimi());
+      v.setSivunnro(valokuva.getSivunnro());
+      v.setPicByte(decompressBytes(valokuva.getPicByte()));
+      vastaus.add(v);
+    }
+    return vastaus;
+  }
+
+  public static byte[] compressBytes(byte[] data) {
+    Deflater deflater = new Deflater();
+    deflater.setInput(data);
+    deflater.finish();
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+    byte[] buffer = new byte[1024];
+    while (!deflater.finished()) {
+      int count = deflater.deflate(buffer);
+      outputStream.write(buffer, 0, count);
+    }
+    try {
+      outputStream.close();
+    } catch (java.io.IOException e) {
+    }
+    System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
+    return outputStream.toByteArray();
+  }
+
+  public static byte[] decompressBytes(byte[] data) {
+    Inflater inflater = new Inflater();
+    inflater.setInput(data);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+    byte[] buffer = new byte[1024];
+    try {
+      while (!inflater.finished()) {
+        int count = inflater.inflate(buffer);
+        outputStream.write(buffer, 0, count);
+      }
+      outputStream.close();
+    } catch (java.util.zip.DataFormatException e) {
+    } catch (java.io.IOException e) {
+    }
+    return outputStream.toByteArray();
   }
 }

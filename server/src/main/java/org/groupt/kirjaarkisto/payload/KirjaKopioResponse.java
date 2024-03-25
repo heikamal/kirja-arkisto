@@ -1,8 +1,10 @@
 package org.groupt.kirjaarkisto.payload;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.groupt.kirjaarkisto.models.KirjaKopio;
+import org.groupt.kirjaarkisto.models.Valokuva;
 
 public class KirjaKopioResponse {
   private Long id;
@@ -18,10 +20,11 @@ public class KirjaKopioResponse {
   private Double myyntiHinta;
   private Long idKirjaHylly;
   private Long idKirjaSarja;
+  private List<Valokuva> kuvat;
 
   public KirjaKopioResponse() {}
 
-  public KirjaKopioResponse(KirjaKopio kopio, KirjaResponse kirja){
+  public KirjaKopioResponse(KirjaKopio kopio, KirjaResponse kirja, List<Valokuva> kuvat){
     this.id = kopio.getId();
     this.nimi = kopio.getTitle();
     this.painos = kopio.getEditions();
@@ -35,6 +38,7 @@ public class KirjaKopioResponse {
     this.myyntiHinta = kopio.getSalePrice();
     this.idKirjaHylly = kopio.getIdKirjaHylly();
     this.idKirjaSarja = kopio.getIdKirjaSarja();
+    this.kuvat = kuvat;
   }
 
 
@@ -142,5 +146,11 @@ public class KirjaKopioResponse {
     this.idKirjaSarja = idKirjaSarja;
   }
 
+  public List<Valokuva> getKuvat() {
+    return this.kuvat;
+  }
 
+  public void setKuvat(List<Valokuva> kuvat) {
+    this.kuvat = kuvat;
+  }
 }
