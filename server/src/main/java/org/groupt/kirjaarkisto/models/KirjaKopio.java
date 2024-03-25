@@ -1,57 +1,96 @@
 package org.groupt.kirjaarkisto.models;
-
 import java.sql.Date;
 import java.util.List;
-
 import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.*;
 
+/**
+   * Kirjakopio on olio joka luodaan kun kirja lisätään omaan kokoelmaan.
+   * Kirjakopio on siis oma henkilökohtainen fyysinen kirjasi jonka tiedot tallennetaan kirjahyllyyn.
+   */
 @Entity
 @Table(name = "kirjakopio")
 public class KirjaKopio {
 
+   /**
+   * Pääavaimen määrittely kirjakopion id:lle.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "idkirjakopio")
   private Long id;
-
+  
+   /**
+   * Kirjakopion nimi
+   */
   @Column(name = "kirjanimi")
   private String title;
 
+  /**
+   * Kopion painos, esim ensimmäinen painos
+   */
   @Column(name = "painos")
   private Integer editions;
 
+  /**
+   * Kopion painosvuosi, esim 1947 painos
+   */
   @Column(name = "painosvuosi")
   private Integer editionYear;
 
+   /**
+   * Monesta yhteen -suhteen määrittely kirjan ja kirjakopion välillä.
+   */
   @ManyToOne
   @JoinColumn(name = "idkirja")
   private Kirja book;
 
+   /**
+   * Millä hinnalla käyttäjä on ostanut kirjan itsellensä
+   */
   @Column(name = "hankintahinta")
   private Double purchasePrice;
 
+   /**
+   * Milloin käyttäjä osti/sai kirjan itsellensä
+   */
   @Column(name = "hankintapvm")
   private Date purchaseDate;
 
+  /**
+   * Kirjan kunto kokonaislukuasteikolla 0-5
+   */
   @Column(name = "kunto")
   private Integer condition;
 
+  /**
+   * Kirjakopion kuvaus, omia muistiinpanoja kirjasta yms...
+   */
   @Column(name = "kuvaus")
   private String description;
 
+  /**
+   * myyntipäivämäärä, jos käyttäjä on esimerkiksi myynyt kirjansa mutta haluaa silti muistaa sen omistamisen
+   */
   @Column(name = "myyntipvm")
   private Date saleDate;
 
+  /**
+   * millä hinnalla käyttäjä on myynyt kirjan
+   */
   @Column(name = "myyntihinta")
   private Double salePrice;
 
+  /**
+   * Mihin kirjahyllyyn kirjakopio kuuluu
+   */
   @Column(name = "idkirjahylly")
   private Long idKirjaHylly;
 
+   /**
+   * Mihin kirjasarjaan kirjakopio kuuluu
+   */
   @Column(name = "idkirjasarja")
   private Long idKirjaSarja;
 
@@ -75,182 +114,208 @@ public class KirjaKopio {
   }
 
   /**
-   * @return Long return the id
+   * palauttaa kirjakopion id:n
+   * @return Long id
    */
   public Long getId() {
     return id;
   }
 
   /**
-   * @param id the id to set
+   * Asettaa kirjakopion id:n 
+   * @param id kirjakopion id
    */
   public void setId(Long id) {
     this.id = id;
   }
 
   /**
-   * @return String return the title
+   * Palauttaa kirjakopion nimen/otsikon
+   * @return String title
    */
   public String getTitle() {
     return title;
   }
 
   /**
-   * @param title the title to set
+   * Asettaa kirjakopion nimen merkkijonona
+   * @param title kirjakopion nimi
    */
   public void setTitle(String title) {
     this.title = title;
   }
 
   /**
-   * @return Integer return the editions
+   * Palauttaa kirjan painoksen kokonaislukuna
+   * @return Integer painos
    */
   public Integer getEditions() {
     return editions;
   }
 
   /**
-   * @param editions the editions to set
+   * Asettaa kirjakopion painoksen kokonaislukuna
+   * @param editions painos
    */
   public void setEditions(Integer editions) {
     this.editions = editions;
   }
 
   /**
-   * @return Integer return the editionYear
+   * Palauttaa kirjakopion painosvuoden kokonaislukuna
+   * @return Integer painosvuosi
    */
   public Integer getEditionYear() {
     return editionYear;
   }
 
   /**
-   * @param editionYear the editionYear to set
+   * Asettaa kirjakopion painosvuoden kokonaislukuna
+   * @param editionYear painosvuosi
    */
   public void setEditionYear(Integer editionYear) {
     this.editionYear = editionYear;
   }
 
   /**
-   * @return kirja return the book
+   * Palauttaa minkä kirjan kopio kirjakopio on
+   * @return kirja
    */
   public Kirja getBook() {
     return book;
   }
 
   /**
-   * @param book the book to set
+   * Asettaa minkä kirjan kopio kirjakopio on, parametrina kirjaolio
+   * @param book kirja
    */
   public void setBook(Kirja book) {
     this.book = book;
   }
 
   /**
-   * @return Double return the purchasePrice
+   * Palauttaa kirjan ostohinnan desimaalilukuna
+   * @return Double purchasePrice
    */
   public Double getPurchasePrice() {
     return purchasePrice;
   }
 
   /**
-   * @param purchasePrice the purchasePrice to set
+   * Asettaa kirjan ostohinnan desimaalilukuna
+   * @param purchasePrice purchasePrice
    */
   public void setPurchasePrice(Double purchasePrice) {
     this.purchasePrice = purchasePrice;
   }
 
   /**
-   * @return Date return the purchaseDate
+   * Palauttaa kirjakopion ostopäivämäärän Date-muodossa DD:MM:YYYY
+   * @return Date purchaseDate
    */
   public Date getPurchaseDate() {
     return purchaseDate;
   }
 
   /**
-   * @param purchaseDate the purchaseDate to set
+   * Asettaa kirjakopion ostopäivämäärään, Date-muodossa DD:MM:YYYY
+   * @param purchaseDate ostopvm
    */
   public void setPurchaseDate(Date purchaseDate) {
     this.purchaseDate = purchaseDate;
   }
 
   /**
-   * @return Integer return the condition
+   * Palauttaa kirjakopion kuntoluokituksen kokonaislukuna asteikolla 0-5
+   * @return Integer condition
    */
   public Integer getCondition() {
     return condition;
   }
 
   /**
-   * @param condition the condition to set
+   * Asettaa kirjakopion kuntoluokituksen kokonaislukuna asteikolla 0-5
+   * @param condition
    */
   public void setCondition(Integer condition) {
     this.condition = condition;
   }
 
   /**
-   * @return String return the description
+   * Palauttaa kirjakopion kuvauksen merkkijonona
+   * @return String description
    */
   public String getDescription() {
     return description;
   }
 
   /**
-   * @param description the description to set
+   * Asettaa kirjakopiolle kuvauksen merkkijonona
+   * @param description
    */
   public void setDescription(String description) {
     this.description = description;
   }
 
   /**
-   * @return Date return the saleDate
+   * Palauttaa kirjakopion myyntipäivän Date-muodossa DD:MM:YYYY
+   * @return Date return saleDate
    */
   public Date getSaleDate() {
     return saleDate;
   }
 
   /**
-   * @param saleDate the saleDate to set
+   * Asettaa kirjakopion myyntipäivämäärän Date-muodossa DD:MM:YYYY
+   * @param saleDate 
    */
   public void setSaleDate(Date saleDate) {
     this.saleDate = saleDate;
   }
 
   /**
-   * @return Double return the salePrice
+   * Palauttaa kirjakopion myyntihinnan desimaalilukuna
+   * @return Double return salePrice
    */
   public Double getSalePrice() {
     return salePrice;
   }
 
   /**
-   * @param salePrice the salePrice to set
+   * Asettaa kirjakopion myyntihinnan desimaalilukuna
+   * @param salePrice 
    */
   public void setSalePrice(Double salePrice) {
     this.salePrice = salePrice;
   }
 
   /**
-   * @return Long return the idKirjaHylly
+   * Palauttaa kirjakopion omistajan kirjahyllyn id:n
+   * @return Long return idKirjaHylly
    */
   public Long getIdKirjaHylly() {
     return idKirjaHylly;
   }
 
   /**
-   * @param idKirjaHylly the idKirjaHylly to set
+   * Asettaa kirjakopion kirjahyllyn (omistajan) id:n
+   * @param idKirjaHylly 
    */
   public void setIdKirjaHylly(Long idKirjaHylly) {
     this.idKirjaHylly = idKirjaHylly;
   }
 
   /**
-   * @return Long return the idKirjaSarja
+   * Palauttaa kirjasarjan id:n mihin kirjakopio kuuluu
+   * @return Long return idKirjaSarja
    */
   public Long getIdKirjaSarja() {
     return idKirjaSarja;
   }
 
   /**
-   * @param idKirjaSarja the idKirjaSarja to set
+   * Asettaa kirjasarjan mihin kirjakopio kuuluu
+   * @param idKirjaSarja 
    */
   public void setIdKirjaSarja(Long idKirjaSarja) {
     this.idKirjaSarja = idKirjaSarja;

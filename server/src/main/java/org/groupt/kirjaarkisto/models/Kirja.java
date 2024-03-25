@@ -1,4 +1,5 @@
 package org.groupt.kirjaarkisto.models;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -217,7 +218,7 @@ public class Kirja {
      * @return List<Kuvitus> palauttaa kuvituslistan
      */
     public List<Kuvitus> getKuvitukset() {
-        return kuvitukset;
+        return new ArrayList<>(kuvitukset);
     }
 
     /**
