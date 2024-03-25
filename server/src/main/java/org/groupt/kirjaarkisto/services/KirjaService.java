@@ -8,6 +8,8 @@ import org.groupt.kirjaarkisto.exceptions.NullKirjaException;
 import jakarta.transaction.Transactional;
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.models.Kuva;
+import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.repositories.KirjaRepository;
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ public class KirjaService {
 
   @Autowired
   private KirjaRepository kirjaRepository;
+
+  @Autowired
+  private KuvaService kuvaService;
 
   public List<Kirja> getKirjat() {
     return kirjaRepository.findAll();
@@ -35,6 +40,11 @@ public class KirjaService {
   public Kirja getKirjaById(Long id) {
     Kirja kirja = kirjaRepository.findById(id).orElse(null);
     if (kirja != null) {
+      List<Kuvitus> kuvitukset = kirja.getKuvitukset();
+      for (Kuvitus k : kuvitukset) {
+        Kuva kuva = kuvaService.getKuvaById(k.getKuva().getIdkuva());
+        k.setKuva(kuva);
+      }
       return kirja;
     } else {
       throw new NonExistingKirjaException("Kirja with ID " + id + " does not exist!");
