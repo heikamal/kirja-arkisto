@@ -13,7 +13,6 @@
                         <p><span class="font-extrabold">Kirjailija:</span><br> {{ author }}</p>
                         <p><span class="font-extrabold">Vuosi:</span><br> {{ date }}</p>
                         <p><span class="font-extrabold">Sarja:</span><br> {{ series_name }}</p>
-                        <p>kuvitukset: {{ kuvitukset }}</p>
                         <div class="max-h-72 overflow-hidden" *ngIf="description">
                             <p class="whitespace-normal break-words"><span class="font-extrabold">Kirjan kuvaus:
                                 </span><br>{{ show_full_description ? description : (description.length > 100 ?
