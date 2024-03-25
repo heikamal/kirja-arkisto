@@ -42,4 +42,7 @@ export class PhotosComponent implements OnInit{
         });
       });
     }
+    closeDialog(): void {
+      this.dialogRef.close();
+    }
   }
