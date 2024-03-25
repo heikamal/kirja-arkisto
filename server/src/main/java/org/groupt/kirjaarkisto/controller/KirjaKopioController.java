@@ -105,4 +105,20 @@ public class KirjaKopioController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Tiedoston tallentaminen epäonnistui.");
       }
     }
+
+    @PutMapping("/{kirjakopioId}")
+    public KirjaKopio updateKirjakopio(@PathVariable Long kirjakopioId, @RequestBody KirjaKopioDTO kirjakopio) {
+      KirjaKopio kopio = kirjakopioService.getKirjakopioById(kirjakopioId);
+      kopio.setTitle(kirjakopio.getNimi());
+      kopio.setEditions(kirjakopio.getPainos());
+      kopio.setEditionYear(kirjakopio.getPainosVuosi());
+      kopio.setPurchasePrice(kirjakopio.getOstoHinta());
+      kopio.setPurchaseDate(kirjakopio.getOstoPvm());
+      kopio.setCondition(kirjakopio.getKunto());
+      kopio.setDescription(kirjakopio.getKuvaus());
+      kopio.setSaleDate(kirjakopio.getMyyntiPvm());
+      kopio.setSalePrice(kirjakopio.getMyyntiHinta());
+
+      return kirjakopioService.saveKirjaKopio(kopio);
+    }
 }
