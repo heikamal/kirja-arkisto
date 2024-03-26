@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { BookCopy } from '../book-copy';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { BookCopyDetailsComponent } from '../book-copy-details/book-copy-details.component';
 
 @Component({
@@ -19,6 +19,10 @@ export class MyBooksComponent implements OnInit {
   constructor(private dataService: DataService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.loadBookshelfData();
+  }
+
+  loadBookshelfData(): void {
     this.dataService.get_bookshelf().subscribe((response: any) => {
       this.copies = [];
       response.kopiot.forEach((copy: any) => {
@@ -32,9 +36,7 @@ export class MyBooksComponent implements OnInit {
         } catch (error) {
           console.error("Error processing image:", error);
         }
-        
-        console.log(image_url); // Logging the image URL for debugging
-        
+
         this.copies.push({
           id: copy.id,
           name: copy.nimi,
@@ -46,7 +48,7 @@ export class MyBooksComponent implements OnInit {
             author: copy.kirja.kirjailija,
             date: copy.kirja.julkaisuVuosi,
             series: copy.kirja.jarjestysNro,
-            image_url: image_url, // Assigning the image URL here
+            image_url: image_url,
             is_owned: true
           },
           purchasePrice: copy.ostoHinta,
@@ -72,6 +74,11 @@ export class MyBooksComponent implements OnInit {
   show_copy_details(copyId: number): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = { copyId };
-    const dialogRef = this.dialog.open(BookCopyDetailsComponent, dialogConfig);
+    const dialogRef: MatDialogRef<BookCopyDetailsComponent> = this.dialog.open(BookCopyDetailsComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(() => {
+      // Reload data when the dialog is closed
+      this.loadBookshelfData();
+    });
   }
 }
