@@ -21,17 +21,29 @@ export class AdminComponent {
   remove_series_id: any;
   book_form: FormGroup;
   series_form: FormGroup;
+  book_edit_form: FormGroup;
   registration_form: FormGroup;
   roles: string[] = ["user"]
   book_data: any;
   single_book_data: any;
+  single_series_data: any;
   series_data: any;
+  series_edit_form: FormGroup;
+  selectedSeriesId: number | null = null;
   series_list: Series[] = [];
   book_list: Book[] = [];
 
   constructor(@Inject(FormBuilder) fb: FormBuilder,
     private dataService: DataService
   ) {
+    this.book_edit_form = fb.group({
+      nimi: ['', Validators.maxLength(45)],
+      kirjailija: ['', Validators.maxLength(45)],
+      julkaisuVuosi: ['', Validators.max(2030)],
+      sarja: [''],
+      kuvaus: ['', Validators.maxLength(255)],
+      jarjestysNro: ['']
+    });
     this.book_form = fb.group({
       nimi: ['', Validators.maxLength(45)],
       kirjailija: ['', Validators.maxLength(45)],
@@ -52,12 +64,22 @@ export class AdminComponent {
       salasana: ['', Validators.maxLength(45)],
       rooli: [this.roles]
     });
+    this.series_edit_form = fb.group({
+      title: ['', Validators.maxLength(45)],
+      kustantaja: ['', Validators.maxLength(45)],
+      kuvaus: ['', Validators.maxLength(255)],
+      luokittelu: ['', Validators.maxLength(45)],
+    });
 
     this.load_series();
     this.load_books();
-    console.log(this.book_list)
   }
-
+  loadEditBookData(bookId: number) {
+    const selectedBook = this.book_list.find(book => book.id === bookId);
+    if (selectedBook) {
+      this.book_edit_form.patchValue(selectedBook);
+    }
+  }
   load_series() {
     this.dataService.get_series().subscribe(response => {
       this.series_list = response;
@@ -109,8 +131,77 @@ export class AdminComponent {
   }
   register_user() {
     this.dataService.register_user(this.registration_form
-  .value).subscribe(response => {
-      console.log('Response:', response);
-    })
+      .value).subscribe(response => {
+        console.log('Response:', response);
+      })
   }
+  edit_book() {
+    if (this.book_edit_form.valid && this.chosen_book_id) {
+      const formData = this.book_edit_form.value;
+      formData['sarja'] = parseInt(formData['sarja']); // Ensure sarja is converted to a number
+      this.dataService.edit_book(this.chosen_book_id, formData).subscribe(response => {
+        console.log('Book updated successfully:', response);
+        this.load_books();
+      }, (error: HttpErrorResponse) => {
+        console.error('Error occurred while editing book:', error);
+      });
+    } else {
+      console.error('Invalid form data or book ID is missing.');
+    }
+  }
+  // Method to submit edited series data
+  edit_series() {
+    if (this.series_edit_form.valid && this.selectedSeriesId) {
+      // Extract edited series data from form
+      const editedSeriesData = this.series_edit_form.value;
+      // Send PUT request to update series data
+      this.dataService.edit_series(this.selectedSeriesId, editedSeriesData).subscribe(
+        response => {
+          console.log('Series updated successfully:', response);
+          // Reload series data after editing
+          this.load_series();
+        },
+        error => {
+          console.error('Error occurred while editing series:', error);
+        }
+      );
+    } else {
+      console.error('Invalid form data or series ID is missing.');
+    }
+  }
+  loadSingleBookData() {
+    // Fetch single book data based on chosen_book_id
+    if (this.chosen_book_id) {
+      this.dataService.get_book(this.chosen_book_id).subscribe((response: any) => {
+        this.single_book_data = response;
+        // Prefill form with book data
+        this.book_edit_form.patchValue({
+          nimi: response.nimi,
+          kirjailija: response.kirjailija,
+          julkaisuVuosi: response.julkaisuVuosi,
+          sarja: response.kirjaSarja.id,
+          kuvaus: response.kuvaus,
+          jarjestysNro: response.jarjestysNro
+        });
+        console.log(this.book_edit_form)
+      });
+    }
+  }
+  loadSingleSeriesData() {
+    // Fetch single series data based on selectedSeriesId
+    if (this.selectedSeriesId !== null) {
+      this.dataService.get_series_info(this.selectedSeriesId).subscribe((response: any) => {
+        this.single_series_data = response;
+        // Prefill form with series data
+        this.series_edit_form.patchValue({
+          title: response.title,
+          kustantaja: response.kustantaja,
+          kuvaus: response.kuvaus,
+          luokittelu: response.luokittelu
+        });
+        console.log(this.series_edit_form)
+      });
+    }
+  }
+  
 }
