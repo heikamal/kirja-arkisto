@@ -6,8 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   selector: 'app-valokuvat',
   standalone: true,
   imports: [],
-  templateUrl: './valokuvat.component.html',
-  styleUrl: './valokuvat.component.css'
+  templateUrl: './valokuvat.component.html'
 })
 export class ValokuvatComponent implements OnInit {
   response : any;

@@ -8,8 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   selector: 'app-valokuva',
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule],
-  templateUrl: './valokuva.component.html',
-  styleUrl: './valokuva.component.css'
+  templateUrl: './valokuva.component.html'
 })
 export class ValokuvaComponent {
   valokuva_form: FormGroup;
