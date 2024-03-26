@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-photos',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './photos.component.html'
 })
 export class PhotosComponent implements OnInit {
