@@ -1,9 +1,9 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
-    <div class="bg-neutral-800 p-6 rounded-lg h-max overflow-y-auto text-center">
+    <div class="bg-neutral-800 p-6 rounded-lg overflow-y-auto text-center" style="max-height: 90vh;">
         <p>kirjan kuvat:</p>
-        <div id="imageContainer" class="h-720 md:h-720 md:w-640 w-640 p-2">
+        <div id="imageContainer" class="md:w-640 w-640 p-2">
         </div>
-        <p *ngIf="!document.getElementById('imageContainer').querySelector('p')">No images added</p>
+        <p *ngIf="!document.getElementById('imageContainer').querySelector('img')">No images added</p>
     </div>
     <button mat-button (click)="closeDialog()"
         class="bg-amber-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
