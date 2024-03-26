@@ -67,7 +67,17 @@ public class Kuvitus {
    * @param kirja 
    */
   public void setKirja(Kirja kirja) {
+    if (sameAsFormerKirja(kirja)) {
+      return;
+    }
+    Kirja vanhaKirja = this.kirja;
     this.kirja = kirja;
+    if (vanhaKirja != null) {
+      vanhaKirja.removeKuvitus(this);
+    }
+    if (kirja != null) {
+      kirja.addKuvitus(this);
+    }
   }
 
   /**
@@ -83,7 +93,7 @@ public class Kuvitus {
    * @param kuva
    */
   public void setKuva(Kuva kuva) {
-    if (sameAsFormer(kuva)) {
+    if (sameAsFormerKuva(kuva)) {
       return;
     }
     Kuva vanhaKuva = this.kuva;
@@ -96,8 +106,12 @@ public class Kuvitus {
     }
   }
 
-  private boolean sameAsFormer(Kuva uusiKuva) {
+  private boolean sameAsFormerKuva(Kuva uusiKuva) {
     return kuva == null ? uusiKuva == null : kuva.equals(uusiKuva);
+  }
+
+  private boolean sameAsFormerKirja(Kirja uusiKirja){
+    return kirja == null ? uusiKirja == null : kirja.equals(uusiKirja);
   }
 
   /**

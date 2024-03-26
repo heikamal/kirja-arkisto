@@ -52,12 +52,13 @@ public class KirjaService {
   }
 
   public Kirja getKirjaById(Long id) {
-    Kirja kirja = kirjaRepository.findById(id).orElse(null);
-    if (kirja != null) {
-      return handlePics(kirja);
-    } else {
-      throw new NonExistingKirjaException("Kirja with ID " + id + " does not exist!");
-    }
+    Kirja kirja = kirjaRepository.findById(id)
+        .orElseThrow(() -> new NonExistingKirjaException("Kirjaa ei käytynyt id:llä " + id));
+    return handlePics(kirja);
+  }
+
+  public Kirja getKirjaByIdEncrypted(Long id) {
+    return kirjaRepository.findById(id).orElseThrow(() -> new NonExistingKirjaException("Kirjaa ei käytynyt id:llä " + id));	
   }
 
   // metodi siis lisää sen kirjan :D hagrid tales :D

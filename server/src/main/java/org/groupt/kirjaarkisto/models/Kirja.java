@@ -220,13 +220,21 @@ public class Kirja {
     public List<Kuvitus> getKuvitukset() {
         return new ArrayList<>(kuvitukset);
     }
-
-    /**
-     * asetataa listan kuvituksia joita kirjalle kuuluu
-     * @param kuvitukset kuvituslista
-     */
-    public void setKuvitukset(List<Kuvitus> kuvitukset) {
-        this.kuvitukset = kuvitukset;
+    
+    public void removeKuvitus(Kuvitus kuvitus) {
+      if (!kuvitukset.contains(kuvitus)) {
+        return;
+      }
+      kuvitukset.remove(kuvitus);
+      kuvitus.setKirja(null);
+    }
+  
+    public void addKuvitus(Kuvitus kuvitus) {
+      if (kuvitukset.contains(kuvitus)) {
+        return;
+      }
+      kuvitukset.add(kuvitus);
+      kuvitus.setKirja(this);
     }
 
 }
