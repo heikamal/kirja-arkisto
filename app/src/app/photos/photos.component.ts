@@ -32,6 +32,7 @@ export class PhotosComponent implements OnInit{
           const base64Data = imageData.kuva.picByte;
           const retrievedImage = 'data:image/jpeg;base64,' + base64Data;
           const imgElement = document.createElement('img');
+          imgElement.classList.add('object-cover', 'w-full', 'h-full');
           imgElement.src = retrievedImage;
           const imageContainer = document.getElementById('imageContainer');
           if (imageContainer) {
