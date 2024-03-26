@@ -96,6 +96,10 @@ public class KirjaKopioService {
   }
 
   public void remove(KirjaKopio kopio) {
+    List<Valokuva> valokuvat = valokuvaRepository.findByKirjaKopio(kopio);
+    for (Valokuva valokuva : valokuvat) {
+      valokuvaRepository.delete(valokuva);
+    }
     kirjaKopioRepository.delete(kopio);
   }
 

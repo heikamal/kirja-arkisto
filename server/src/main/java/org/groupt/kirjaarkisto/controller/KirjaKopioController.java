@@ -151,12 +151,6 @@ public class KirjaKopioController {
 
     KirjaKopio poistettava = kirjakopioService.getKirjakopioById(kirjakopioId);
 
-    List<Valokuva> valukuvat = kirjakopioService.getValokuvatByKirjaKopio(poistettava);
-
-    for (Valokuva valokuva : valukuvat) {
-      kirjakopioService.poistaValokuva(valokuva.getIdkuva());;
-    }
-
     try {
       kirjakopioService.remove(poistettava);
       return ResponseEntity.ok(poistettava.getTitle() + " on poistettu onnistuneesti");
