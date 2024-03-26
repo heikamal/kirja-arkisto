@@ -12,9 +12,9 @@
               <span *ngIf="copy.condition === 1" class="text-red-500">K1</span>
             </div>
             <img *ngIf="copy.book.image_url === 'none'" src="../../assets/miscellaneous/cover_not_available.png" [alt]="copy.book.title"
-              class="h-48 md:h-64 md:w-48 w-32 p-2 hover:brightness-75" (click)="show_copy_details(copy.id)">
+              class="h-48 md:h-64 md:w-48 w-32 max-w-max p-2 hover:brightness-75" (click)="show_copy_details(copy.id)">
             <img *ngIf="copy.book.image_url !== 'none'" [src]="copy.book.image_url" [alt]="copy.book.title"
-              class="h-48 md:h-64 md:w-48 w-32 p-2 hover:brightness-75" (click)="show_copy_details(copy.id)">
+              class="h-48 md:h-64 md:w-48 w-32 max-w-max p-2 hover:brightness-75" (click)="show_copy_details(copy.id)">
             <div
               class="absolute top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 text-white p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex justify-center items-center cursor-pointer"
               (click)="show_copy_details(copy.id)">

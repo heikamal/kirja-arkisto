@@ -40,7 +40,7 @@ export class PhotosComponent implements OnInit{
     
           // Create paragraph elements for each property and set their text content
           const pElements: HTMLParagraphElement[] = [];
-          ['julkaisuvuosi', 'taiteilija', 'tyyli', 'kuvaus', 'sivunro', 'kuvannimi'].forEach(property => {
+          ['julkaisuvuosi', 'taiteilija', 'tyyli', 'kuvaus'].forEach(property => {
             const p = document.createElement('p');
             p.textContent = `${property}: ${imageData.kuva[property]}`;
             pElements.push(p);
