@@ -1,7 +1,10 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
-    <div class="bg-neutral-800 p-6 rounded-lg h-full y-full overflow-y-auto">
+    <div class="bg-neutral-800 p-6 rounded-lg h-max overflow-y-auto text-center">
         <p>kirjan kuvat:</p>
-            <div id = "imageContainer" class="h-720 md:h-720 md:w-640 w-640 p-2"></div>
+        <div id="imageContainer" class="h-720 md:h-720 md:w-640 w-640 p-2">
+        </div>
+        <p *ngIf="!document.getElementById('imageContainer').querySelector('p')">No images added</p>
     </div>
-    <button mat-button (click)="closeDialog()"class="bg-amber-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
+    <button mat-button (click)="closeDialog()"
+        class="bg-amber-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
 </div>
