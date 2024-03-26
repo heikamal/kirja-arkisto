@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BookCopy } from '../book-copy';
 import { CommonModule } from '@angular/common';
 import { ValokuvaComponent } from '../valokuva/valokuva.component';
+import { ValokuvatComponent } from '../valokuvat/valokuvat.component';
 
 @Component({
   standalone: true,
@@ -167,11 +168,21 @@ export class BookCopyDetailsComponent implements OnInit {
     );
   }
 
+  
   add_photos(): void {
     if (this.dialogRef && this.dialogRef.componentInstance instanceof BookCopyDetailsComponent) {
       this.dialogRef.close();
     }
     const dialogRef = this.dialog.open(ValokuvaComponent, {
+      width: '400px',
+      data: { bookcopyid: this.data.copyId}
+    });
+  }
+  show_photos(): void {
+    if (this.dialogRef && this.dialogRef.componentInstance instanceof BookCopyDetailsComponent) {
+      this.dialogRef.close();
+    }
+    const dialogRef = this.dialog.open(ValokuvatComponent, {
       width: '400px',
       data: { bookcopyid: this.data.copyId}
     });
