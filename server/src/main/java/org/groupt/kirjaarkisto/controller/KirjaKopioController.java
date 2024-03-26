@@ -79,6 +79,8 @@ public class KirjaKopioController {
 
     Kirja kirja = kirjaService.getKirjaById(kirjaKopio.getKirjaId());
 
+    //TODO: Kirjan kuva persistency
+
     KirjaKopio kopio = new KirjaKopio(kirjaKopio, kirja, hylly.getId());
 
     return kirjakopioService.saveKirjaKopio(kopio);

@@ -81,7 +81,7 @@ public class KirjaService {
     kirjaRepository.delete(book);
   }
 
-  private Kirja handlePics(Kirja kirja) {
+  public Kirja handlePics(Kirja kirja) {
     if (kirja.getKuvitukset() != null) {
       for (Kuvitus k : kirja.getKuvitukset()) {
         Kuva kuva = kuvaService.getKuvaById(k.getKuva().getIdkuva());

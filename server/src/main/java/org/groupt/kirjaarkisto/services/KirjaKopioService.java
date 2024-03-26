@@ -40,6 +40,9 @@ public class KirjaKopioService {
   @Autowired
   private KuvaRepository kuvaRepository;
 
+  @Autowired
+  private KirjaService kirjaService;
+
 
   //@Autowired
   //private TiedostonhallintaService tiedostonhallintaService;
@@ -83,7 +86,12 @@ public class KirjaKopioService {
   }
 
   public List<KirjaKopio> getByOmaSarja(Long hyllyId, Long sarjaId) {
-    return kirjaKopioRepository.findByIdKirjaSarjaAndIdKirjaHylly(sarjaId, hyllyId);
+    List<KirjaKopio> kopiot = kirjaKopioRepository.findByIdKirjaSarjaAndIdKirjaHylly(sarjaId, hyllyId);
+    for (KirjaKopio kopio : kopiot) {
+      Kirja kirja = kopio.getBook();
+      kopio.setBook(kirjaService.handlePics(kirja));
+    }
+    return kopiot;
   }
 
   public List<KirjaKopio> getBySarja(KirjaSarja sarja) {
