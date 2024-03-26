@@ -15,8 +15,11 @@
     <div mat-dialog-actions class="m-4 md:m-1 w-full flex justify-center">
       <button mat-button (click)="closeDialog()"
         class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
-        <p *ngIf="is_owned" class="bg-green-500 rounded-md m-1 p-2 text-white text-xs whitespace-nowrap">Kirjahyllyssä
-        </p>
+      <ng-container *ngIf="is_owned">
+        <button mat-button (click)="remove_series_from_bookshelf()"
+          class="bg-red-500 rounded-md m-1 p-1 hover:brightness-75 text-white whitespace-nowrap">Poista kirjahyllystä</button>
+        <p class="bg-green-500 rounded-md m-1 p-2 text-white text-xs whitespace-nowrap">Kirjahyllyssä</p>
+      </ng-container>
       <ng-container *ngIf="!is_owned">
         <button mat-button (click)="add_series_to_bookshelf()"
           class="bg-neutral-500 rounded-md m-1 p-1 hover:brightness-75 text-black whitespace-nowrap">Lisää

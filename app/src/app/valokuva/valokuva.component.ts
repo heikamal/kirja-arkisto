@@ -1,23 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { HttpErrorResponse, HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DataService } from '../data.service';
-import { CookieService } from 'ngx-cookie-service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DataService } from '../data.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
-
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
-  selector: 'app-photo',
+  selector: 'app-valokuva',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
-  providers: [DataService],
-  templateUrl: './photo.component.html'
+  imports: [ReactiveFormsModule, FormsModule],
+  templateUrl: './valokuva.component.html'
 })
-export class PhotoComponent {
-  
-  photo_form: FormGroup;
+export class ValokuvaComponent {
+  valokuva_form: FormGroup;
   selectedFile: any;
   retrievedImage: any;
   base64Data: any;
@@ -26,13 +20,13 @@ export class PhotoComponent {
   imageName: any;
    
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { bookId: number, title: string },
+    @Inject(MAT_DIALOG_DATA) public data: { bookcopyid: number},
     private dataService: DataService,
     private dialog: MatDialog,
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<PhotoComponent>
+    public dialogRef: MatDialogRef<ValokuvaComponent>
   ) {
-    this.photo_form = fb.group({
+    this.valokuva_form = fb.group({
       tiedosto : [null],
       julkaisuvuosi: [''],
       taiteilija: ['', Validators.maxLength(45)],
@@ -47,16 +41,18 @@ export class PhotoComponent {
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
-    bookid : string = this.data.bookId.toString();
+  bookid : string = this.data.bookcopyid.toString();
 
     
     onUpload() {
-      if (this.photo_form.valid) {
+      if (this.valokuva_form.valid) {
         const formData = new FormData();
-        Object.keys(this.photo_form.value).forEach(key => {
-          const value = this.photo_form.value[key];
-          formData.append(key, value);
-        });
+        formData.append("kuvannimi", this.valokuva_form.value.kuvannimi);
+        formData.append("julkaisuvuosi", this.valokuva_form.value.julkaisuvuosi);
+        formData.append("taiteilija", this.valokuva_form.value.taiteilija);
+        formData.append("tyyli", this.valokuva_form.value.tyyli);
+        formData.append("kuvaus", this.valokuva_form.value.kuvaus);
+        formData.append("sivunro", this.valokuva_form.value.sivunro);
         const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
         if (fileInput) {
           const files = fileInput.files;
@@ -66,25 +62,29 @@ export class PhotoComponent {
           } else {
             console.error('No files selected');
             this.openErrorDialog();
+            
           }
         } else {
           console.error('File input not found');
           this.openErrorDialog();
         }
         
-        this.dataService.post_photo(this.bookid, formData).subscribe((response) => {
+        this.dataService.post_valokuva(this.bookid, formData).subscribe((response) => {
           console.log(response);
           this.dialogRef.close();
+          
         })
       
     }
   }
-
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
   openErrorDialog(): void {
     const dialogRef = this.dialog.open(ErrorDialogComponent, {
       width: '250px',
       data: { message: 'Tarkista kentät, kuvaa ei pystytty lisäämään' }
     });
   }
+  }
 
-}

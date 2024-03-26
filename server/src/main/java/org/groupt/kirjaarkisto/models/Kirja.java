@@ -1,34 +1,68 @@
 package org.groupt.kirjaarkisto.models;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
+/**
+ * Luokka määrittelee kirja-olion tietokantaa varten.
+ * Tämä luokka on JPA-entity, joka vastaa tietokantataulua
+ */
 @Entity
 @Table(name = "kirja")
 public class Kirja {
+
+    /**
+    * Kirjan yksilöllinen tunniste tietokannassa (id).
+    * Springin @Id-annotaatio tarkoittaa että tämä attribuutti on pääavain tietokannassa.
+    * Springin @GeneratedValue-annotaatio kertoo, että id-arvot ovat auto-increment.
+    */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idkirja")
     private Long id;
 
+    /**
+    * Kirjan nimi tietokannassa.
+    * Spring @Column-annotaatio määrittelee sarakkeen nimen tietokannassa, tässä tapauksessa "kirjanimi".
+    */
     @Column(name = "kirjanimi")
     private String nimi;
 
+    /**
+    *   Kirjan kirjailijan nimi
+    */
     @Column(name = "kirjailija") 
     private String kirjailija;
 
+    /**
+    *   Kirjan julkaisuvuosi
+    */
     @Column(name = "julkaisuvuosi")
     private Integer julkaisuVuosi;
 
+    /**
+    *   Kirjaan liittyvä kirjasarja tietokannassa.
+    * Springin @ManyToOne-annotaatio merkitsee monen suhde yhteen -suhteen kirjan ja kirjasarjan välillä.
+    * Springin @JoinColumn-annotaatio määrittelee liitostaulun sarakkeen nimen, tässä tapauksessa "idkirjasarja".
+    */
     @ManyToOne
     @JoinColumn(name = "idkirjasarja")
     private KirjaSarja kirjaSarja;
 
+    /**
+    * Kirjasarjassa olevan kirjan järjestysnumero.
+    * Tämä attribuutti määrittää kirjan järjestysnumeron tietokannassa, mikäli kirja kuuluu johonkin kirjasarjaan.
+    * Springin @Column-annotaatio määrittelee sarakkeen nimen tietokannassa, tässä tapauksessa "jarjestysnro".
+    */
     @Column(name = "jarjestysnro")
     private Integer jarjestysNro;
 
+    /**
+    *   Kirjan kuvaus tietokannassa, esimerkiksi takakannen teksti
+    */
     @Column(name = "kuvaus")
     private String kuvaus;
 
@@ -56,49 +90,55 @@ public class Kirja {
     }
 
     /**
-     * @return Long return the id
+     * @return Long Palauttaa kirjan id:n
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * Asettaa kirjan id:n
+     * @param id Kirjan id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * @return String return the title
+     * Palauttaa kirjan otsikkonimen/titlen
+     * @return String kirjan nimi
      */
     public String getNimi() {
         return nimi;
     }
 
     /**
-     * @param title the title to set
+     * Asettaa kirjan otsikkonimen tai "titlen"
+     * @param title ottaa parametrina merkkijonon joka on kirjan "title"
      */
     public void setNimi(String title) {
         this.nimi = title;
     }
 
     /**
-     * @return Integer return the publicationYear
+     * Palauttaa kirjan julkaisuvuoden kokonaislukuna
+     * @return Integer julkaisuvuosi
      */
     public Integer getJulkaisuVuosi() {
         return julkaisuVuosi;
     }
 
     /**
-     * @param publicationYear the publicationYear to set
+     * Asettaa julkaisuvuoden kirjalle, ottaa parametrina kokonaisluvun
+     * @param publicationYear kirjan julkaisuvuosi
      */
     public void setJulkaisuVuosi(Integer publicationYear) {
         this.julkaisuVuosi = publicationYear;
     }
 
     /**
-     * @return kirjasarja return the bookSeries
+     * Palauttaa kirjasarja olion mihin sitä kutsuva kirja kuuluu
+     * @return kirjasarja palauttaa kirjasarja olion
      */
     public KirjaSarja getKirjaSarja() {
         return kirjaSarja;
@@ -112,21 +152,24 @@ public class Kirja {
     }
 
     /**
-     * @param seriesOrder the seriesOrder to set
+     * Asettaa kirjan järjestysnumeron sarjassa
+     * @param seriesOrder Kirjan järjestysnumero sarjassa kokonaislukuna
      */
     public void setJarjestysNro(Integer seriesOrder) {
         this.jarjestysNro = seriesOrder;
     }
 
     /**
-     * @return String return the description
+     *  Palauttaa kirjan kuvauksen merkkijonona
+     * @return String kirjan kuvaus
      */
     public String getKuvaus() {
         return kuvaus;
     }
 
     /**
-     * @param description the description to set
+     * Asettaa kirjan kuvauksen merkkijonona
+     * @param description kirjan kuvaus
      */
     public void setKuvaus(String description) {
         this.kuvaus = description;
@@ -134,14 +177,16 @@ public class Kirja {
 
 
     /**
-     * @return String return the kirjailija
+     * Palauttaa kirjan kirjailijan nimen
+     * @return String kirjailijan nimi
      */
     public String getKirjailija() {
         return kirjailija;
     }
 
     /**
-     * @param kirjailija the kirjailija to set
+     * Asettaa kirjan kirjailijan
+     * @param kirjailija kirjailijan nimi
      */
     public void setKirjailija(String kirjailija) {
         this.kirjailija = kirjailija;
@@ -169,17 +214,27 @@ public class Kirja {
     }
 
     /**
-     * @return List<Kuvitus> return the kuvitukset
+     * Palauttaa listan kuvituksia joita kirjalle kuuluu
+     * @return List<Kuvitus> palauttaa kuvituslistan
      */
     public List<Kuvitus> getKuvitukset() {
-        return kuvitukset;
+        return new ArrayList<>(kuvitukset);
     }
-
-    /**
-     * @param kuvitukset the kuvitukset to set
-     */
-    public void setKuvitukset(List<Kuvitus> kuvitukset) {
-        this.kuvitukset = kuvitukset;
+    
+    public void removeKuvitus(Kuvitus kuvitus) {
+      if (!kuvitukset.contains(kuvitus)) {
+        return;
+      }
+      kuvitukset.remove(kuvitus);
+      kuvitus.setKirja(null);
+    }
+  
+    public void addKuvitus(Kuvitus kuvitus) {
+      if (kuvitukset.contains(kuvitus)) {
+        return;
+      }
+      kuvitukset.add(kuvitus);
+      kuvitus.setKirja(this);
     }
 
 }

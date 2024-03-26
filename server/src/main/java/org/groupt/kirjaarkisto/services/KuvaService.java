@@ -33,8 +33,8 @@ public class KuvaService {
   private KuvitusRepository kuvitusRepository;
 
 
-  @Autowired
-  private TiedostonhallintaService tiedostonhallintaservice;
+  //@Autowired
+  //private TiedostonhallintaService tiedostonhallintaservice;
 
     public void poistaKuva(Long id) {
         kuvaRepository.deleteById(id);
@@ -46,28 +46,18 @@ public class KuvaService {
 
     public Kuva getKuvaById(Long id) {
       Kuva kuva = kuvaRepository.findById(id).orElse(null);
-      Kuva img = new Kuva();
-      if (kuva != null) {
-        img.setKuvanimi(kuva.getKuvanimi());
-        img.setJulkaisuvuosi(kuva.getJulkaisuvuosi());
-        img.setTaiteilija(kuva.getTaiteilija());
-        img.setTyyli(kuva.getTyyli());
-        img.setKuvaus(kuva.getKuvaus());
-        img.setTiedostonimi(kuva.getTiedostonimi());
-        img.setKuvitukset(kuva.getKuvitukset());
-        img.setPicByte(decompressBytes(kuva.getPicByte()));
-      }
-      return img;
+      kuva.setPicByte(decompressBytes(kuva.getPicByte()));
+      return kuva;
     }
      //kuvan lisäys metodi
      @Transactional
      public Kuvitus lisaaKuvaKirjalle(Long kirjaId, MultipartFile tiedosto, Integer julkaisuvuosi, String taiteilija,
-         String tyyli, String kuvaus, Integer sivunro) throws java.io.IOException {
+         String tyyli, String kuvaus, Integer sivunro, String nimi) throws java.io.IOException {
 
       Kirja kirja = kirjaRepository.findById(kirjaId)
         .orElseThrow(() -> new EntityNotFoundException("Kirjaa ei löydy id:llä " + kirjaId));
 
-       String tiedostoNimi = tiedostonhallintaservice.tallennaKuva(tiedosto);
+       //String tiedostoNimi = tiedostonhallintaservice.tallennaKuva(tiedosto);
        
        // Luo kuvaolio ja tallenna tiedostonimi tietokantaan
        Kuva kuva = new Kuva();
@@ -75,8 +65,9 @@ public class KuvaService {
        kuva.setTaiteilija(taiteilija);
        kuva.setTyyli(tyyli);
        kuva.setKuvaus(kuvaus);
-       kuva.setTiedostonimi(tiedostoNimi); // Tallennetaan tiedostonimi tietokantaan
+       kuva.setTiedostonimi(nimi);
        kuva.setPicByte(compressBytes(tiedosto.getBytes()));
+       kuva.setKuvanimi(nimi);
 
        Kuva lisatty = kuvaRepository.save(kuva);
 

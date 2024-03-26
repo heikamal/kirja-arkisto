@@ -13,14 +13,16 @@
       <option *ngFor="let series of series_list" [value]="series.id">{{ series.title }}</option>
     </select>
     <div class="flex flex-col">
-      <button class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3" type="submit"
-        [disabled]="series_list.length === 0">
+      <button class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
+        type="submit" [disabled]="series_list.length === 0">
         LISÄÄ
       </button>
-      <span *ngIf="series_list.length === 0" class="text-red-600 text-sm">Lisätäksesi kirjan sinun täytyy ensin lisätä kirjasarja.</span>
+      <span *ngIf="series_list.length === 0" class="text-red-600 text-sm">Lisätäksesi kirjan sinun täytyy ensin lisätä
+        kirjasarja.</span>
     </div>
   </form>
-  <p class="text-red-500">{{ book_form.status === 'INVALID' ? 'Jossain kentässä on epäkelpoa tietoa. Tarkista syötteet' : '' }}</p>
+  <p class="text-red-500">{{ book_form.status === 'INVALID' ? 'Jossain kentässä on epäkelpoa tietoa. Tarkista syötteet'
+    : '' }}</p>
   <hr class="my-4 border-b-2 border-neutral-500">
   <p>Lisää kirjasarja</p>
   <form (ngSubmit)="submit_series()" [formGroup]="series_form" class="flex flex-col items-center">
@@ -32,7 +34,8 @@
       <button class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
         type="submit">LISÄÄ</button>
     </div>
-    <p class="text-red-500">{{ series_form.status === 'INVALID' ? 'Jossain kentässä on epäkelpoa tietoa. Tarkista syötteet' : '' }}</p>
+    <p class="text-red-500">{{ series_form.status === 'INVALID' ? 'Jossain kentässä on epäkelpoa tietoa. Tarkista
+      syötteet' : '' }}</p>
   </form>
   <hr class="my-4 border-b-2 border-neutral-500">
   <p>POISTA KIRJA</p>
@@ -50,13 +53,88 @@
   </select>
   <button class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
     (click)="remove_series()">POISTA</button>
-    <hr class="my-4 border-b-2 border-neutral-500">
-    <p>Rekisteröi käyttäjä</p>
-    <form (ngSubmit)="register_user()" [formGroup]="registration_form" class="flex flex-col items-center">
-      <input formControlName="nimi" placeholder="Nimi" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
-      <input formControlName="salasana" placeholder="Salasana" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
-      <button class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
-        type="submit">REKISTERÖI</button>
-    </form>
-    <p class="text-red-500">{{ registration_form.status === 'INVALID' ? 'Tarkista syötteet' : '' }}</p>
+  <hr class="my-4 border-b-2 border-neutral-500">
+  <p>Rekisteröi käyttäjä</p>
+  <form (ngSubmit)="register_user()" [formGroup]="registration_form" class="flex flex-col items-center">
+    <input formControlName="nimi" placeholder="Nimi" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+    <input formControlName="salasana" placeholder="Salasana" class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+    <button class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3"
+      type="submit">REKISTERÖI</button>
+  </form>
+  <p class="text-red-500">{{ registration_form.status === 'INVALID' ? 'Tarkista syötteet' : '' }}</p>
+  <hr class="my-4 border-b-2 border-neutral-500">
+  <p>Muokkaa kirjaa</p>
+  <select [(ngModel)]="chosen_book_id" (change)="loadSingleBookData()">
+    <option *ngFor="let book of book_list" [value]="book.id">{{ book.title }}</option>
+  </select>
+  <div class="flex justify-center">
+    <div class="w-96">
+      <form [formGroup]="book_edit_form" *ngIf="single_book_data" class="flex flex-col items-center">
+        <div class="mb-4">
+          <label for="nimi" class="inline-block w-24 text-right mr-4">Nimi:</label>
+          <input type="text" id="nimi" formControlName="nimi" placeholder="Kirjan nimi"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+        </div>
+        <div class="mb-4">
+          <label for="kirjailija" class="inline-block w-24 text-right mr-4">Kirjailija:</label>
+          <input type="text" id="kirjailija" formControlName="kirjailija" placeholder="Kirjailija"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+        </div>
+        <div class="mb-4">
+          <label for="julkaisuVuosi" class="inline-block w-24 text-right mr-4">Julkaisuvuosi:</label>
+          <input type="number" id="julkaisuVuosi" formControlName="julkaisuVuosi" placeholder="Julkaisuvuosi"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+        </div>
+        <div class="mb-4">
+          <label for="kuvaus" class="inline-block w-24 text-right mr-4">Kuvaus:</label>
+          <textarea id="kuvaus" formControlName="kuvaus" placeholder="Kuvaus"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="jarjestysNro" class="inline-block w-24 text-right mr-4">Järjestysnumero:</label>
+          <input type="number" id="jarjestysNro" formControlName="jarjestysNro" placeholder="Järjestysnumero"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+        </div>
+        <button type="button" (click)="edit_book()"
+          class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3">Save
+          Changes</button>
+      </form>
+    </div>
+  </div>
+  <hr class="my-4 border-b-2 border-neutral-500">
+  
+  <!-- Muokkaa kirjasarjaa -->
+  <p>Muokkaa kirjasarjaa</p>
+  <select [(ngModel)]="selectedSeriesId" (change)="loadSingleSeriesData()">
+    <option *ngFor="let series of series_list" [value]="series.id">{{ series.title }}</option>
+  </select>
+  <div class="flex justify-center">
+    <div class="w-96">
+      <form [formGroup]="series_edit_form" *ngIf="series_edit_form" class="flex flex-col items-center">
+        <div class="mb-4">
+          <label for="title" class="inline-block w-24 text-right mr-4">Nimi:</label>
+          <input type="text" id="title" formControlName="title" placeholder="Sarjan nimi"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+        </div>
+        <div class="mb-4">
+          <label for="kustantaja" class="inline-block w-24 text-right mr-4">Kustantaja:</label>
+          <input type="text" id="kustantaja" formControlName="kustantaja" placeholder="Kustantaja"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+        </div>
+        <div class="mb-4">
+          <label for="kuvaus" class="inline-block w-24 text-right mr-4">Kuvaus:</label>
+          <textarea id="kuvaus" formControlName="kuvaus" placeholder="Kuvaus"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="luokittelu" class="inline-block w-24 text-right mr-4">Luokittelu:</label>
+          <input type="text" id="luokittelu" formControlName="luokittelu" placeholder="Luokittelu"
+            class="mt-2 md:mt-4 p-2 md:p-3 w-full md:w-auto">
+        </div>
+        <button type="button" (click)="edit_series()"
+          class="rounded-lg hover:brightness-75 border-2 bg-neutral-500 border-black mt-4 md:mt-6 p-2 md:p-3">Tallenna
+          muutokset</button>
+      </form>
+    </div>
+  </div>
 </div>

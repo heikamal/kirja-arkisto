@@ -1,24 +1,21 @@
 package org.groupt.kirjaarkisto.models;
-
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.*;
+import java.util.Objects;
 
+/**
+
+ * Tämä luokka edustaa "Kuvitus"-entiteettiä
+ * Se yhdistää tietyn kuvan (Kuva-luokka) kirjaan (Kirja-luokkaan) ja sisältää sivunumeron.
+ * jossa kuvitus esiintyy kirjassa.
+ * 
+ * Kuvalla voi siis olla monta kuvitusta. (Siis monia kuvia kirjasta, esimerkiksi eri sivuilta)
+ */
 @Entity
 @Table(name = "kuvitus")
 public class Kuvitus {
 
-  /*
-   * @Id
-   * 
-   * @GeneratedValue(strategy = GenerationType.IDENTITY)
-   * 
-   * @Column(name = "idkuva")
-   * private Long id;
-   */
 
   @EmbeddedId
   private KuvitusId id;
@@ -40,6 +37,7 @@ public class Kuvitus {
   public Kuvitus() {
   }
 
+  //parametrillinen konstruktori :D
   public Kuvitus(Kirja kirja, Kuva kuva, Integer sivunro) {
     this.id = new KuvitusId(kirja.getId(), kuva.getIdkuva());
     this.kirja = kirja;
@@ -47,61 +45,101 @@ public class Kuvitus {
     this.sivunro = sivunro;
   }
 
-  /* 
-  /**
-   * @return Long return the id
-   *
-  public Long getId() {
+  public KuvitusId getId() {
     return id;
   }
 
-  /**
-   * @param id the id to set
-   *
-  public void setId(Long id) {
+  public void setId(KuvitusId id) {
     this.id = id;
-  }*/
+  }
+
 
   /**
-   * @return Kirja return the kirja
+   * Palauttaa kirjan mihin kuvitus kuuluu
+   * @return Kirja
    */
   public Kirja getKirja() {
     return kirja;
   }
 
   /**
-   * @param kirja the kirja to set
+   * Asettaa kuvitukselle kirjan
+   * @param kirja 
    */
   public void setKirja(Kirja kirja) {
+    if (sameAsFormerKirja(kirja)) {
+      return;
+    }
+    Kirja vanhaKirja = this.kirja;
     this.kirja = kirja;
+    if (vanhaKirja != null) {
+      vanhaKirja.removeKuvitus(this);
+    }
+    if (kirja != null) {
+      kirja.addKuvitus(this);
+    }
   }
 
   /**
-   * @return Kuva return the kuva
+   * Palauttaa kuvan mihin kuvitus kuuluu
+   * @return Kuva 
    */
   public Kuva getKuva() {
     return kuva;
   }
 
   /**
-   * @param kuva the kuva to set
+   * Asettaa kuvan mihin kuvitus kuuluu
+   * @param kuva
    */
   public void setKuva(Kuva kuva) {
+    if (sameAsFormerKuva(kuva)) {
+      return;
+    }
+    Kuva vanhaKuva = this.kuva;
     this.kuva = kuva;
+    if (vanhaKuva != null){
+      vanhaKuva.removeKuvitus(this);
+    }
+    if (kuva != null){
+      kuva.addKuvitus(this);
+    }
+  }
+
+  private boolean sameAsFormerKuva(Kuva uusiKuva) {
+    return kuva == null ? uusiKuva == null : kuva.equals(uusiKuva);
+  }
+
+  private boolean sameAsFormerKirja(Kirja uusiKirja){
+    return kirja == null ? uusiKirja == null : kirja.equals(uusiKirja);
   }
 
   /**
-   * @return Integer return the sivunro
+   * Palauttaa kuvituksen sivunumeron kokonaislukuna
+   * @return Integer sivunro
    */
   public Integer getSivunro() {
     return sivunro;
   }
 
   /**
-   * @param sivunro the sivunro to set
+   * Asettaa kuvituksen sivunumeron kokonaislukuna
+   * @param sivunro
    */
   public void setSivunro(Integer sivunro) {
     this.sivunro = sivunro;
   }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " id='" + getId() + "'" +
+      ", kirja='" + getKirja() + "'" +
+      ", kuva='" + getKuva() + "'" +
+      ", sivunro='" + getSivunro() + "'" +
+      "}";
+  }
+  
 
 }

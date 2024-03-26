@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import io.jsonwebtoken.io.IOException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -24,7 +23,6 @@ import org.groupt.kirjaarkisto.payload.KirjaDTO;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +108,7 @@ public class KirjaController {
      * @return Tietokantaan lisätty kirja.
      */
     @PostMapping(path = "")
-    public ResponseEntity<Kirja> createKirja(@NonNull @RequestBody KirjaDTO kirjaDTO) {
+    public KirjaResponse createKirja(@NonNull @RequestBody KirjaDTO kirjaDTO) {
         Kirja lisattava = new Kirja();
         lisattava.setNimi(kirjaDTO.getNimi());
         lisattava.setKirjailija(kirjaDTO.getKirjailija());
@@ -126,8 +124,7 @@ public class KirjaController {
                 .buildAndExpand(lisatty.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri)
-                .body(lisatty);
+        return new KirjaResponse(lisatty);
     }
 
     @DeleteMapping("/{id}")
@@ -148,12 +145,12 @@ public class KirjaController {
      * @return päivitetty kirja.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Kirja> editKirja(@PathVariable Long id, @NonNull @RequestBody KirjaDTO kirjaDTO) {
+    public KirjaResponse editKirja(@PathVariable Long id, @NonNull @RequestBody KirjaDTO kirjaDTO) {
 
         Kirja muokattava = kirjaService.getKirjaById(id);
 
         if (muokattava == null) {
-            return ResponseEntity.notFound().build();
+            throw new NonExistingKirjaException("Kirjaa ei ole olemassa!");
         }
 
         muokattava.setNimi(kirjaDTO.getNimi());
@@ -163,11 +160,25 @@ public class KirjaController {
         muokattava.setJarjestysNro(kirjaDTO.getJarjestysNro());
         muokattava.setKuvaus(kirjaDTO.getKuvaus());
 
-        Kirja muokattuKirja = kirjaService.editKirja(id, muokattava);
+        Kirja muokattuKirja = kirjaService.addKirja(muokattava);
 
-        return ResponseEntity.ok(muokattuKirja);
+        return new KirjaResponse(muokattuKirja);
     }
 
+    /**
+     * Endpoint kuvan lisäyspyynnöille URL-osoitteessa: /api/kirjat/{id}/kuvat ({id} on kirjan id mille lisätään kuva)
+     * 
+     * Ottaa siis parametrinä kuvan tiedot ja kutsuu service-luokan metodia kuvan tallentamiseksi
+     *  
+     * @param id kirjan id mille kuva lisätään
+     * @param tiedosto frontendissa valittu kuva
+     * @param julkaisuvuosi kuvan julkaisuvuosi kokonaislukuna
+     * @param taiteilija kuvan taiteilija
+     * @param tyyli kuvan tyyli
+     * @param kuvaus kuvan kuvaus :D
+     * @param sivunro sivunro kokonaislukuna, jos sellaista on
+     * @throws java.io.IOException
+     */
     @PostMapping("/{id}/kuvat")
     public Kuvitus lisaakuvaKirjalle(
             @PathVariable Long id,
@@ -176,15 +187,24 @@ public class KirjaController {
             @RequestParam("taiteilija") String taiteilija,
             @RequestParam("tyyli") String tyyli,
             @RequestParam("kuvaus") String kuvaus,
-            @RequestParam("sivunro") Integer sivunro) throws java.io.IOException {
+            @RequestParam("sivunro") Integer sivunro,
+            @RequestParam("kuvannimi") String nimi) throws java.io.IOException {
 
         try {
-            return kuvaservice.lisaaKuvaKirjalle(id, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro);
+            return kuvaservice.lisaaKuvaKirjalle(id, tiedosto, julkaisuvuosi, taiteilija, tyyli, kuvaus, sivunro, nimi);
         } catch (EntityNotFoundException e) {
             throw new NonExistingKirjaException("Ei saatana ei helvetti");
         }
     }
-  
+    /**
+     * Endpoint joka käsittelee DELETE-requestit kuville. URL-osoite: /api/kirjat/{kirjaId}/kuva/{kuvaId}
+     * 
+     * Poistaa parametrien osoittaman kuvan kirjalta
+     * 
+     * @param kirjaId kirjan id miltä kuva poistetaan
+     * @param kuvaId kuvan id mikä halutaan poistaa
+     * @return HTTP-status eli OK,NOT_FOUND tai INTERNAL_SERVER_ERROR
+     */
     @DeleteMapping("/{kirjaId}/kuva/{kuvaId}")
     public ResponseEntity<String> poistaKuvaKirjalta(
             @PathVariable Long kirjaId,
@@ -200,10 +220,18 @@ public class KirjaController {
                     .body("Kuvan poistaminen kirjalta epäonnistui");
         }
     }
-
+    /**
+     * GET-Endpoint joka palauttaa tietyn kirjan kuvitukset listana. URL-osoite: /api/kirjat/{id}/kuvitukset
+     * @param kirja jonka kuvitukset haetaan
+     * @return Kirjan kuvitukset listana
+     */
     @GetMapping("/{id}/kuvitukset")
-    public ResponseEntity<List<Kuvitus>> getKuvituksetByKirja(@PathVariable Kirja kirja) {
-        List<Kuvitus> kuvitukset = kuvaservice.getKuvaByKirja(kirja);
-        return ResponseEntity.ok(kuvitukset);
+    public List<Kuvitus> getKuvituksetByKirja(@PathVariable Long id) {
+      Kirja kirja = kirjaService.getKirjaById(id);
+      List<Kuvitus> kuvitukset = kuvaservice.getKuvaByKirja(kirja);
+      for (Kuvitus k : kuvitukset) {
+        System.out.println(k.getKuva());
+      }
+      return kuvitukset;
     }
 }

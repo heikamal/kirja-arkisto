@@ -1,110 +1,128 @@
 package org.groupt.kirjaarkisto.models;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
+/**
+ * Valokuva luokka ja/tai entiteetti on käytännössä kirjakopioiden kuvitus.
+ *
+ * Sitä käytetään erottelemaan Kirjan ja kirjakopioiden "kuvitukset" tai kuvat
+ * Käytännössä siis valokuvat ovat käyttäjän itse ottamia kuvia jotka lisätään kirjakopioille omaan kirjahyllyyn.
+ * 
+ * Tiedot: idkuva (tunniste), kuvan nimi, sivunumero, tiedostonimi, kuvan bittimuoto tietokantaan tallennusta varten ja siihen liittyvä kirjakopio
+ */
 @Entity
 @Table(name = "valokuva")
 public class Valokuva {
 
-    @ManyToOne
-    @MapsId("idkuva")
-    @JoinColumn(name = "idkuva")
-    @JsonManagedReference
-    private Kuva kuva;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "idkuva")
+  private Long idkuva;
 
-    @Column(name = "kuvanimi")
-    private String kuvanimi;
+  @Column(name = "kuvanimi")
+  private String kuvanimi;
 
-    @ManyToOne
-    @MapsId("idkirjakopio")
-    @JoinColumn(name = "idkirjakopio")
-    @JsonBackReference
-    private KirjaKopio kirjaKopio;
+  @ManyToOne
+  @JoinColumn(name = "idkirjakopio")
+  @JsonBackReference
+  private KirjaKopio kirjaKopio;
 
-    @Column(name = "sivunnro")
-    private Integer sivunnro;
+  @Column(name = "sivunnro")
+  private Integer sivunnro;
 
-    @Column(name = "tiedostonimi")
-    private String tiedostonimi; 
+  @Column(name = "tiedostonimi")
+  private String tiedostonimi;
 
-    @Column(name = "picbyte", length = 10000000)
-    private byte[] picByte;
-   
-    // Getters and setters
-    
-    /**
-     * @return Long return the idkuva
-     *  public Long getIdkuva() {
-        return idkuva;
-    }
-     * 
-     */
-   
-    /**
-     * @param idkuva the idkuva to set
-     *   public void setIdkuva(Long idkuva) {
-        this.idkuva = idkuva;
-    }
-     */
-  
-    /**
-     * @return String return the kuvanimi
-     */
-    public String getKuvanimi() {
-        return kuvanimi;
-    }
+  @Column(name = "picbyte", length = 10000000)
+  private byte[] picByte;
 
-    /**
-     * @param kuvanimi the kuvanimi to set
-     */
-    public void setKuvanimi(String kuvanimi) {
-        this.kuvanimi = kuvanimi;
-    }
+  // Getters ja setters
 
-    /**
-     * @return KirjaKopio return the kirjaKopio
-     */
-    public KirjaKopio getKirjaKopio() {
-        return kirjaKopio;
-    }
+  /**
+   * Palauttaa valokuvan nimen merkkijonona
+   * @return String return the kuvanimi
+   */
+  public String getKuvanimi() {
+    return kuvanimi;
+  }
 
-    /**
-     * @param kirjaKopio the kirjaKopio to set
-     */
-    public void setKirjaKopio(KirjaKopio kirjaKopio) {
-        this.kirjaKopio = kirjaKopio;
-    }
+  /**
+   * Asettaa valokuvan nimen
+   * @param kuvanimi nimi
+   */
+  public void setKuvanimi(String kuvanimi) {
+    this.kuvanimi = kuvanimi;
+  }
 
-    /**
-     * @return Integer return the sivunnro
-     */
-    public Integer getSivunnro() {
-        return sivunnro;
-    }
+  /**
+   * palauttaa kirjakopion mihin valokuva kuuluu
+   * @return KirjaKopio kirjakopio
+   */
+  public KirjaKopio getKirjaKopio() {
+    return kirjaKopio;
+  }
 
-    /**
-     * @param sivunnro the sivunnro to set
-     */
-    public void setSivunnro(Integer sivunnro) {
-        this.sivunnro = sivunnro;
-    }
+  /**
+   * asettaa kirjakopion mihin valokuva kuuluu
+   * @param kirjaKopio 
+   */
+  public void setKirjaKopio(KirjaKopio kirjaKopio) {
+    this.kirjaKopio = kirjaKopio;
+  }
 
+  /**
+   * Palauttaa sivunumeron kokonaislukuna
+   * @return Integer sivunnro
+   */
+  public Integer getSivunnro() {
+    return sivunnro;
+  }
 
-    /**
-     * @return String return the tiedostonimi
-     */
-    public String getTiedostonimi() {
-        return tiedostonimi;
-    }
+  /**
+   * asettaa sivunumeron kokonaislukuna
+   * @param sivunnro sivunnro
+   */
+  public void setSivunnro(Integer sivunnro) {
+    this.sivunnro = sivunnro;
+  }
 
-    /**
-     * @param tiedostonimi the tiedostonimi to set
-     */
-    public void setTiedostonimi(String tiedostonimi) {
-        this.tiedostonimi = tiedostonimi;
-    }
+  /**
+   * legacy-metodi
+   */
+  public String getTiedostonimi() {
+    return tiedostonimi;
+  }
+
+  /**
+   * legacy-metodi
+   */
+  public void setTiedostonimi(String tiedostonimi) {
+    this.tiedostonimi = tiedostonimi;
+  }
+  /**
+   * asettaa valokuvan id:n
+   * @param idkuva
+   */
+  public void setIdkuva(Long idkuva) {
+    this.idkuva = idkuva;
+  }
+  /**
+   * palauttaa valokuvan id:n
+   * @return Long idkuva
+   */
+  public Long getIdkuva() {
+    return this.idkuva;
+  }
+
+  public byte[] getPicByte() {
+    return this.picByte;
+  }
+
+  public void setPicByte(byte[] picByte) {
+    this.picByte = picByte;
+  }
+
 
 }
-

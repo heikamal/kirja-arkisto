@@ -4,6 +4,6 @@ export interface Book {
     author: string;
     date: number;
     series: number;
-    image_url: string;
+    image_url: any;
     is_owned: boolean;
   }

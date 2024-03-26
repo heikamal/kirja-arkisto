@@ -1,41 +1,92 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
-    <div class="bg-neutral-800 p-6 rounded-lg md:max-w-4xl">
+  <div class="bg-neutral-800 p-6 rounded-lg min-w-96">
+    <ng-container *ngIf="!editing; else editMode">
       <div style="display: grid; gap: 1rem;">
         <div style="display: flex; justify-content: space-between;">
-          <span>Painos (Edition):</span>
-          <span>{{ copy?.edition }}</span>
+          <label style="align-self: center;">Painos:</label>
+          <div>{{ copy?.edition }}</div>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span>Painos vuosi (Edition Year):</span>
-          <span>{{ copy?.editionYear }}</span>
+          <label style="align-self: center;">Painos vuosi:</label>
+          <div>{{ copy?.editionYear }}</div>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span>Osto hinta (Purchase Price):</span>
-          <span>{{ copy?.purchasePrice }}€</span>
+          <label style="align-self: center;">Osto hinta:</label>
+          <div>{{ copy?.purchasePrice }}</div>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span>Osto päivämäärä (Purchase Date):</span>
-          <span>{{ copy?.purchaseDate }}</span>
+          <label style="align-self: center;">Osto päivämäärä:</label>
+          <div>{{ copy?.purchaseDate }}</div>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span>Kunto (Condition):</span>
-          <span>{{ copy?.condition }}</span>
+          <label style="align-self: center;">Kunto:</label>
+          <div>{{ copy?.condition }}</div>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span>Kuvaus (Description):</span>
-          <span>{{ copy?.description }}</span>
+          <label style="align-self: center;">Kuvaus:</label>
+          <div>{{ copy?.description }}</div>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span>Myynti päivämäärä (Sale Date):</span>
-          <span>{{ copy?.saleDate }}</span>
+          <label style="align-self: center;">Myynti päivämäärä:</label>
+          <div>{{ copy?.saleDate }}</div>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span>Myynti hinta (Sale Price):</span>
-          <span>{{ copy?.salePrice }}€</span>
+          <label style="align-self: center;">Myynti hinta:</label>
+          <div>{{ copy?.salePrice }}</div>
         </div>
       </div>
-      <button mat-button (click)="closeDialog()"
-        class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
-    </div>
+      <button mat-button (click)="toggleEdit()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Muokkaa</button>
+    </ng-container>
+
+    <ng-template #editMode>
+      <form [formGroup]="copyForm" (ngSubmit)="saveChanges()" style="display: grid; gap: 1rem;">
+        <div style="display: flex; justify-content: space-between;">
+          <label for="edition" style="align-self: center;">Painos:</label>
+          <input type="number" id="edition" formControlName="edition" required class="text-black" style="text-align: right;">
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <label for="editionYear" style="align-self: center;">Painos vuosi:</label>
+          <input type="number" id="editionYear" formControlName="editionYear" required class="text-black" style="text-align: right;">
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <label for="purchasePrice" style="align-self: center;">Osto hinta:</label>
+          <input type="number" id="purchasePrice" formControlName="purchasePrice" step="0.01" required class="text-black" style="text-align: right;">
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <label for="purchaseDate" style="align-self: center;">Osto päivämäärä:</label>
+          <input type="date" id="purchaseDate" formControlName="purchaseDate" required class="text-black" style="text-align: right;">
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <label for="condition" style="align-self: center;">Kunto:</label>
+          <select id="condition" formControlName="condition" required class="text-black" style="text-align: right;">
+            <option value="5">K5 - Uusi</option>
+            <option value="4">K4 - Uudenveroinen</option>
+            <option value="3">K3 - Hyvä</option>
+            <option value="2">K2 - Tyydyttävä</option>
+            <option value="1">K1 - Kehno</option>
+          </select>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <label for="description" style="align-self: center;">Kuvaus:</label>
+          <textarea id="description" formControlName="description" required class="text-black" style="text-align: right;"></textarea>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <label for="saleDate" style="align-self: center;">Myynti päivämäärä:</label>
+          <input type="date" id="saleDate" formControlName="saleDate" class="text-black" style="text-align: right;">
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <label for="salePrice" style="align-self: center;">Myynti hinta:</label>
+          <input type="number" id="salePrice" formControlName="salePrice" step="0.01" class="text-black" style="text-align: right;">
+        </div>
+        <button type="submit" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Tallenna muutokset</button>
+      </form>
+      <ng-container *ngIf="copy?.book?.is_owned">
+        <button mat-button (click)="removeCopyFromBookshelf()" class="bg-red-500 rounded-md m-1 hover:brightness-75 text-white whitespace-nowrap">Poista kirjahyllystä</button>
+      </ng-container>
+      <button mat-button (click)="add_photos()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Lisää valokuvia</button>
+      <button mat-button (click)="toggleEdit()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Peruuta</button>
+    </ng-template>
+    <button mat-button *ngIf="!editing" (click)="show_photos()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Näytä valokuvia</button>
+    <button mat-button *ngIf="!editing" (click)="closeDialog()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
   </div>
-  
+</div>

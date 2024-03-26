@@ -1,14 +1,13 @@
 package org.groupt.kirjaarkisto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-
-
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.models.Valokuva;
 import org.groupt.kirjaarkisto.payload.HyllyResponse;
 import org.groupt.kirjaarkisto.payload.KirjaKopioResponse;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
@@ -46,7 +45,11 @@ public class KirjaHyllyController {
     public KirjaHylly getKirjahylly(@PathVariable Long id) {
         return kirjahyllyService.getKirjahyllyById(id);
     }
-
+    /**
+     * GET-Endpoint kirjahyllyjen hakuun. URL-osoite: /api/kirjahyllyt/self
+     * Palauttaa siis kirjautuneen käyttäjän kirjahyllyn
+     * @return Hylly
+     */
     @GetMapping("/self")
     public HyllyResponse getOwnKirjaHylly() {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -61,20 +64,29 @@ public class KirjaHyllyController {
       List<KirjaKopioResponse> k = new ArrayList<>();
 
       for (KirjaSarja sarja : hylly.getOmatSarjat()) {
+        System.out.println(sarja.getId());
         List<KirjaKopio> kopiot = kirjaKopioService.getByOmaSarja(hylly.getId(), sarja.getId());
         List<KirjaKopioResponse> kopioResponseList = new ArrayList<>();
         for (KirjaKopio kopio : kopiot) {
-          KirjaKopioResponse kopioResponse = new KirjaKopioResponse(kopio, new KirjaResponse(kopio.getBook()));
+          List<Valokuva> kuvat = kirjaKopioService.getValokuvatByKirjaKopio(kopio);
+          KirjaKopioResponse kopioResponse = new KirjaKopioResponse(kopio, new KirjaResponse(kopio.getBook()), kuvat);
           kopioResponseList.add(kopioResponse);
           k.add(kopioResponse);
         }
         SarjaResponse a = new SarjaResponse(sarja, kopioResponseList, true);
         sarjat.add(a);
+        //TODO: Ei jostakin syystä palauta kirjan kuvia oikein
       }
 
       return new HyllyResponse(hylly, sarjat, k);
     }
-
+    /**
+     * POST-endpoint joka käsittelee sarjojen lisäyksen kirjahyllyyn. URL-osoite: /api/kirjahyllyt/self
+     * 
+     * Muistutus: Kaikki kirjat kuuluvat kirjasarjaan
+     * 
+     * @param sarja lisättävä sarja
+     */
     @PostMapping("/self")
     public KirjaHylly addSarja(@NonNull @RequestBody OmaSarjaDTO sarja) {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -98,8 +110,25 @@ public class KirjaHyllyController {
         hylly.addToOmatSarjat(kirjaSarjaService.getKirjasarjaById(sarja.getSarjaId()));
       }
 
+     
       return kirjahyllyService.saveKirjaHylly(hylly);
     }
+    /**
+     * DELETE-Endpoint joka poistaa sarjan omasta hyllystä. URL-osoite: /api/kirjahyllyt/self/{sarjaId}
+     * @param sarjaId
+     * @return
+     */
+    @DeleteMapping("/self/{sarjaId}")
+    public ResponseEntity<?> removeSarjaFromHylly(@PathVariable Long sarjaId) {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    // Lisää tarvittavat endpointit (POST, PUT, DELETE) kirjahyllyille
+      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+      KirjaHylly hylly = kirjahyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
+
+      kirjahyllyService.poistaSarja(hylly.getId(), sarjaId);
+
+      return ResponseEntity.ok().build();
+    }
 }

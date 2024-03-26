@@ -2,10 +2,12 @@ package org.groupt.kirjaarkisto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaHyllyException;
+import org.groupt.kirjaarkisto.exceptions.NonExistingKirjaSarjaException;
 import org.groupt.kirjaarkisto.exceptions.NullKirjaHyllyException;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.repositories.KirjaHyllyRepository;
+import org.groupt.kirjaarkisto.repositories.KirjaSarjaRepository;
 
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class KirjaHyllyService {
    */
     @Autowired
     private KirjaHyllyRepository kirjahyllyRepository;
+
+    @Autowired
+    private KirjaSarjaRepository kirjasarjaRepository;
 
     /**
      * Metodi hakee kaikki kirjahyllyt.
@@ -79,5 +84,26 @@ public class KirjaHyllyService {
       return kirjahyllyRepository.findByOmatSarjatIn(sarjat);
     }
 
-    // Lisää tarvittavat liiketoimintalogiikkametodit
+    /**
+     * Poistaa kirjasarjan kirjahyllystä.
+     *
+     * @param hyllyId Kirjahyllyn ID, josta poistetaan kirjasarja.
+     * @param sarjaId Kirjasarjan ID, joka poistetaan.
+     * @return Päivitetty kirjahylly.
+     */
+    public void poistaSarja(Long hyllyId, Long sarjaId) {
+       KirjaHylly hylly = kirjahyllyRepository.findById(hyllyId)
+            .orElseThrow(() -> new NonExistingKirjaHyllyException("Kirjahyllyä ei löydy id:llä " + hyllyId));
+    
+    KirjaSarja sarja = kirjasarjaRepository.findById(sarjaId)
+            .orElseThrow(() -> new NonExistingKirjaSarjaException("Kirjasarjaa ei löydy id:llä " + sarjaId));
+
+    if (!hylly.getOmatSarjat().contains(sarja)) {
+        throw new IllegalArgumentException("Kirjahyllyssä ei ole tätä kirjasarjaa.");
+    }
+
+    hylly.getOmatSarjat().remove(sarja);
+    kirjahyllyRepository.save(hylly);
+    }
+    
 }

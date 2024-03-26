@@ -1,11 +1,15 @@
 package org.groupt.kirjaarkisto.models;
-
 import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+/**
+ * Tämä luokka edustaa Kuvitus-olion yhdistelmäavainta.
+ *
+ * Käytännössä se siis yksilöi kuvitukset siihen liittyvien kuvien ja kirjojen pääavaimien ja tunnisteiden perusteella
+ */
 @Embeddable
+public
 class KuvitusId implements Serializable {
 
   @Column(name = "idkirja")
@@ -17,10 +21,13 @@ class KuvitusId implements Serializable {
   public KuvitusId() {
   }
 
+  //parametrillinen konstruktori :D
   public KuvitusId(Long idkirja, Long idkuva) {
     this.idkirja = idkirja;
     this.idkuva = idkuva;
   }
+
+  //get ja setterit, kyl te tiiätte... 
 
   public Long getIdkirja() {
     return idkirja;
@@ -47,6 +54,7 @@ class KuvitusId implements Serializable {
     return result;
   }
 
+  //equals metodin implementaatio kuvituksille, käytetään tarkistukseen onko kuvitus eri kuin parametrikuvitus
   @Override
   public boolean equals(Object obj) {
     if (this == obj)
@@ -68,4 +76,14 @@ class KuvitusId implements Serializable {
       return false;
     return true;
   }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " idkirja='" + getIdkirja() + "'" +
+      ", idkuva='" + getIdkuva() + "'" +
+      "}";
+  }
+
 }

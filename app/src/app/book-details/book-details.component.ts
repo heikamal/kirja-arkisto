@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { AddCopyComponent } from '../add-copy/add-copy.component';
 import { PhotoComponent } from '../photo/photo.component';
+import { PhotosComponent } from '../photos/photos.component';
 
 @Component({
   selector: 'app-book-details',
@@ -23,6 +24,10 @@ export class BookDetailsComponent implements OnInit {
   chosen_book: any;
   image_url: any;
   owned: any;
+  kuvitukset: any;
+  retrieveResonse: any;
+  base64Data: any;
+  retrievedImage : any;
   show_full_description: boolean = false;
 
   constructor(
@@ -36,22 +41,42 @@ export class BookDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.get_book(this.chosen_book).subscribe((response: any[]) => {
-      const jsonStr: string = JSON.stringify(response);
-      const jsonObject: any = JSON.parse(jsonStr);
-      this.title = jsonObject.nimi;
-      this.author = jsonObject.kirjailija;
-      this.date = jsonObject.julkaisuVuosi;
-      this.series_name = jsonObject.kirjaSarja.title;
-      this.series_id = jsonObject.kirjaSarja.id;
-      this.description = jsonObject.kuvaus;
-      this.image_url = jsonObject.image_url;
+      try {
+        const jsonStr: string = JSON.stringify(response);
+        const jsonObject: any = JSON.parse(jsonStr);
+        this.title = jsonObject.nimi;
+        this.author = jsonObject.kirjailija;
+        this.date = jsonObject.julkaisuVuosi;
+        this.series_name = jsonObject.kirjaSarja.title;
+        this.series_id = jsonObject.kirjaSarja.id;
+        this.description = jsonObject.kuvaus;
+        this.retrieveResonse = response;
+  
+        if (this.retrieveResonse.kuvitukset && this.retrieveResonse.kuvitukset.length > 0 && this.retrieveResonse.kuvitukset[0].kuva.picByte) {
+          this.base64Data = this.retrieveResonse.kuvitukset[0].kuva.picByte;
+          this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+          this.image_url = this.retrievedImage;
+        } else {
+          this.image_url = 'none';
+        }
+
+        console.log(this.image_url);
+      } catch (error) {
+        console.error("Error processing book data:", error);
+      }
     });
+  
     this.dataService.get_ownership(this.chosen_book).subscribe((response: any) => {
-      const jsonStr: string = JSON.stringify(response);
-      const jsonObject: any = JSON.parse(jsonStr);
-      this.owned = jsonObject.owned;
+      try {
+        const jsonStr: string = JSON.stringify(response);
+        const jsonObject: any = JSON.parse(jsonStr);
+        this.owned = jsonObject.owned;
+      } catch (error) {
+        console.error("Error processing ownership data:", error);
+      }
     });
   }
+  
 
   toggle_description(): void {
     this.show_full_description = !this.show_full_description;
@@ -72,7 +97,14 @@ export class BookDetailsComponent implements OnInit {
       data: { bookId: this.chosen_book, title: this.title }
     });
   }
+  show_photos(): void {
+    const dialogRef = this.dialog.open(PhotosComponent, {
+      width: '400px',
+      data: { bookId: this.chosen_book, title: this.title }
+    });
+  }
   closeDialog(): void {
     this.dialogRef.close();
   }
+ 
 }

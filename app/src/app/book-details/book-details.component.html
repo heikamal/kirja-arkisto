@@ -1,9 +1,9 @@
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 text-white">
     <div class="bg-neutral-800 p-6 rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
         <div class="relative">
-            <img *ngIf="!image_url" src="../../assets/miscellaneous/cover_not_available.png"
-                class="max-h-96 p-2 mx-auto">
-            <img *ngIf="image_url" [src]="image_url" class="max-h-96 p-2 mx-auto">
+            <img *ngIf="image_url === 'none'" src="../../assets/miscellaneous/cover_not_available.png"
+                class="h-48 md:h-64 md:w-48 w-32 p-2 mx-auto">
+            <img *ngIf="image_url !== 'none'" [src]="retrievedImage" class="h-48 md:h-64 md:w-48 w-32 p-2 mx-auto">
         </div>
         <div class="flex justify-center items-center">
             <div class="flex-1 max-w-xs">
@@ -32,6 +32,8 @@
                 class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Lisää kirjahyllyyn</button>
             <button (click)="add_photo()"
                 class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Lisää kuva</button>
+            <button (click)="show_photos()"
+                class="bg-neutral-500 rounded-md m-1 p-2 hover:brightness-75 text-black whitespace-nowrap">Kirjan kuvat</button>
             <p *ngIf="owned" class="rounded-md m-1 p-3 text-green-500 whitespace-nowrap">
                 Kirjahyllyssä
             </p>
