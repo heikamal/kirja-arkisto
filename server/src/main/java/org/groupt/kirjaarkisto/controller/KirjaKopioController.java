@@ -14,13 +14,15 @@ import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
-import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
+import org.groupt.kirjaarkisto.payload.KirjaKopioResponse;
+import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import org.groupt.kirjaarkisto.services.KirjaHyllyService;
 import org.groupt.kirjaarkisto.services.KirjaKopioService;
 import org.groupt.kirjaarkisto.services.KirjaSarjaService;
 import org.groupt.kirjaarkisto.services.KirjaService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,17 +42,24 @@ public class KirjaKopioController {
   @Autowired
   private KirjaKopioService kirjakopioService;
 
-   @Autowired
-    private KirjaKopioRepository kirjaKopioRepository;
-
   @GetMapping
-  public List<KirjaKopio> getKirjakopiot() {
-    return kirjakopioService.getKirjakopiot();
+  public List<KirjaKopioResponse> getKirjakopiot() {
+    List<KirjaKopio> kopiot = kirjakopioService.getKirjakopiot();
+    List<KirjaKopioResponse> vastaus = new ArrayList<>();
+
+    for (KirjaKopio kirjakopio : kopiot) {
+      Kirja kirja = kirjaService.getKirjaById(kirjakopio.getBook().getId());
+      vastaus.add(new KirjaKopioResponse(kirjakopio, new KirjaResponse(kirja), kirjakopioService.getValokuvatByKirjaKopio(kirjakopio)));
+    }
+
+    return vastaus;
   }
 
   @GetMapping("/{id}")
-  public KirjaKopio getKirjakopio(@PathVariable Long id) {
-    return kirjakopioService.getKirjakopioById(id);
+  public KirjaKopioResponse getKirjakopio(@PathVariable Long id) {
+    KirjaKopio kirjakopio = kirjakopioService.getKirjakopioById(id);
+    Kirja kirja = kirjaService.getKirjaById(kirjakopio.getBook().getId());
+    return new KirjaKopioResponse(kirjakopio, new KirjaResponse(kirja), kirjakopioService.getValokuvatByKirjaKopio(kirjakopio));
   }
 
   @PostMapping

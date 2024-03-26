@@ -1,5 +1,7 @@
 package org.groupt.kirjaarkisto.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 /**
@@ -15,6 +17,7 @@ import jakarta.persistence.*;
 public class Valokuva {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "idkuva")
   private Long idkuva;
 
@@ -23,6 +26,7 @@ public class Valokuva {
 
   @ManyToOne
   @JoinColumn(name = "idkirjakopio")
+  @JsonBackReference
   private KirjaKopio kirjaKopio;
 
   @Column(name = "sivunnro")

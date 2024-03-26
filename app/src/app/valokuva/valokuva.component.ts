@@ -33,7 +33,8 @@ export class ValokuvaComponent {
       taiteilija: ['', Validators.maxLength(45)],
       tyyli: ['', Validators.maxLength(45)],
       kuvaus:['', Validators.maxLength(255)],
-      sivunro: ['']
+      sivunro: [''],
+      kuvannimi : ['', Validators.maxLength(45)]
     });
   }
 
@@ -47,10 +48,12 @@ export class ValokuvaComponent {
     onUpload() {
       if (this.valokuva_form.valid) {
         const formData = new FormData();
-        Object.keys(this.valokuva_form.value).forEach(key => {
-          const value = this.valokuva_form.value[key];
-          formData.append(key, value);
-        });
+        formData.append("kuvannimi", this.valokuva_form.value.kuvannimi);
+        formData.append("julkaisuvuosi", this.valokuva_form.value.julkaisuvuosi);
+        formData.append("taiteilija", this.valokuva_form.value.taiteilija);
+        formData.append("tyyli", this.valokuva_form.value.tyyli);
+        formData.append("kuvaus", this.valokuva_form.value.kuvaus);
+        formData.append("sivunro", this.valokuva_form.value.sivunro);
         const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
         if (fileInput) {
           const files = fileInput.files;
