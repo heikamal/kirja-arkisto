@@ -40,49 +40,7 @@ export class BookCopyDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.get_book_copy(this.data.copyId).subscribe(
-      (response: any) => {
-        this.copy = {
-          id: response.id,
-          name: response.title,
-          edition: response.editions,
-          editionYear: response.editionYear,
-          book: {
-            id: response.book.id,
-            title: response.book.nimi,
-            author: response.book.kirjailija,
-            date: response.book.julkaisuVuosi,
-            series: response.book.kirjaSarja.jarjestysNro,
-            image_url: response.book.image_url,
-            is_owned: true
-          },
-          purchasePrice: response.purchasePrice,
-          purchaseDate: response.purchaseDate,
-          condition: response.condition,
-          description: response.description,
-          saleDate: response.saleDate,
-          salePrice: response.salePrice,
-          bookshelfId: response.idKirjaHylly,
-          seriesId: response.idKirjaSarja
-        };
-        // Initialize editedCopy with values from copy
-        this.editedCopy = { ...this.copy };
-        // Patch the values to the form
-        this.copyForm.patchValue({
-          edition: this.copy.edition,
-          editionYear: this.copy.editionYear,
-          purchasePrice: this.copy.purchasePrice,
-          purchaseDate: this.copy.purchaseDate,
-          condition: this.copy.condition,
-          description: this.copy.description,
-          saleDate: this.copy.saleDate,
-          salePrice: this.copy.salePrice,
-        });
-      },
-      (error: HttpErrorResponse) => {
-        console.error('Error:', error);
-      }
-    );
+    this.reloadData();
   }
 
   toggleEdit(): void {
@@ -104,7 +62,6 @@ export class BookCopyDetailsComponent implements OnInit {
       this.copyForm.reset();
     }
   }
-  
 
   saveChanges(): void {
     // Manually update the editedCopy with the form values
@@ -116,7 +73,7 @@ export class BookCopyDetailsComponent implements OnInit {
     this.editedCopy.description = this.copyForm.value.description;
     this.editedCopy.saleDate = this.copyForm.value.saleDate;
     this.editedCopy.salePrice = this.copyForm.value.salePrice;
-  
+
     // Construct the data object to be sent to the server
     const editedData = {
       nimi: this.editedCopy.name,
@@ -131,7 +88,7 @@ export class BookCopyDetailsComponent implements OnInit {
       myyntiHinta: this.editedCopy.salePrice,
       idKirjaSarja: this.editedCopy.seriesId
     };
-  
+
     // Call the edit_book_copy method to update the data
     this.dataService.edit_book_copy(this.data.copyId, editedData).subscribe(
       (response: any) => {
@@ -148,6 +105,18 @@ export class BookCopyDetailsComponent implements OnInit {
       (error: HttpErrorResponse) => {
         console.error('Error editing data:', error);
         // Handle error scenario
+      }
+    );
+  }
+
+  removeCopyFromBookshelf(): void {
+    this.dataService.remove_book_copy(this.data.copyId).subscribe(
+      (response: any) => {
+        this.reloadData();
+        this.closeDialog();
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error removing copy from bookshelf:', error);
       }
     );
   }
@@ -197,7 +166,6 @@ export class BookCopyDetailsComponent implements OnInit {
       }
     );
   }
-  
 
   add_photos(): void {
     if (this.dialogRef && this.dialogRef.componentInstance instanceof BookCopyDetailsComponent) {

@@ -75,6 +75,7 @@ public class KirjaHyllyController {
         }
         SarjaResponse a = new SarjaResponse(sarja, kopioResponseList, true);
         sarjat.add(a);
+        //TODO: Ei jostakin syystä palauta kirjan kuvia oikein
       }
 
       return new HyllyResponse(hylly, sarjat, k);
