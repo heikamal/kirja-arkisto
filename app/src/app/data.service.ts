@@ -97,6 +97,18 @@ export class DataService {
     const url = `${this.book_url}/${book_id}`;
     return this.http.delete<any>(url, { headers });
   }
+  remove_series_from_bookshelf(series_id: number): Observable<any> {
+    const accessToken = this.cookieService.get('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    const url = `${this.bookshelf_url}/${series_id}`;
+    return this.http.delete<any>(url, { headers });
+  }
+  remove_book_copy(copy_id: number): Observable<any> {
+    const accessToken = this.cookieService.get('accessToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+    const url = `${this.bookcopy_url}/${copy_id}`;
+    return this.http.delete<any>(url, { headers });
+  }
   post_series(data: JSON): Observable<JSON> {
     const accessToken = this.cookieService.get('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
