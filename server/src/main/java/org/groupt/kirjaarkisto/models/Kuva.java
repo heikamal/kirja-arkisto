@@ -176,13 +176,7 @@ public class Kuva {
     public List<Kuvitus> getKuvitukset() {
         return new ArrayList<>(kuvitukset);
     }
-     /**
-     * Asettaa kuvalle kuvituksia
-     * @param kuvitukset kuvituslista
-     */
-    public void setKuvitukset(List<Kuvitus> kuvitukset) {
-        this.kuvitukset = kuvitukset;
-    }
+    
      /**
      * Palauttaa kuvan bittimuodossa
      * @return byte[]
@@ -208,6 +202,22 @@ public class Kuva {
       ", tiedostonimi='" + getTiedostonimi() + "'" +
       "," + "'" +
       "}";
+  }
+
+  public void removeKuvitus(Kuvitus kuvitus) {
+    if (!kuvitukset.contains(kuvitus)) {
+      return;
+    }
+    kuvitukset.remove(kuvitus);
+    kuvitus.setKuva(null);
+  }
+
+  public void addKuvitus(Kuvitus kuvitus) {
+    if (kuvitukset.contains(kuvitus)) {
+      return;
+    }
+    kuvitukset.add(kuvitus);
+    kuvitus.setKuva(this);
   }
 
 }
