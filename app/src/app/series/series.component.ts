@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DataService } from '../data.service';
 import { Series } from '../series';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,7 @@ import { SeriesDetailsComponent } from '../series-details/series-details.compone
   templateUrl: './series.component.html'
 })
 export class SeriesComponent {
+  @Input() frontpage: boolean = false;
   series: Series[] = [];
   displayedSeries: Series[] = [];
   remainingSeries: Series[] = [];
@@ -29,11 +30,14 @@ export class SeriesComponent {
           category: seriesData.category,
         } as Series;
       });
-      this.displayedSeries = this.series.slice(0, 9);
-      this.remainingSeries = this.series.slice(9);
+      if (this.frontpage) {
+        this.displayedSeries = this.series.slice(0, 5);
+      } else {
+        this.displayedSeries = this.series.slice(0, 9);
+        this.remainingSeries = this.series.slice(9);
+      }
     });
   }
-
   load_more_series(): void {
     const nextSeries = this.remainingSeries.splice(0, 8);
     this.displayedSeries = this.displayedSeries.concat(nextSeries);
