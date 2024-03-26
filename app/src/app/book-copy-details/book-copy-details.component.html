@@ -83,10 +83,9 @@
       <ng-container *ngIf="copy?.book?.is_owned">
         <button mat-button (click)="removeCopyFromBookshelf()" class="bg-red-500 rounded-md m-1 hover:brightness-75 text-white whitespace-nowrap">Poista kirjahyllystä</button>
       </ng-container>
-      <button mat-button (click)="toggleEdit()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Peruuta</button>
       <button mat-button (click)="add_photos()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Lisää valokuvia</button>
+      <button mat-button (click)="toggleEdit()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Peruuta</button>
     </ng-template>
-
-    <button mat-button (click)="closeDialog()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
+    <button mat-button *ngIf="!editing" (click)="closeDialog()" class="bg-neutral-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
   </div>
 </div>
