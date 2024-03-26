@@ -46,19 +46,8 @@ public class KuvaService {
 
     public Kuva getKuvaById(Long id) {
       Kuva kuva = kuvaRepository.findById(id).orElse(null);
-      Kuva img = new Kuva();
-      if (kuva != null) {
-        img.setIdkuva(id);
-        img.setKuvanimi(kuva.getKuvanimi());
-        img.setJulkaisuvuosi(kuva.getJulkaisuvuosi());
-        img.setTaiteilija(kuva.getTaiteilija());
-        img.setTyyli(kuva.getTyyli());
-        img.setKuvaus(kuva.getKuvaus());
-        img.setTiedostonimi(kuva.getTiedostonimi());
-        img.setKuvitukset(kuva.getKuvitukset());
-        img.setPicByte(decompressBytes(kuva.getPicByte()));
-      }
-      return img;
+      kuva.setPicByte(decompressBytes(kuva.getPicByte()));
+      return kuva;
     }
      //kuvan lisäys metodi
      @Transactional

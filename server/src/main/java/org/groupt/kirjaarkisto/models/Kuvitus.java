@@ -83,7 +83,21 @@ public class Kuvitus {
    * @param kuva
    */
   public void setKuva(Kuva kuva) {
+    if (sameAsFormer(kuva)) {
+      return;
+    }
+    Kuva vanhaKuva = this.kuva;
     this.kuva = kuva;
+    if (vanhaKuva != null){
+      vanhaKuva.removeKuvitus(this);
+    }
+    if (kuva != null){
+      kuva.addKuvitus(this);
+    }
+  }
+
+  private boolean sameAsFormer(Kuva uusiKuva) {
+    return kuva == null ? uusiKuva == null : kuva.equals(uusiKuva);
   }
 
   /**

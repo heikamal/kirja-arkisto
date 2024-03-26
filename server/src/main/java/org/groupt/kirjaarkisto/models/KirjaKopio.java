@@ -320,4 +320,25 @@ public class KirjaKopio {
   public void setIdKirjaSarja(Long idKirjaSarja) {
     this.idKirjaSarja = idKirjaSarja;
   }
+
+
+  @Override
+  public String toString() {
+    return "{" +
+      " id='" + getId() + "'" +
+      ", title='" + getTitle() + "'" +
+      ", editions='" + getEditions() + "'" +
+      ", editionYear='" + getEditionYear() + "'" +
+      ", book='" + getBook() + "'" +
+      ", purchasePrice='" + getPurchasePrice() + "'" +
+      ", purchaseDate='" + getPurchaseDate() + "'" +
+      ", condition='" + getCondition() + "'" +
+      ", description='" + getDescription() + "'" +
+      ", saleDate='" + getSaleDate() + "'" +
+      ", salePrice='" + getSalePrice() + "'" +
+      ", idKirjaHylly='" + getIdKirjaHylly() + "'" +
+      ", idKirjaSarja='" + getIdKirjaSarja() + "'" +
+      "}";
+  }
+
 }
