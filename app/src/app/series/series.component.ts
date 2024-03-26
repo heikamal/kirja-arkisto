@@ -29,8 +29,8 @@ export class SeriesComponent {
           category: seriesData.category,
         } as Series;
       });
-      this.displayedSeries = this.series.slice(0, 8);
-      this.remainingSeries = this.series.slice(8);
+      this.displayedSeries = this.series.slice(0, 9);
+      this.remainingSeries = this.series.slice(9);
     });
   }
 
