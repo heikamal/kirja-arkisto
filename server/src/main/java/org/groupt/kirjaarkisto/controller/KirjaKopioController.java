@@ -13,6 +13,7 @@ import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
+import org.groupt.kirjaarkisto.models.Valokuva;
 import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
 import org.groupt.kirjaarkisto.payload.KirjaKopioResponse;
 import org.groupt.kirjaarkisto.payload.KirjaResponse;
@@ -93,6 +94,12 @@ public class KirjaKopioController {
     KirjaKopio kopio = new KirjaKopio(kirjaKopio, kirja, hylly.getId());
 
     return kirjakopioService.saveKirjaKopio(kopio);
+  }
+
+  @GetMapping("/{kirjakopioId}/kuvat")
+  public List<Valokuva> haeKopionKuvat(@PathVariable Long kirjakopioId) {
+    KirjaKopio kirjakopio = kirjakopioService.getKirjakopioById(kirjakopioId);
+    return kirjakopioService.getValokuvatByKirjaKopio(kirjakopio);
   }
 
   @PostMapping("/{kirjakopioId}/kuvat")

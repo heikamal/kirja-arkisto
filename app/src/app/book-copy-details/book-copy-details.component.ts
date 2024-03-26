@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BookCopy } from '../book-copy';
 import { CommonModule } from '@angular/common';
 import { ValokuvaComponent } from '../valokuva/valokuva.component';
+import { ValokuvatComponent } from '../valokuvat/valokuvat.component';
 
 @Component({
   standalone: true,
@@ -126,24 +127,24 @@ export class BookCopyDetailsComponent implements OnInit {
       (response: any) => {
         this.copy = {
           id: response.id,
-          name: response.title,
-          edition: response.editions,
-          editionYear: response.editionYear,
+          name: response.nimi,
+          edition: response.painos,
+          editionYear: response.painosVuosi,
           book: {
-            id: response.book.id,
-            title: response.book.nimi,
-            author: response.book.kirjailija,
-            date: response.book.julkaisuVuosi,
-            series: response.book.kirjaSarja.jarjestysNro,
-            image_url: response.book.image_url,
+            id: response.kirja.id,
+            title: response.kirja.nimi,
+            author: response.kirja.kirjailija,
+            date: response.kirja.julkaisuVuosi,
+            series: response.kirja.idKirjaSarja,
+            image_url: response.kirja.image_url,
             is_owned: true
           },
-          purchasePrice: response.purchasePrice,
-          purchaseDate: response.purchaseDate,
-          condition: response.condition,
-          description: response.description,
-          saleDate: response.saleDate,
-          salePrice: response.salePrice,
+          purchasePrice: response.ostoHinta,
+          purchaseDate: response.ostoPvm,
+          condition: response.kunto,
+          description: response.kuvaus,
+          saleDate: response.myyntiPvm,
+          salePrice: response.ostoHinta,
           bookshelfId: response.idKirjaHylly,
           seriesId: response.idKirjaSarja
         };
@@ -167,11 +168,21 @@ export class BookCopyDetailsComponent implements OnInit {
     );
   }
 
+  
   add_photos(): void {
     if (this.dialogRef && this.dialogRef.componentInstance instanceof BookCopyDetailsComponent) {
       this.dialogRef.close();
     }
     const dialogRef = this.dialog.open(ValokuvaComponent, {
+      width: '400px',
+      data: { bookcopyid: this.data.copyId}
+    });
+  }
+  show_photos(): void {
+    if (this.dialogRef && this.dialogRef.componentInstance instanceof BookCopyDetailsComponent) {
+      this.dialogRef.close();
+    }
+    const dialogRef = this.dialog.open(ValokuvatComponent, {
       width: '400px',
       data: { bookcopyid: this.data.copyId}
     });

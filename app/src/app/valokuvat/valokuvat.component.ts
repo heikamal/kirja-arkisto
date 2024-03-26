@@ -18,43 +18,38 @@ export class ValokuvatComponent implements OnInit {
   i : any;
   number : number = -1;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { bookId: number },
+    @Inject(MAT_DIALOG_DATA) public data: { bookcopyid : number },
     private dataService: DataService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<ValokuvatComponent>
   ) {
-    this.chosen_book = data.bookId;
+    this.chosen_book = data.bookcopyid;
     }
 
     ngOnInit(): void {
+      console.log(this.chosen_book);
       this.dataService.get_book_copy(this.chosen_book).subscribe((response) => {
-        response.kuvat.forEach((imageData: any) => {
-          console.log(response.kuvat);
-          const base64Data = imageData.kuva.picByte;
+        response.kuvat.forEach((kuva: any) => {
+          const base64Data = kuva.picByte;
+          console.log(base64Data);
           const retrievedImage = 'data:image/jpeg;base64,' + base64Data;
-    
+          console.log(retrievedImage);
+          
           // Create image element
           const imgElement = document.createElement('img');
           imgElement.classList.add('object-cover', 'w-800', 'h-600');
           imgElement.src = retrievedImage;
-    
-          // Create paragraph elements for each property and set their text content
-          const pElements: HTMLParagraphElement[] = [];
-          ['julkaisuvuosi', 'taiteilija', 'tyyli', 'kuvaus', 'idkuva', 'kuvannimi'].forEach(property => {
-            const p = document.createElement('p');
-            p.textContent = `${property}: ${imageData.kuva[property]}`;
-            pElements.push(p);
-          });
+          
           // Find the image container
           const imageContainer = document.getElementById('imageContainer');
           if (imageContainer) {
-            // Append the image element and paragraph elements to the container
+            // Append the image element to the container
             imageContainer.appendChild(imgElement);
-            pElements.forEach(p => imageContainer.appendChild(p));
           } else {
             console.error("Element with id 'imageContainer' not found.");
           }
         });
       });
     }
+    
 }
