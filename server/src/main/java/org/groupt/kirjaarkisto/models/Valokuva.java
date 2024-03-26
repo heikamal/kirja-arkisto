@@ -17,6 +17,7 @@ import jakarta.persistence.*;
 public class Valokuva {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "idkuva")
   private Long idkuva;
 
