@@ -66,6 +66,7 @@ public class KirjaHyllyController {
       List<KirjaKopioResponse> k = new ArrayList<>();
 
       for (KirjaSarja sarja : hylly.getOmatSarjat()) {
+        System.out.println(sarja);
         List<KirjaKopio> kopiot = kirjaKopioService.getByOmaSarja(hylly.getId(), sarja.getId());
         List<KirjaKopioResponse> kopioResponseList = new ArrayList<>();
         for (KirjaKopio kopio : kopiot) {
