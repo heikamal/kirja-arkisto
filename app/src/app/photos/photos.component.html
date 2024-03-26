@@ -2,8 +2,15 @@
     <div class="bg-neutral-800 p-6 rounded-lg overflow-y-auto text-center" style="max-height: 90vh;">
         <p>kirjan kuvat:</p>
         <div id="imageContainer" class="md:w-640 w-640 p-2">
+            <img *ngFor="let imageData of response?.kuvitukset" class="object-cover w-800 h-600" [src]="'data:image/jpeg;base64,' + imageData.kuva.picByte" />
+            <p *ngIf="!imagesLoaded">No images added</p>
+            <p *ngFor="let imageData of response?.kuvitukset">
+                {{ 'julkaisuvuosi: ' + imageData.kuva.julkaisuvuosi }}
+                {{ 'taiteilija: ' + imageData.kuva.taiteilija }}
+                {{ 'tyyli: ' + imageData.kuva.tyyli }}
+                {{ 'kuvaus: ' + imageData.kuva.kuvaus }}
+            </p>
         </div>
-        <p *ngIf="!document.getElementById('imageContainer').querySelector('img')">No images added</p>
     </div>
     <button mat-button (click)="closeDialog()"
         class="bg-amber-500 rounded-md m-1 hover:brightness-75 text-black whitespace-nowrap">Sulje</button>
