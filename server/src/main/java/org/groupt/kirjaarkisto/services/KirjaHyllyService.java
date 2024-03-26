@@ -79,5 +79,35 @@ public class KirjaHyllyService {
       return kirjahyllyRepository.findByOmatSarjatIn(sarjat);
     }
 
-    // Lisää tarvittavat liiketoimintalogiikkametodit
+    /**
+     * Poistaa kirjasarjan kirjahyllystä.
+     *
+     * @param hyllyId Kirjahyllyn ID, josta poistetaan kirjasarja.
+     * @param sarjaId Kirjasarjan ID, joka poistetaan.
+     * @return Päivitetty kirjahylly.
+     */
+    public KirjaHylly poistaSarja(Long hyllyId, Long sarjaId) {
+      KirjaHylly hylly = kirjahyllyRepository.findById(hyllyId)
+          .orElseThrow(() -> new NonExistingKirjaHyllyException("Kirjahyllyä ei löydy, Oletko Admin?"));
+
+      
+      KirjaSarja poistettavaSarja = null;
+      for (KirjaSarja sarja : hylly.getOmatSarjat()) {
+        if (sarja.getId().equals(sarjaId)) {
+          poistettavaSarja = sarja;
+          break;
+        }
+      }
+
+      if (poistettavaSarja == null) {
+        throw new NonExistingKirjaHyllyException("Kirjasarjaa ei löydy kirjahyllystä.");
+      }
+
+      // Poistetaan kirjasarja kirjahyllystä
+      hylly.getOmatSarjat().remove(poistettavaSarja);
+
+      // Tallennetaan päivitetty kirjahylly tietokantaan ja palautetaan se :D
+      return kirjahyllyRepository.save(hylly);
+    }
+    
 }

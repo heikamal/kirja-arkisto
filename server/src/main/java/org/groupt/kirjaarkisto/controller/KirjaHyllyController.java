@@ -110,6 +110,14 @@ public class KirjaHyllyController {
         hylly.addToOmatSarjat(kirjaSarjaService.getKirjasarjaById(sarja.getSarjaId()));
       }
 
+     
       return kirjahyllyService.saveKirjaHylly(hylly);
+    }
+    @DeleteMapping("/self/{sarjaId}")
+    public KirjaHylly removeSarjaFromHylly(@PathVariable Long id, @PathVariable Long sarjaId) {
+      
+      
+      return kirjahyllyService.poistaSarja(id, sarjaId);
+
     }
 }
