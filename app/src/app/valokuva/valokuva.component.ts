@@ -72,6 +72,7 @@ export class ValokuvaComponent {
         
         this.dataService.post_valokuva(this.bookid, formData).subscribe((response) => {
           console.log(response);
+          this.dialogRef.close();
           
         })
       
