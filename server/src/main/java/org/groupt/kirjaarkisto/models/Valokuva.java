@@ -1,5 +1,7 @@
 package org.groupt.kirjaarkisto.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 /**
@@ -23,6 +25,7 @@ public class Valokuva {
 
   @ManyToOne
   @JoinColumn(name = "idkirjakopio")
+  @JsonBackReference
   private KirjaKopio kirjaKopio;
 
   @Column(name = "sivunnro")
