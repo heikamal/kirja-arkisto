@@ -20,6 +20,7 @@ import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.Kuvitus;
 import org.groupt.kirjaarkisto.payload.KirjaDTO;
+import org.groupt.kirjaarkisto.payload.KirjaResponse;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import java.net.URI;
 import java.util.HashMap;
@@ -107,7 +108,7 @@ public class KirjaController {
      * @return Tietokantaan lisätty kirja.
      */
     @PostMapping(path = "")
-    public ResponseEntity<Kirja> createKirja(@NonNull @RequestBody KirjaDTO kirjaDTO) {
+    public KirjaResponse createKirja(@NonNull @RequestBody KirjaDTO kirjaDTO) {
         Kirja lisattava = new Kirja();
         lisattava.setNimi(kirjaDTO.getNimi());
         lisattava.setKirjailija(kirjaDTO.getKirjailija());
@@ -123,8 +124,7 @@ public class KirjaController {
                 .buildAndExpand(lisatty.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri)
-                .body(lisatty);
+        return new KirjaResponse(lisatty);
     }
 
     @DeleteMapping("/{id}")
