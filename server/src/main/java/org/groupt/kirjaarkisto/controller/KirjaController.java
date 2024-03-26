@@ -145,12 +145,12 @@ public class KirjaController {
      * @return päivitetty kirja.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Kirja> editKirja(@PathVariable Long id, @NonNull @RequestBody KirjaDTO kirjaDTO) {
+    public KirjaResponse editKirja(@PathVariable Long id, @NonNull @RequestBody KirjaDTO kirjaDTO) {
 
         Kirja muokattava = kirjaService.getKirjaById(id);
 
         if (muokattava == null) {
-            return ResponseEntity.notFound().build();
+            throw new NonExistingKirjaException("Kirjaa ei ole olemassa!");
         }
 
         muokattava.setNimi(kirjaDTO.getNimi());
@@ -160,9 +160,9 @@ public class KirjaController {
         muokattava.setJarjestysNro(kirjaDTO.getJarjestysNro());
         muokattava.setKuvaus(kirjaDTO.getKuvaus());
 
-        Kirja muokattuKirja = kirjaService.editKirja(id, muokattava);
+        Kirja muokattuKirja = kirjaService.addKirja(muokattava);
 
-        return ResponseEntity.ok(muokattuKirja);
+        return new KirjaResponse(muokattuKirja);
     }
 
     /**
