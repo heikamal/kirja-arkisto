@@ -66,6 +66,7 @@ public class KirjaHyllyController {
       List<KirjaKopioResponse> k = new ArrayList<>();
 
       for (KirjaSarja sarja : hylly.getOmatSarjat()) {
+        System.out.println(sarja);
         List<KirjaKopio> kopiot = kirjaKopioService.getByOmaSarja(hylly.getId(), sarja.getId());
         List<KirjaKopioResponse> kopioResponseList = new ArrayList<>();
         for (KirjaKopio kopio : kopiot) {
@@ -110,6 +111,14 @@ public class KirjaHyllyController {
         hylly.addToOmatSarjat(kirjaSarjaService.getKirjasarjaById(sarja.getSarjaId()));
       }
 
+     
       return kirjahyllyService.saveKirjaHylly(hylly);
+    }
+    @DeleteMapping("/self/{sarjaId}")
+    public KirjaHylly removeSarjaFromHylly(@PathVariable Long id, @PathVariable Long sarjaId) {
+      
+      
+      return kirjahyllyService.poistaSarja(id, sarjaId);
+
     }
 }

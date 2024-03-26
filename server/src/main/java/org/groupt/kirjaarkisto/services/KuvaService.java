@@ -76,7 +76,7 @@ public class KuvaService {
        kuva.setTaiteilija(taiteilija);
        kuva.setTyyli(tyyli);
        kuva.setKuvaus(kuvaus);
-       kuva.setTiedostonimi(nimi); // Tallennetaan tiedostonimi tietokantaan
+       kuva.setTiedostonimi(nimi);
        kuva.setPicByte(compressBytes(tiedosto.getBytes()));
        kuva.setKuvanimi(nimi);
 
