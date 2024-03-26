@@ -129,13 +129,17 @@ public class KirjaKopioController {
 
     return kirjakopioService.saveKirjaKopio(kopio);
   }
+
   @DeleteMapping("/{kirjakopioId}")
   public ResponseEntity<?> deleteKirjakopio(@PathVariable Long kirjakopioId) {
 
     KirjaKopio poistettava = kirjakopioService.getKirjakopioById(kirjakopioId);
-      
-      kirjakopioService.remove(poistettava);
 
+    try {
+      kirjakopioService.remove(poistettava);
       return ResponseEntity.ok(poistettava.getTitle() + "on poistettu onnistuneesti");
-  } 
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Poistaminen epäonnistui");
+    }
+  }
 }

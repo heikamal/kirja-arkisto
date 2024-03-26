@@ -9,16 +9,13 @@ import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.models.Valokuva;
-import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
 import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
 import org.groupt.kirjaarkisto.repositories.KuvaRepository;
 import org.groupt.kirjaarkisto.repositories.ValokuvaRepository;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
