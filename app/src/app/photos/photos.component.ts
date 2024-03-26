@@ -6,8 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   selector: 'app-photos',
   standalone: true,
   imports: [],
-  templateUrl: './photos.component.html',
-  styleUrl: './photos.component.css'
+  templateUrl: './photos.component.html'
 })
 export class PhotosComponent implements OnInit{
   response : any;
