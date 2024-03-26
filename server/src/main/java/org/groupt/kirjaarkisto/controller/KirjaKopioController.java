@@ -7,15 +7,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import io.jsonwebtoken.io.IOException;
 import jakarta.persistence.EntityNotFoundException;
-
 import org.groupt.kirjaarkisto.models.Kirja;
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
 import org.groupt.kirjaarkisto.payload.KirjaKopioDTO;
+import org.groupt.kirjaarkisto.repositories.KirjaKopioRepository;
 import org.groupt.kirjaarkisto.security.services.UserDetailsImpl;
 import org.groupt.kirjaarkisto.services.KirjaHyllyService;
 import org.groupt.kirjaarkisto.services.KirjaKopioService;
@@ -40,6 +39,9 @@ public class KirjaKopioController {
 
   @Autowired
   private KirjaKopioService kirjakopioService;
+
+   @Autowired
+    private KirjaKopioRepository kirjaKopioRepository;
 
   @GetMapping
   public List<KirjaKopio> getKirjakopiot() {
@@ -129,4 +131,13 @@ public class KirjaKopioController {
 
     return kirjakopioService.saveKirjaKopio(kopio);
   }
+  @DeleteMapping("/{kirjakopioId}")
+  public ResponseEntity<?> deleteKirjakopio(@PathVariable Long kirjakopioId) {
+
+    KirjaKopio poistettava = kirjakopioService.getKirjakopioById(kirjakopioId);
+      
+      kirjakopioService.remove(poistettava);
+
+      return ResponseEntity.ok(poistettava.getTitle() + "on poistettu onnistuneesti");
+  } 
 }
