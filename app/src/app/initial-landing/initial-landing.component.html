@@ -1,7 +1,18 @@
 <div class="text-center overflow-x-hidden">
-    <p> Tervetuloa Arkisto.xyz sivustolle, kirja-arkiston kotipaikkaan! </p>
-    <div class="flex flex-col items-center mt-8">
-        <p>Uusimmat lisätyt kirjat</p>
-        <app-carousel></app-carousel>
+    <p class="font-black mb-10">Tervetuloa Arkisto.xyz sivustolle, kirja-arkiston kotipaikkaan!</p>
+    <p>Uusimmat lisätyt kirjat</p>
+    <app-carousel></app-carousel>
+    <div class="flex flex-col md:flex-row items-start mt-8">
+      <div class="w-full md:w-1/3">
+        <p>Uusimmat lisätyt sarjat</p>
+        <app-series [frontpage]="true"></app-series>
+      </div>
+      <div class="w-full md:w-2/3 md:mt-20 md:ml-4 mt-8">
+        <div class="p-4">
+          <p class="text-lg font-semibold">Lorem Ipsum</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sed elit sit amet risus vulputate consequat. Sed ullamcorper nulla vel justo faucibus, at tristique nisi condimentum. Nam eu mauris non libero volutpat rhoncus. Vivamus at commodo velit, a viverra dui. Nulla facilisi. Phasellus tempus mollis metus, ac suscipit leo. Proin consequat neque sit amet libero egestas, ac convallis neque volutpat.</p>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  
