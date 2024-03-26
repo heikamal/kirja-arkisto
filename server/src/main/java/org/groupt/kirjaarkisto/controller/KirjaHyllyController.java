@@ -1,11 +1,9 @@
 package org.groupt.kirjaarkisto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-
-
 import org.groupt.kirjaarkisto.models.KirjaHylly;
 import org.groupt.kirjaarkisto.models.KirjaKopio;
 import org.groupt.kirjaarkisto.models.KirjaSarja;
@@ -66,7 +64,7 @@ public class KirjaHyllyController {
       List<KirjaKopioResponse> k = new ArrayList<>();
 
       for (KirjaSarja sarja : hylly.getOmatSarjat()) {
-        System.out.println(sarja);
+        System.out.println(sarja.getId());
         List<KirjaKopio> kopiot = kirjaKopioService.getByOmaSarja(hylly.getId(), sarja.getId());
         List<KirjaKopioResponse> kopioResponseList = new ArrayList<>();
         for (KirjaKopio kopio : kopiot) {
@@ -114,11 +112,22 @@ public class KirjaHyllyController {
      
       return kirjahyllyService.saveKirjaHylly(hylly);
     }
+    /**
+     * DELETE-Endpoint joka poistaa sarjan omasta hyllystä. URL-osoite: /api/kirjahyllyt/self/{sarjaId}
+     * @param sarjaId
+     * @return
+     */
     @DeleteMapping("/self/{sarjaId}")
-    public KirjaHylly removeSarjaFromHylly(@PathVariable Long id, @PathVariable Long sarjaId) {
-      
-      
-      return kirjahyllyService.poistaSarja(id, sarjaId);
+    public ResponseEntity<?> removeSarjaFromHylly(@PathVariable Long sarjaId) {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      SecurityContextHolder.getContext().setAuthentication(authentication);
 
+      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+      KirjaHylly hylly = kirjahyllyService.getKirjaHyllyByOmistaja(userDetails.getId());
+
+      kirjahyllyService.poistaSarja(hylly.getId(), sarjaId);
+
+      return ResponseEntity.ok().build();
     }
 }
