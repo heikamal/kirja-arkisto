@@ -29,26 +29,27 @@ export class ValokuvatComponent implements OnInit {
     ngOnInit(): void {
       console.log(this.chosen_book);
       this.dataService.get_book_copy(this.chosen_book).subscribe((response) => {
-        response.kuvat.forEach((imageData: any) => {
-          const base64Data = imageData.kuva.picByte;
+        response.kuvat.forEach((kuva: any) => {
+          const base64Data = kuva.picByte;
           console.log(base64Data);
           const retrievedImage = 'data:image/jpeg;base64,' + base64Data;
           console.log(retrievedImage);
+          
           // Create image element
           const imgElement = document.createElement('img');
           imgElement.classList.add('object-cover', 'w-800', 'h-600');
           imgElement.src = retrievedImage;
-          // Create paragraph elements for each property and set their text content
+          
           // Find the image container
           const imageContainer = document.getElementById('imageContainer');
           if (imageContainer) {
-            // Append the image element and paragraph elements to the container
+            // Append the image element to the container
             imageContainer.appendChild(imgElement);
-
           } else {
             console.error("Element with id 'imageContainer' not found.");
           }
         });
       });
     }
+    
 }
