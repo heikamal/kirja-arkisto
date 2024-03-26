@@ -35,7 +35,7 @@ export class PhotosComponent implements OnInit{
     
           // Create image element
           const imgElement = document.createElement('img');
-          imgElement.classList.add('object-cover', 'w-full', 'h-full');
+          imgElement.classList.add('object-cover', 'w-800', 'h-600');
           imgElement.src = retrievedImage;
     
           // Create paragraph elements for each property and set their text content
@@ -45,7 +45,6 @@ export class PhotosComponent implements OnInit{
             p.textContent = `${property}: ${imageData.kuva[property]}`;
             pElements.push(p);
           });
-    
           // Find the image container
           const imageContainer = document.getElementById('imageContainer');
           if (imageContainer) {
