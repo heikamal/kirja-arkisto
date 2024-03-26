@@ -6,7 +6,6 @@ import { SeriesComponent } from '../series/series.component';
 import { AdminComponent } from '../admin/admin.component';
 import { BooksComponent } from '../books/books.component';
 import { MyBooksComponent } from '../my-books/my-books.component';
-import { MyProfileComponent } from '../my-profile/my-profile.component';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 import { SearchComponent } from '../search/search.component';
 import { PhotoComponent } from '../photo/photo.component';
@@ -16,7 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
   selector: 'app-landing',
   standalone: true,
   imports: [InitialLandingComponent, ProfileComponent, SeriesComponent, BooksComponent, AdminComponent, CommonModule,
-    MyBooksComponent, MyProfileComponent, BookDetailsComponent, SearchComponent, PhotoComponent],
+    MyBooksComponent, BookDetailsComponent, SearchComponent, PhotoComponent],
   templateUrl: './landing.component.html',
 })
 
