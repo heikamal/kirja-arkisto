@@ -1,30 +1,29 @@
-# Kirja-Arkisto
+# Book Archive
 
-Kirja-arkisto ollaan tarkoitettu kirjasarjojen ja kirjojen tietojen arkistointiin ja helpottamaan esimerkiksi kokoelman keräämistä. Tämä dokumentti on yksinkertaistettu käyttöohjekirja sovelluksen käyttöön.
+The Book Archive is intended for archiving information about book series and books to facilitate tasks such as collecting a library. This document is a simplified user manual for using the application.
 
-## Asennus
+## Installation
 
-Kehittämisympäristön saa Docker - konttiin suorittamalla komennon:
+To set up the development environment, run the following command in a Docker container:
 
 ```bash
 docker compose -f docker-compose.dev.yml up
 ```
-Tietokantakontti käyttää viimeisintä mysql - imagea ja siihen saa yhteyden portissa 3306.
-Backend amazoncorretto:21-alpine-jdk - imagea pohjanaan ja pyörii portissa 8080.
-Frontend käyttää pohjanaan node:21-alpine3.19 - imagea ja siihen saa yhteyden portissa 4200.
+The database container uses the latest mysql image and can be accessed on port 3306.
+The backend utilizes the amazoncorretto:21-alpine-jdk image as its base and runs on port 8080.
+The frontend uses the node:21-alpine3.19 image as its base and can be accessed on port 4200.
 
-Tuotantoympäristo vaatii toimiakseen docker stack deployta ja dockerille secretien asettamista docker swarmilla. Tuotantokonttia varten tarvitsee määrittää secretit:
-- db_user_password, tietokannan käyttäjän salasana
-- api_admin_password, sovelluksen adminisalasana. Backend luo adminikäyttäjän tällä salasanalla.
-- jwt_secret, JSON Webtokenia varten salasana, jota käytetään tokenien muodostamiseen. Ota huomion pituusvaativuudet.
+For the production environment, Docker stack deployment is required along with setting secrets for Docker Swarm. To run the production container, the following secrets need to be specified:
+- db_user_password: Database user's password
+- api_admin_password: Application's admin password. The backend creates an admin user with this password.
+- jwt_secret: A password for JSON Web Token used for token generation. Do note the length requirements.
 
-Tämän lisäksi sekä frontend ja backend tarvitsevat omat imagensa. Niiden nimiä voi muokata docker-compose.yml-tiedostossa.
+Additionally, both the frontend and backend require their own images. You can customize their names in the docker-compose.yml file.
 
+## Participation
 
-## Osallistuminen
+Don't participate yet, this is still very much a work in progress...
 
-Älä osallistu vielä, tää on aik pahasti kesken..
+## License
 
-## Lisenssi
-
-[Ei me mitää lisenssei tarvita](https://www.youtube.com/watch?v=tdSJjY3lWvE)
+[We don't need no licenses](https://www.youtube.com/watch?v=tdSJjY3lWvE)
